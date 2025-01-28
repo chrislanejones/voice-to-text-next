@@ -63,7 +63,7 @@ export default function DictationApp() {
   useEffect(() => {
     if (!recognition) return;
 
-    const onResult = (event: SpeechRecognitionEvent) => {
+    const handleResult = (event: SpeechRecognitionEvent) => {
       let interimTranscript = "";
       let finalTranscript = "";
 
@@ -78,28 +78,28 @@ export default function DictationApp() {
       setTranscription(finalTranscript || interimTranscript);
     };
 
-    const onEnd = () => {
+    const handleEnd = () => {
       setIsRecording(false);
       if (transcription) {
-        setHistory((prev) => [...prev, transcription]);
+        setHistory([transcription, ...history].slice(0, 10)); // Limit history to 10 entries
       }
     };
 
-    const onError = (event: SpeechRecognitionErrorEvent) => {
+    const handleError = (event: SpeechRecognitionErrorEvent) => {
       setError(`Speech recognition error: ${event.error}`);
       setIsRecording(false);
     };
 
-    recognition.addEventListener("result", onResult);
-    recognition.addEventListener("end", onEnd);
-    recognition.addEventListener("error", onError);
+    recognition.addEventListener("result", handleResult);
+    recognition.addEventListener("end", handleEnd);
+    recognition.addEventListener("error", handleError);
 
     return () => {
-      recognition.removeEventListener("result", onResult);
-      recognition.removeEventListener("end", onEnd);
-      recognition.removeEventListener("error", onError);
+      recognition.removeEventListener("result", handleResult);
+      recognition.removeEventListener("end", handleEnd);
+      recognition.removeEventListener("error", handleError);
     };
-  }, [recognition, transcription]);
+  }, [recognition, transcription, history]);
 
   const handleDeleteHistory = (index: number) => {
     setHistory((prev) => prev.filter((_, i) => i !== index));
@@ -111,56 +111,64 @@ export default function DictationApp() {
   };
 
   return (
-    <>
-      <Sidebar
-        history={history}
-        onDeleteHistory={handleDeleteHistory}
-        onOpenModal={handleOpenModal}
-      />
-      <div className="flex-1 p-8 text-white">
-        <div className="max-w-2xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md">
-          <h1 className="text-3xl text-center font-bold mb-6">
-            Voice to Text Dictation
-          </h1>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="col-span-1">
-              <Button
-                onClick={isRecording ? stopRecording : startRecording}
-                className="mb-4"
-              >
-                {isRecording ? (
-                  <>
-                    <StopCircle className="mr-2" />
-                    Stop Recording
-                  </>
-                ) : (
-                  <>
-                    <Mic className="mr-2" />
-                    Start Dictation
-                  </>
+    <div className="flex flex-col min-h-screen items-center justify-center">
+      {/* Centering container */}
+      <div className="max-w-screen-xl">
+        {/* Dictation Section */}
+        <div className="flex-1 p-8 text-white">
+          <div className="max-w-2xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md">
+            <h1 className="text-3xl text-center font-bold mb-6">
+              Voice to Text Dictation
+            </h1>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="col-span-1">
+                <Button
+                  onClick={isRecording ? stopRecording : startRecording}
+                  className="mb-4"
+                >
+                  {isRecording ? (
+                    <>
+                      <StopCircle className="mr-2" />
+                      Stop Recording
+                    </>
+                  ) : (
+                    <>
+                      <Mic className="mr-2" />
+                      Start Dictation
+                    </>
+                  )}
+                </Button>
+              </div>
+              <div className="col-span-2">
+                <h2 className="text-xl font-semibold mb-2">Transcription:</h2>
+                <p className="bg-gray-700 p-4 rounded min-h-[100px]">
+                  {transcription}
+                </p>
+                {error && (
+                  <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
+                    Error: {error}
+                  </div>
                 )}
-              </Button>
-            </div>
-            <div className="col-span-2">
-              <h2 className="text-xl font-semibold mb-2">Transcription:</h2>
-              <p className="bg-gray-700 p-4 rounded min-h-[100px]">
-                {transcription}
-              </p>
-              {error && (
-                <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
-                  Error: {error}
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Sidebar Section */}
+        <Sidebar
+          history={history}
+          onDeleteHistory={handleDeleteHistory}
+          onOpenModal={handleOpenModal}
+        />
       </div>
+
+      {/* Modal */}
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         title="Transcription Details"
         content={selectedText}
       />
-    </>
+    </div>
   );
 }
