@@ -111,12 +111,11 @@ export default function DictationApp() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center">
-      {/* Centering container */}
-      <div className="max-w-screen-xl">
-        {/* Dictation Section */}
-        <div className="flex-1 p-8 text-white">
-          <div className="max-w-2xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md">
+    <div className="grid grid-cols-3 h-screen">
+      <div className="bg-gray-900"></div>
+      <div className="col-span-2">
+        <div className="flex flex-col h-full">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-md flex-1 text-white mt-4">
             <h1 className="text-3xl text-center font-bold mb-6">
               Voice to Text Dictation
             </h1>
@@ -152,17 +151,14 @@ export default function DictationApp() {
               </div>
             </div>
           </div>
+          <Sidebar
+            history={history}
+            onDeleteHistory={handleDeleteHistory}
+            onOpenModal={handleOpenModal}
+          />
         </div>
-
-        {/* Sidebar Section */}
-        <Sidebar
-          history={history}
-          onDeleteHistory={handleDeleteHistory}
-          onOpenModal={handleOpenModal}
-        />
       </div>
-
-      {/* Modal */}
+      <div className="bg-gray-900"></div>
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
