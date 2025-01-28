@@ -65,15 +65,24 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <div className="w-64 p-4 h-full overflow-y-auto bg-gray-900">
-      {history.map((text, index) => (
-        <SidebarItem
-          key={index}
-          text={text}
-          onDelete={() => onDeleteHistory(index)}
-          onOpen={() => onOpenModal(text)}
-          color={colorKeys[index % colorKeys.length]}
-        />
-      ))}
+      <div className="grid grid-cols-1 mb-8">
+        {" "}
+        {/* Dictation Section */}
+        {/* Your dictation component goes here */}
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {" "}
+        {/* Cards Section */}
+        {history.map((text, index) => (
+          <SidebarItem
+            key={index}
+            text={text}
+            onDelete={() => onDeleteHistory(index)}
+            onOpen={() => onOpenModal(text)}
+            color={colorKeys[index % colorKeys.length]}
+          />
+        ))}
+      </div>
     </div>
   );
 };

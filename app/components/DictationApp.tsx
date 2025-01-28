@@ -118,36 +118,40 @@ export default function DictationApp() {
         onOpenModal={handleOpenModal}
       />
       <div className="flex-1 p-8 text-white">
-        <div className="max-w-2xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Voice to Text Dictation</h1>
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md">
-            <Button
-              onClick={isRecording ? stopRecording : startRecording}
-              className="mb-4"
-            >
-              {isRecording ? (
-                <>
-                  <StopCircle className="mr-2" />
-                  Stop Recording
-                </>
-              ) : (
-                <>
-                  <Mic className="mr-2" />
-                  Start Dictation
-                </>
-              )}
-            </Button>
-            <div className="mt-4">
+        <div className="max-w-2xl mx-auto bg-gray-800 p-6 rounded-lg shadow-md">
+          <h1 className="text-3xl text-center font-bold mb-6">
+            Voice to Text Dictation
+          </h1>
+          <div className="grid grid-cols-3 gap-4">
+            <div className="col-span-1">
+              <Button
+                onClick={isRecording ? stopRecording : startRecording}
+                className="mb-4"
+              >
+                {isRecording ? (
+                  <>
+                    <StopCircle className="mr-2" />
+                    Stop Recording
+                  </>
+                ) : (
+                  <>
+                    <Mic className="mr-2" />
+                    Start Dictation
+                  </>
+                )}
+              </Button>
+            </div>
+            <div className="col-span-2">
               <h2 className="text-xl font-semibold mb-2">Transcription:</h2>
               <p className="bg-gray-700 p-4 rounded min-h-[100px]">
                 {transcription}
               </p>
+              {error && (
+                <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
+                  Error: {error}
+                </div>
+              )}
             </div>
-            {error && (
-              <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
-                Error: {error}
-              </div>
-            )}
           </div>
         </div>
       </div>
