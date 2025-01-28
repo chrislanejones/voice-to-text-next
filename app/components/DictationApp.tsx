@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Mic, StopCircle } from "lucide-react";
 import Sidebar from "./Sidebar";
 import Modal from "./Modal";
+import { ModeToggle } from "./DarkLightToggle";
 
 declare global {
   interface Window {
@@ -111,50 +112,62 @@ export default function DictationApp() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center">
-      <div className="bg-gray-800 p-6 rounded-lg shadow-md text-white w-[800px]">
-        <h1 className="text-3xl text-center font-bold mb-6">
+    <div className="flex flex-col min-h-screen items-center justify-center p-4">
+      {/* Dictation container */}
+      <div className="p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[800px] dark:bg-sky-900 bg-sky-200">
+        <h1 className="text-2xl sm:text-3xl text-center font-bold mb-4 sm:mb-6">
           Voice to Text Dictation
         </h1>
-        <div className="flex gap-4">
-          <div className="flex-none w-[200px]">
+
+        {/* Stack layout on mobile, side by side on larger screens */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* Control buttons container */}
+          <div className="w-full sm:w-[200px]">
             <Button
-              variant="destructive" // Use destructive variant for red button
+              variant="destructive"
               onClick={isRecording ? stopRecording : startRecording}
-              className="mb-4 w-full"
+              className="w-full"
             >
               {isRecording ? (
                 <>
-                  <StopCircle className="mr-2 text-white" />
-                  Stop Recording
+                  <StopCircle className="mr-2  h-4 w-4" />
+                  <span className="whitespace-nowrap">Stop Recording</span>
                 </>
               ) : (
                 <>
-                  <Mic className="mr-2 text-white" />
-                  Start Dictation
+                  <Mic className="mr-2 h-4 w-4" />
+                  <span className="whitespace-nowrap">Start Dictation</span>
                 </>
               )}
             </Button>
           </div>
+
+          {/* Transcription container */}
           <div className="flex-1">
-            <div className="bg-gray-700 p-4 rounded min-h-[100px] max-h-[400px] overflow-y-auto">
-              <p>Transcription:</p>
-              <p>{transcription}</p>
+            <div className="dark:bg-gray-800 bg-slate-300 p-3 sm:p-4 rounded min-h-[100px] max-h-[300px] sm:max-h-[400px] overflow-y-auto inset-shadow-2">
+              <p className="text-sm font-medium mb-2">Transcription:</p>
+              <p className="text-sm">{transcription}</p>
             </div>
             {error && (
-              <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
+              <div className="mt-4 p-3 sm:p-4 bg-red-900 text-red-100 rounded text-sm">
                 Error: {error}
               </div>
             )}
           </div>
         </div>
       </div>
-      <Sidebar
-        history={history}
-        onDeleteHistory={handleDeleteHistory}
-        onOpenModal={handleOpenModal}
-      />
 
+      {/* Sidebar with responsive positioning */}
+      <div className="w-full max-w-[800px] mt-4">
+        <Sidebar
+          history={history}
+          onDeleteHistory={handleDeleteHistory}
+          onOpenModal={handleOpenModal}
+        />
+      </div>
+      <div className="absolute right-0 bottom-0 size-16">
+        <ModeToggle />
+      </div>
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

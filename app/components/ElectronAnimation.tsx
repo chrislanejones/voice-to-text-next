@@ -16,7 +16,7 @@ export default function ElectronAnimation() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-800">
+    <div className="flex items-center justify-center h-80 bg-gray-800">
       <div className="relative w-[300px] h-[300px]">
         <svg width="300" height="300" viewBox="0 0 300 300">
           {/* Electron orbit */}
