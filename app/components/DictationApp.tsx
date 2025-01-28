@@ -111,54 +111,56 @@ export default function DictationApp() {
   };
 
   return (
-    <div className="grid grid-cols-3 h-screen">
-      <div className="bg-gray-900"></div>
-      <div className="col-span-2">
-        <div className="flex flex-col h-full">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-md flex-1 text-white mt-4">
-            <h1 className="text-3xl text-center font-bold mb-6">
-              Voice to Text Dictation
-            </h1>
-            <div className="grid grid-cols-3 gap-4">
-              <div className="col-span-1">
-                <Button
-                  onClick={isRecording ? stopRecording : startRecording}
-                  className="mb-4"
-                >
-                  {isRecording ? (
-                    <>
-                      <StopCircle className="mr-2" />
-                      Stop Recording
-                    </>
-                  ) : (
-                    <>
-                      <Mic className="mr-2" />
-                      Start Dictation
-                    </>
+    <div className="flex flex-col min-h-screen items-center justify-center">
+      <div className="max-w-screen-xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 h-full">
+          <div className="bg-gray-900 md:col-span-1"></div>
+          <div className="col-span-1 md:col-span-2">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md flex-1">
+              <h1 className="text-3xl text-center font-bold mb-6">
+                Voice to Text Dictation
+              </h1>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="col-span-1">
+                  <Button
+                    onClick={isRecording ? stopRecording : startRecording}
+                    className="mb-4"
+                  >
+                    {isRecording ? (
+                      <>
+                        <StopCircle className="mr-2" />
+                        Stop Recording
+                      </>
+                    ) : (
+                      <>
+                        <Mic className="mr-2" />
+                        Start Dictation
+                      </>
+                    )}
+                  </Button>
+                </div>
+                <div className="col-span-2">
+                  <h2 className="text-xl font-semibold mb-2">Transcription:</h2>
+                  <p className="bg-gray-700 p-4 rounded min-h-[100px]">
+                    {transcription}
+                  </p>
+                  {error && (
+                    <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
+                      Error: {error}
+                    </div>
                   )}
-                </Button>
-              </div>
-              <div className="col-span-2">
-                <h2 className="text-xl font-semibold mb-2">Transcription:</h2>
-                <p className="bg-gray-700 p-4 rounded min-h-[100px]">
-                  {transcription}
-                </p>
-                {error && (
-                  <div className="mt-4 p-4 bg-red-900 text-red-100 rounded">
-                    Error: {error}
-                  </div>
-                )}
+                </div>
               </div>
             </div>
+            <Sidebar
+              history={history}
+              onDeleteHistory={handleDeleteHistory}
+              onOpenModal={handleOpenModal}
+            />
           </div>
-          <Sidebar
-            history={history}
-            onDeleteHistory={handleDeleteHistory}
-            onOpenModal={handleOpenModal}
-          />
+          <div className="bg-gray-900 md:col-span-1"></div>
         </div>
       </div>
-      <div className="bg-gray-900"></div>
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
