@@ -114,7 +114,7 @@ export default function DictationApp() {
   return (
     <div className="flex flex-col min-h-screen items-center justify-center p-4">
       {/* Dictation container */}
-      <div className="p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[800px] dark:bg-sky-900 bg-sky-200">
+      <div className="p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[800px] dark:bg-slate-600 bg-slate-400">
         <h1 className="text-2xl sm:text-3xl text-center font-bold mb-4 sm:mb-6">
           Voice to Text Dictation
         </h1>
@@ -144,7 +144,7 @@ export default function DictationApp() {
 
           {/* Transcription container */}
           <div className="flex-1">
-            <div className="dark:bg-gray-800 bg-slate-300 p-3 sm:p-4 rounded min-h-[100px] max-h-[300px] sm:max-h-[400px] overflow-y-auto inset-shadow-2">
+            <div className="dark:bg-zinc-800 bg-zinc-300 p-3 sm:p-4 rounded min-h-[100px] max-h-[300px] sm:max-h-[400px] overflow-y-auto inset-shadow-2">
               <p className="text-sm font-medium mb-2">Transcription:</p>
               <p className="text-sm">{transcription}</p>
             </div>
