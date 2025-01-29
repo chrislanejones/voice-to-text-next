@@ -5,8 +5,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { X } from "lucide-react";
+import { X, Copy, Check } from "lucide-react";
+import { useState } from "react";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -16,6 +18,15 @@ export interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-gray-900 border border-gray-700">
@@ -31,6 +42,25 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content }) => {
         <div className="mt-2">
           <p className="text-sm text-white">{content}</p>
         </div>
+        <DialogFooter>
+          <button
+            onClick={handleCopy}
+            className="p-1 hover:bg-gray-300/50 bg-gray-100/50 rounded ml-auto flex items-center gap-2"
+            aria-label="Copy to clipboard"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                <span className="text-sm">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                <span className="text-sm">Copy</span>
+              </>
+            )}
+          </button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

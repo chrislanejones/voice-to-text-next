@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, StopCircle } from "lucide-react";
-import Sidebar from "./Sidebar";
+import CardSection from "./CardSection";
 import Modal from "./Modal";
 import { ModeToggle } from "./DarkLightToggle";
 
@@ -157,9 +157,9 @@ export default function DictationApp() {
         </div>
       </div>
 
-      {/* Sidebar with responsive positioning */}
+      {/* CardSection with responsive positioning */}
       <div className="w-full max-w-[800px] mt-4">
-        <Sidebar
+        <CardSection
           history={history}
           onDeleteHistory={handleDeleteHistory}
           onOpenModal={handleOpenModal}
