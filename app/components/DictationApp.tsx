@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Mic, StopCircle } from "lucide-react";
 import CardSection from "./CardSection";
@@ -20,17 +20,33 @@ declare global {
   }
 }
 
-export default function DictationApp() {
-  const [isRecording, setIsRecording] = useState(false);
-  const [transcription, setTranscription] = useState("");
+const STORAGE_KEY = "voice-to-text-history";
+
+export default function DictationApp(): React.ReactElement {
+  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [transcription, setTranscription] = useState<string>("");
   const [history, setHistory] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedText, setSelectedText] = useState("");
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedText, setSelectedText] = useState<string>("");
 
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(
-    null
-  );
+  const recognitionRef = React.useRef<SpeechRecognition | null>(null);
+
+  useEffect(() => {
+    const savedHistory = localStorage.getItem(STORAGE_KEY);
+    if (savedHistory) {
+      try {
+        setHistory(JSON.parse(savedHistory));
+      } catch (error) {
+        console.error("Failed to parse saved history:", error);
+      }
+    }
+  }, []);
+
+  // Save history to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+  }, [history]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -39,32 +55,32 @@ export default function DictationApp() {
       const newRecognition = new SpeechRecognition();
       newRecognition.continuous = true;
       newRecognition.interimResults = true;
-      setRecognition(newRecognition);
+      recognitionRef.current = newRecognition;
     } else {
       setError("Speech recognition is not supported in this browser.");
     }
   }, []);
 
-  const startRecording = useCallback(() => {
-    if (recognition) {
+  const startRecording = useCallback((): void => {
+    if (recognitionRef.current) {
       setError(null);
       setTranscription("");
-      recognition.start();
+      recognitionRef.current.start();
       setIsRecording(true);
     }
-  }, [recognition]);
+  }, []);
 
-  const stopRecording = useCallback(() => {
-    if (recognition) {
-      recognition.stop();
+  const stopRecording = useCallback((): void => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
       setIsRecording(false);
     }
-  }, [recognition]);
+  }, []);
 
   useEffect(() => {
-    if (!recognition) return;
+    if (!recognitionRef.current) return;
 
-    const handleResult = (event: SpeechRecognitionEvent) => {
+    const handleResult = (event: SpeechRecognitionEvent): void => {
       let interimTranscript = "";
       let finalTranscript = "";
 
@@ -79,34 +95,40 @@ export default function DictationApp() {
       setTranscription(finalTranscript || interimTranscript);
     };
 
-    const handleEnd = () => {
+    const handleEnd = (): void => {
       setIsRecording(false);
       if (transcription) {
-        setHistory([transcription, ...history].slice(0, 10)); // Limit history to 10 entries
+        setHistory((prev) => [transcription, ...prev].slice(0, 10)); // Limit history to 10 entries
       }
     };
 
-    const handleError = (event: SpeechRecognitionErrorEvent) => {
+    const handleError = (event: SpeechRecognitionErrorEvent): void => {
       setError(`Speech recognition error: ${event.error}`);
       setIsRecording(false);
     };
 
-    recognition.addEventListener("result", handleResult);
-    recognition.addEventListener("end", handleEnd);
-    recognition.addEventListener("error", handleError);
+    recognitionRef.current.addEventListener("result", handleResult);
+    recognitionRef.current.addEventListener("end", handleEnd);
+    recognitionRef.current.addEventListener("error", handleError);
 
     return () => {
-      recognition.removeEventListener("result", handleResult);
-      recognition.removeEventListener("end", handleEnd);
-      recognition.removeEventListener("error", handleError);
+      if (recognitionRef.current) {
+        recognitionRef.current.removeEventListener("result", handleResult);
+        recognitionRef.current.removeEventListener("end", handleEnd);
+        recognitionRef.current.removeEventListener("error", handleError);
+      }
     };
-  }, [recognition, transcription, history]);
+  }, [transcription]);
 
-  const handleDeleteHistory = (index: number) => {
-    setHistory((prev) => prev.filter((_, i) => i !== index));
+  const handleDeleteHistory = (index: number): void => {
+    setHistory((prev) => {
+      const newHistory = [...prev];
+      newHistory.splice(index, 1);
+      return newHistory;
+    });
   };
 
-  const handleOpenModal = (text: string) => {
+  const handleOpenModal = (text: string): void => {
     setSelectedText(text);
     setModalOpen(true);
   };
@@ -130,7 +152,7 @@ export default function DictationApp() {
             >
               {isRecording ? (
                 <>
-                  <StopCircle className="mr-2  h-4 w-4" />
+                  <StopCircle className="mr-2 h-4 w-4" />
                   <span className="whitespace-nowrap">Stop Recording</span>
                 </>
               ) : (
