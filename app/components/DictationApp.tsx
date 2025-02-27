@@ -12,9 +12,15 @@ import { Trash2 } from "lucide-react";
 const STORAGE_KEY = "voice-to-text-history";
 
 export default function DictationApp(): React.ReactElement {
-  // Speech recognition
-  const { isRecording, transcription, error, startRecording, stopRecording } =
-    useSpeechRecognition();
+  // Move the hook INSIDE the component function
+  const {
+    isRecording,
+    transcription,
+    error,
+    startRecording,
+    stopRecording,
+    clearTranscription,
+  } = useSpeechRecognition();
 
   // UI state
   const [history, setHistory] = useState<string[]>([]);
@@ -66,9 +72,26 @@ export default function DictationApp(): React.ReactElement {
   };
 
   const handleDeleteAll = (): void => {
-    setHistory([]);
+    // Clear history array (using function form to ensure it's properly updated)
+    setHistory(() => []);
+
+    // Reset transcription text using the dedicated function
+    clearTranscription();
+
+    // Reset last saved transcription tracker
     setLastSavedTranscription("");
+
+    // Remove from localStorage
     localStorage.removeItem(STORAGE_KEY);
+
+    // Force a UI refresh if needed
+    setTimeout(() => {
+      // Double-check that history is truly empty
+      if (history.length > 0) {
+        console.log("Forcing history clear");
+        setHistory(() => []);
+      }
+    }, 100);
   };
 
   return (

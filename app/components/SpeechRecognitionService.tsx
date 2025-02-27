@@ -35,6 +35,11 @@ export function useSpeechRecognition() {
     console.log("SpeechService: isRecording changed to", isRecording);
   }, [isRecording]);
 
+  // Clear transcription function
+  const clearTranscription = useCallback(() => {
+    setTranscription("");
+  }, []);
+
   // Stop recording function
   const stopRecording = useCallback(() => {
     console.log("Stopping recording called");
@@ -273,5 +278,6 @@ export function useSpeechRecognition() {
     error,
     startRecording,
     stopRecording,
+    clearTranscription,
   };
 }
