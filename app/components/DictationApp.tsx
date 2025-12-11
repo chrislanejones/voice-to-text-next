@@ -12,7 +12,6 @@ import { Trash2 } from "lucide-react";
 const STORAGE_KEY = "voice-to-text-history";
 
 export default function DictationApp(): React.ReactElement {
-  // Move the hook INSIDE the component function
   const {
     isRecording,
     transcription,
@@ -22,14 +21,12 @@ export default function DictationApp(): React.ReactElement {
     clearTranscription,
   } = useSpeechRecognition();
 
-  // UI state
   const [history, setHistory] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedText, setSelectedText] = useState<string>("");
   const [lastSavedTranscription, setLastSavedTranscription] =
     useState<string>("");
 
-  // Load history from localStorage
   useEffect(() => {
     const savedHistory = localStorage.getItem(STORAGE_KEY);
     if (savedHistory) {
@@ -41,12 +38,10 @@ export default function DictationApp(): React.ReactElement {
     }
   }, []);
 
-  // Save history to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
   }, [history]);
 
-  // Add transcription to history when recording stops, but avoid duplicates
   useEffect(() => {
     if (
       !isRecording &&
@@ -72,21 +67,11 @@ export default function DictationApp(): React.ReactElement {
   };
 
   const handleDeleteAll = (): void => {
-    // Clear history array (using function form to ensure it's properly updated)
     setHistory(() => []);
-
-    // Reset transcription text using the dedicated function
     clearTranscription();
-
-    // Reset last saved transcription tracker
     setLastSavedTranscription("");
-
-    // Remove from localStorage
     localStorage.removeItem(STORAGE_KEY);
-
-    // Force a UI refresh if needed
     setTimeout(() => {
-      // Double-check that history is truly empty
       if (history.length > 0) {
         console.log("Forcing history clear");
         setHistory(() => []);
@@ -96,67 +81,47 @@ export default function DictationApp(): React.ReactElement {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center p-4">
-      {/* Title above the container */}
-      <h1 className="text-2xl sm:text-3xl text-center font-bold mb-4 sm:mb-6 dark:text-white">
-        Voice to Text Dictation
-      </h1>
-
-      {/* Dictation container */}
       <div className="p-4 sm:p-6 rounded-lg shadow-xl w-full max-w-[800px] dark:bg-slate-600 bg-slate-400">
-        {/* Stack layout on mobile, side by side on larger screens */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          {/* Animation and control centered */}
-          <div className="w-full sm:w-[200px] flex flex-col items-center">
-            <DictationButton
-              isRecording={isRecording}
-              onStartRecording={startRecording}
-              onStopRecording={stopRecording}
-            />
-          </div>
-
-          {/* Transcription container with increased height */}
-          <div className="flex-1">
-            <div className="dark:bg-zinc-800 bg-zinc-300 p-3 sm:p-4 rounded min-h-[140px] max-h-[350px] sm:max-h-[450px] overflow-y-auto inset-shadow-2">
-              <p className="text-sm font-medium mb-2">Transcription:</p>
-              <p className="text-sm">{transcription}</p>
+        <div className="w-full flex justify-center mb-4">
+          <DictationButton
+            isRecording={isRecording}
+            onStartRecording={startRecording}
+            onStopRecording={stopRecording}
+          />
+        </div>
+        <div className="w-full max-w-[800px] mt-4">
+          {error && (
+            <div className="text-red-500 text-center mb-4">{error}</div>
+          )}
+          {transcription && (
+            <div className="p-4 bg-white/10 rounded-lg mb-4">
+              <p className="text-white">{transcription}</p>
             </div>
-            {error && (
-              <div className="mt-4 p-3 sm:p-4 bg-red-900 text-red-100 rounded text-sm">
-                Error: {error}
-              </div>
-            )}
-          </div>
+          )}
+          <CardSection
+            history={history}
+            onDeleteHistory={handleDeleteHistory}
+            onOpenModal={handleOpenModal}
+          />
         </div>
       </div>
 
-      {/* CardSection with responsive positioning */}
-      <div className="w-full max-w-[800px] mt-4">
-        <CardSection
-          history={history}
-          onDeleteHistory={handleDeleteHistory}
-          onOpenModal={handleOpenModal}
-        />
-      </div>
-
-      {/* Bottom Action Buttons Container */}
-      <div className="absolute right-0 bottom-0 flex items-center gap-2 p-4">
+      <div className="fixed bottom-4 right-4 flex gap-2">
+        <ModeToggle />
         <Button
           variant="destructive"
           size="icon"
           onClick={handleDeleteAll}
-          aria-label="Delete all transcriptions"
-          title="Delete all transcriptions"
-          className="h-9 w-9"
+          aria-label="Delete all"
         >
           <Trash2 className="h-4 w-4" />
         </Button>
-        <ModeToggle />
       </div>
 
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        title="Transcription Details"
+        title="Transcription"
         content={selectedText}
       />
     </div>

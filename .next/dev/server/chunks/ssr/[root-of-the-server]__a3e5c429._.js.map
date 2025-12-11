@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 13, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":""}},
+    {"offset": {"line": 17, "column": 0}, "map": {"version":3,"sources":["file:///home/clj/repo/voice-to-text-next/app/page.tsx"],"sourcesContent":["import DictationApp from \"./components/DictationApp\";\n\nexport default function Home() {\n  return (\n    <main className=\"dark:bg-slate-800 bg-slate-200\">\n      <DictationApp />\n    </main>\n  );\n}\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,sbAAC;QAAK,WAAU;kBACd,cAAA,sbAAC,oLAAY;;;;;;;;;;AAGnB"}}]
+}

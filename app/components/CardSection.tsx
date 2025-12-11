@@ -1,5 +1,5 @@
 import React from "react";
-import { Trash2, Maximize2, Copy } from "lucide-react"; // Add Copy import
+import { Trash2, Maximize2, Copy } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardFooter } from "./ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -99,10 +99,7 @@ const CardSection: React.FC<CardSectionProps> = ({
 }) => {
   return (
     <div className="h-full overflow-y-auto w-full max-w-[800px] px-4 sm:px-0">
-      <div className="mb-6 sm:mb-8">
-        {/* Dictation Section */}
-        {/* Your dictation component goes here */}
-      </div>
+      <div className="mb-6 sm:mb-8"></div>
       <AnimatePresence>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 auto-rows-fr">
           {history.map((text, index) => (

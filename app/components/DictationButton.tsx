@@ -15,7 +15,6 @@ export default function DictationButton({
   onStartRecording,
   onStopRecording,
 }: DictationButtonProps) {
-  // Debug logging for state changes
   useEffect(() => {
     console.log("DictationButton: isRecording changed to", isRecording);
   }, [isRecording]);
@@ -30,83 +29,114 @@ export default function DictationButton({
     onStopRecording();
   };
 
+  // Electron configuration - 3 electrons with different speeds and starting positions
+  const electrons = [
+    { duration: 2, startAngle: 0, color: "#ef4444", orbitSize: 100 },
+    { duration: 2.5, startAngle: 120, color: "#3b82f6", orbitSize: 100 },
+    { duration: 3, startAngle: 240, color: "#22c55e", orbitSize: 100 },
+  ];
+
   return (
-    <div className="relative w-[160px] h-[160px] flex items-center justify-center">
-      {/* Orbit path */}
-      <AnimatePresence>
-        {isRecording && (
-          <motion.svg
-            width="160"
-            height="160"
-            viewBox="0 0 160 160"
-            className="absolute"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            key="orbit-path"
-          >
-            <circle
-              cx="80"
-              cy="80"
-              r="68"
-              fill="none"
-              stroke="#bdc3c7"
-              strokeWidth="1.5"
-              strokeDasharray="4,4"
-            />
-          </motion.svg>
-        )}
-      </AnimatePresence>
+    <div className="flex items-center justify-center w-full">
+      <div className="relative w-[120px] h-[120px] flex items-center justify-center">
+        {/* Dashed orbit ring */}
+        <AnimatePresence>
+          {isRecording && (
+            <motion.svg
+              className="absolute"
+              width="100"
+              height="100"
+              viewBox="0 0 100 100"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="46"
+                fill="none"
+                stroke="#9ca3af"
+                strokeWidth="1.5"
+                strokeDasharray="4,4"
+                opacity="0.5"
+              />
+            </motion.svg>
+          )}
+        </AnimatePresence>
 
-      {/* Animating electron */}
-      <AnimatePresence>
-        {isRecording && (
-          <motion.div
-            className="absolute w-5 h-5 bg-red-600 rounded-full shadow-md"
-            initial={{ opacity: 0, rotate: 0 }}
-            animate={{ opacity: 1, rotate: 360 }}
-            exit={{ opacity: 0 }}
-            transition={{
-              rotate: {
-                duration: 2,
+        {/* Orbiting electrons */}
+        <AnimatePresence>
+          {isRecording &&
+            electrons.map((electron, index) => (
+              <motion.div
+                key={`electron-${index}`}
+                className="absolute w-[100px] h-[100px]"
+                initial={{ opacity: 0, rotate: electron.startAngle }}
+                animate={{ opacity: 1, rotate: electron.startAngle + 360 }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  opacity: { duration: 0.3 },
+                  rotate: {
+                    duration: electron.duration,
+                    repeat: Infinity,
+                    ease: "linear",
+                  },
+                }}
+              >
+                <div
+                  className="absolute w-3 h-3 rounded-full"
+                  style={{
+                    backgroundColor: electron.color,
+                    top: "-6px",
+                    left: "50%",
+                    marginLeft: "-6px",
+                    boxShadow: `0 0 8px 3px ${electron.color}80`,
+                  }}
+                />
+              </motion.div>
+            ))}
+        </AnimatePresence>
+
+        {/* Glow effect when recording */}
+        <AnimatePresence>
+          {isRecording && (
+            <motion.div
+              className="absolute w-16 h-16 rounded-full bg-red-500/20 z-0"
+              initial={{ opacity: 0, scale: 1 }}
+              animate={{
+                opacity: [0.2, 0.4, 0.2],
+                scale: [1, 1.3, 1],
+              }}
+              exit={{ opacity: 0, scale: 1 }}
+              transition={{
+                duration: 1.5,
                 repeat: Infinity,
-                ease: "linear",
-              },
-              opacity: { duration: 0.2 },
-            }}
-            style={{
-              transformOrigin: "55px 60px",
-              top: 0,
-              left: "25px",
-              marginTop: "15px",
-              marginLeft: "-2px",
-            }}
-            key="electron"
-          />
-        )}
-      </AnimatePresence>
+                ease: "easeInOut",
+              }}
+            />
+          )}
+        </AnimatePresence>
 
-      {/* Button container with z-index to ensure it's clickable */}
-      <div className="relative z-10">
-        {isRecording ? (
-          <button
-            onClick={handleStopClick}
-            className="w-16 h-16 rounded-full flex items-center justify-center bg-red-600 hover:bg-red-700 transition-colors duration-300 focus:outline-none cursor-pointer"
-            aria-label="Stop recording"
-            type="button"
-          >
-            <StopCircle className="h-8 w-8 text-white" />
-          </button>
-        ) : (
-          <button
-            onClick={handleStartClick}
-            className="w-16 h-16 rounded-full flex items-center justify-center bg-red-500 hover:bg-red-600 transition-colors duration-300 focus:outline-none cursor-pointer"
-            aria-label="Start recording"
-            type="button"
-          >
-            <Mic className="h-8 w-8 text-white" />
-          </button>
-        )}
+        {/* Center button - 64px size */}
+        <motion.button
+          className={`relative z-10 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-colors ${
+            isRecording
+              ? "bg-red-500 hover:bg-red-600"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={isRecording ? handleStopClick : handleStartClick}
+          aria-label={isRecording ? "Stop recording" : "Start recording"}
+        >
+          {isRecording ? (
+            <StopCircle className="w-8 h-8 text-white" />
+          ) : (
+            <Mic className="w-8 h-8 text-white" />
+          )}
+        </motion.button>
       </div>
     </div>
   );

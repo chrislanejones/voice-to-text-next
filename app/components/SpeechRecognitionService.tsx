@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// Define types for the Web Speech API
 interface SpeechRecognitionConstructor {
   new (): SpeechRecognition;
   prototype: SpeechRecognition;
@@ -15,49 +14,37 @@ declare global {
   }
 }
 
-// Silence timeout in milliseconds
 const SILENCE_TIMEOUT = 5000;
 
 export function useSpeechRecognition() {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [transcription, setTranscription] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-
-  // Refs for stable references
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const silenceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastResultTimeRef = useRef<number>(0);
-  const isRecordingRef = useRef<boolean>(false); // Track state in ref for callbacks
+  const isRecordingRef = useRef<boolean>(false);
 
-  // Update the ref whenever isRecording changes
   useEffect(() => {
     isRecordingRef.current = isRecording;
     console.log("SpeechService: isRecording changed to", isRecording);
   }, [isRecording]);
 
-  // Clear transcription function
   const clearTranscription = useCallback(() => {
     setTranscription("");
   }, []);
 
-  // Stop recording function
   const stopRecording = useCallback(() => {
     console.log("Stopping recording called");
-
-    // Clear silence timeout
     if (silenceTimeoutRef.current) {
       clearTimeout(silenceTimeoutRef.current);
       silenceTimeoutRef.current = null;
     }
-
-    // Force UI update first to ensure immediate feedback
     setIsRecording(false);
-
     if (!recognitionRef.current) {
       console.log("No recognition ref available");
       return;
     }
-
     try {
       console.log(
         "Attempting to stop recognition, current state:",
@@ -70,35 +57,24 @@ export function useSpeechRecognition() {
     }
   }, []);
 
-  // Start recording function
   const startRecording = useCallback(() => {
     console.log("Start recording called");
-
     if (!recognitionRef.current) {
       console.error("Speech recognition not available");
       setError("Speech recognition not available");
       return;
     }
-
     try {
-      // Reset state and prepare for recording
       setError(null);
       setTranscription("");
-
-      // Start recognition
       console.log("Starting recognition...");
       recognitionRef.current.start();
       console.log("Recognition started!");
-
-      // Update state immediately for UI feedback
       setIsRecording(true);
-
-      // Setup silence detection
       lastResultTimeRef.current = Date.now();
       if (silenceTimeoutRef.current) {
         clearTimeout(silenceTimeoutRef.current);
       }
-
       silenceTimeoutRef.current = setTimeout(() => {
         console.log("Initial silence detected");
         if (isRecordingRef.current) {
@@ -107,15 +83,11 @@ export function useSpeechRecognition() {
       }, SILENCE_TIMEOUT);
     } catch (error) {
       console.error("Error starting recording:", error);
-
-      // Try to recover by stopping first if already running
       if (error instanceof DOMException && error.name === "InvalidStateError") {
         console.log("Recognition was already running, stopping first...");
         try {
           recognitionRef.current.stop();
           console.log("Successfully stopped recognition");
-
-          // Try again after a delay
           setTimeout(() => {
             console.log("Attempting to restart recognition");
             try {
@@ -142,18 +114,15 @@ export function useSpeechRecognition() {
     }
   }, [stopRecording]);
 
-  // Initialize speech recognition once
   useEffect(() => {
     console.log("Initializing speech recognition...");
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
-
     if (!SpeechRecognition) {
       console.error("Speech recognition not supported");
       setError("Speech recognition is not supported in this browser.");
       return;
     }
-
     try {
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
@@ -165,14 +134,11 @@ export function useSpeechRecognition() {
       console.error("Error initializing speech recognition:", error);
       setError("Failed to initialize speech recognition.");
     }
-
-    // Cleanup on unmount
     return () => {
       console.log("Cleaning up speech recognition");
       if (silenceTimeoutRef.current) {
         clearTimeout(silenceTimeoutRef.current);
       }
-
       try {
         if (isRecordingRef.current && recognitionRef.current) {
           recognitionRef.current.stop();
@@ -183,15 +149,12 @@ export function useSpeechRecognition() {
     };
   }, []);
 
-  // Event handlers
   const handleResult = useCallback(
     (event: SpeechRecognitionEvent): void => {
       console.log("Speech recognition result received");
       lastResultTimeRef.current = Date.now();
-
       let interimTranscript = "";
       let finalTranscript = "";
-
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
           finalTranscript += event.results[i][0].transcript;
@@ -199,18 +162,14 @@ export function useSpeechRecognition() {
           interimTranscript += event.results[i][0].transcript;
         }
       }
-
       const newTranscription = finalTranscript || interimTranscript;
       if (newTranscription) {
         console.log("New transcription:", newTranscription);
         setTranscription((prev) => newTranscription || prev);
       }
-
-      // Reset silence timeout
       if (silenceTimeoutRef.current) {
         clearTimeout(silenceTimeoutRef.current);
       }
-
       silenceTimeoutRef.current = setTimeout(() => {
         console.log("Silence detected, stopping recording");
         if (isRecordingRef.current) {
@@ -223,14 +182,10 @@ export function useSpeechRecognition() {
 
   const handleEnd = useCallback((): void => {
     console.log("Recognition ended event fired");
-
-    // Clear silence timeout
     if (silenceTimeoutRef.current) {
       clearTimeout(silenceTimeoutRef.current);
       silenceTimeoutRef.current = null;
     }
-
-    // Ensure UI is updated
     setIsRecording(false);
   }, []);
 
@@ -239,7 +194,6 @@ export function useSpeechRecognition() {
       console.error("Speech recognition error:", event.error);
       setError(`Speech recognition error: ${event.error}`);
       setIsRecording(false);
-
       if (silenceTimeoutRef.current) {
         clearTimeout(silenceTimeoutRef.current);
         silenceTimeoutRef.current = null;
@@ -248,22 +202,16 @@ export function useSpeechRecognition() {
     []
   );
 
-  // Set up event listeners
   useEffect(() => {
     const recognition = recognitionRef.current;
     if (!recognition) {
       console.log("No recognition object available for event listeners");
       return;
     }
-
     console.log("Setting up speech recognition event listeners");
-
-    // Add event listeners
     recognition.addEventListener("result", handleResult);
     recognition.addEventListener("end", handleEnd);
     recognition.addEventListener("error", handleError);
-
-    // Cleanup function
     return () => {
       console.log("Removing speech recognition event listeners");
       recognition.removeEventListener("result", handleResult);

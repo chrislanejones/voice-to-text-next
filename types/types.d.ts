@@ -12,13 +12,9 @@ interface SpeechRecognition extends EventTarget {
   interimResults: boolean;
   lang: string;
   maxAlternatives: number;
-
-  // Methods
   abort(): void;
   start(): void;
   stop(): void;
-
-  // Event handlers
   onaudiostart: ((this: SpeechRecognition, ev: Event) => void) | null;
   onaudioend: ((this: SpeechRecognition, ev: Event) => void) | null;
   onend: ((this: SpeechRecognition, ev: Event) => void) | null;
@@ -36,8 +32,6 @@ interface SpeechRecognition extends EventTarget {
   onspeechstart: ((this: SpeechRecognition, ev: Event) => void) | null;
   onspeechend: ((this: SpeechRecognition, ev: Event) => void) | null;
   onstart: ((this: SpeechRecognition, ev: Event) => void) | null;
-
-  // Event listener methods with proper event map
   addEventListener<K extends keyof SpeechRecognitionEventMap>(
     type: K,
     listener: (
@@ -46,7 +40,6 @@ interface SpeechRecognition extends EventTarget {
     ) => void,
     options?: boolean | AddEventListenerOptions
   ): void;
-
   removeEventListener<K extends keyof SpeechRecognitionEventMap>(
     type: K,
     listener: (

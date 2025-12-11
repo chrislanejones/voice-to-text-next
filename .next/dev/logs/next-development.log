@@ -1,0 +1,1608 @@
+[00:00:01.127] Server  LOG     
+[00:00:01.127] Server  LOG        We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+[00:00:01.127] Server  LOG        The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+[00:00:01.127] Server  LOG        	- include was updated to add '.next/dev/types/**/*.ts'
+[00:00:01.127] Server  LOG     
+[00:00:01.127] Server  LOG        The following mandatory changes were made to your tsconfig.json:
+
+[00:00:01.128] Server  LOG        	- jsx was set to react-jsx (next.js uses the React automatic runtime)
+[00:00:01.128] Server  LOG     
+[00:00:01.255] Server  LOG      ✓ Ready in 983ms
+[00:00:09.261] Browser LOG     DictationButton: isRecording changed to false
+[00:00:09.261] Browser LOG     SpeechService: isRecording changed to false
+[00:00:09.261] Browser LOG     Initializing speech recognition...
+[00:00:09.261] Browser LOG     Speech recognition initialized successfully
+[00:00:09.261] Browser LOG     Setting up speech recognition event listeners
+[00:00:11.374] Browser LOG     Start button clicked, calling onStartRecording
+[00:00:11.374] Browser LOG     Start recording called
+[00:00:11.374] Browser LOG     Starting recognition...
+[00:00:11.374] Browser LOG     Recognition started!
+[00:00:11.374] Browser LOG     DictationButton: isRecording changed to true
+[00:00:11.374] Browser LOG     SpeechService: isRecording changed to true
+[00:00:14.491] Browser LOG     Speech recognition result received
+[00:00:14.491] Browser LOG     New transcription: hey
+[00:00:14.779] Browser LOG     Speech recognition result received
+[00:00:14.779] Browser LOG     New transcription: hey how's
+[00:00:15.054] Browser LOG     Speech recognition result received
+[00:00:15.054] Browser LOG     New transcription: hey how's it
+[00:00:15.054] Browser LOG     Stop button clicked, calling onStopRecording
+[00:00:15.054] Browser LOG     Stopping recording called
+[00:00:15.054] Browser LOG     Attempting to stop recognition, current state: true
+[00:00:15.054] Browser LOG     Recognition stopped successfully
+[00:00:15.054] Browser LOG     DictationButton: isRecording changed to false
+[00:00:15.054] Browser LOG     SpeechService: isRecording changed to false
+[00:00:15.054] Browser LOG     Speech recognition result received
+[00:00:15.054] Browser LOG     New transcription: hey how's it going
+[00:00:15.054] Browser LOG     Speech recognition result received
+[00:00:15.054] Browser LOG     New transcription: hey how's it going
+[00:00:15.054] Browser LOG     Speech recognition result received
+[00:00:15.054] Browser LOG     New transcription: hey how's it going
+[00:00:15.054] Browser LOG     Recognition ended event fired
+[00:00:17.546] Browser LOG     Start button clicked, calling onStartRecording
+[00:00:17.546] Browser LOG     Start recording called
+[00:00:17.546] Browser LOG     Starting recognition...
+[00:00:17.546] Browser LOG     Recognition started!
+[00:00:17.546] Browser LOG     DictationButton: isRecording changed to true
+[00:00:17.546] Browser LOG     SpeechService: isRecording changed to true
+[00:00:19.018] Browser LOG     Speech recognition result received
+[00:00:19.018] Browser LOG     New transcription: that
+[00:00:19.254] Browser LOG     Speech recognition result received
+[00:00:19.255] Browser LOG     New transcription: that sounds
+[00:00:19.513] Browser LOG     Stop button clicked, calling onStopRecording
+[00:00:19.513] Browser LOG     Stopping recording called
+[00:00:19.513] Browser LOG     Attempting to stop recognition, current state: true
+[00:00:19.513] Browser LOG     Recognition stopped successfully
+[00:00:19.513] Browser LOG     DictationButton: isRecording changed to false
+[00:00:19.513] Browser LOG     SpeechService: isRecording changed to false
+[00:00:19.513] Browser LOG     Speech recognition result received
+[00:00:19.513] Browser LOG     New transcription: that sounds cool
+[00:00:19.513] Browser LOG     Speech recognition result received
+[00:00:19.513] Browser LOG     New transcription: that sounds cool
+[00:00:19.513] Browser LOG     Recognition ended event fired
+[00:00:41.528] Browser LOG     Start button clicked, calling onStartRecording
+[00:00:41.528] Browser LOG     Start recording called
+[00:00:41.528] Browser LOG     Starting recognition...
+[00:00:41.528] Browser LOG     Recognition started!
+[00:00:41.528] Browser LOG     DictationButton: isRecording changed to true
+[00:00:41.528] Browser LOG     SpeechService: isRecording changed to true
+[00:00:43.189] Browser LOG     Speech recognition result received
+[00:00:43.189] Browser LOG     New transcription: I
+[00:00:43.617] Browser LOG     Speech recognition result received
+[00:00:43.617] Browser LOG     New transcription: I'll
+[00:00:43.618] Browser LOG     Speech recognition result received
+[00:00:43.618] Browser LOG     New transcription: I like
+[00:00:43.618] Browser LOG     Speech recognition result received
+[00:00:43.618] Browser LOG     New transcription: I like this
+[00:00:43.618] Browser LOG     Speech recognition result received
+[00:00:43.618] Browser LOG     New transcription: I like this a
+[00:00:43.618] Browser LOG     Speech recognition result received
+[00:00:43.618] Browser LOG     New transcription: I like this a lot
+[00:00:43.868] Browser LOG     Speech recognition result received
+[00:00:43.868] Browser LOG     New transcription: I like this a lot
+[00:00:44.085] Browser LOG     Speech recognition result received
+[00:00:44.085] Browser LOG     New transcription: I like this a lot
+[00:00:44.085] Browser LOG     Speech recognition result received
+[00:00:44.085] Browser LOG     New transcription: I like this a lot
+[00:00:44.085] Browser LOG     Speech recognition result received
+[00:00:44.085] Browser LOG     New transcription: I like this a lot
+[00:00:44.251] Browser LOG     Stop button clicked, calling onStopRecording
+[00:00:44.251] Browser LOG     Stopping recording called
+[00:00:44.251] Browser LOG     Attempting to stop recognition, current state: true
+[00:00:44.251] Browser LOG     Recognition stopped successfully
+[00:00:44.251] Browser LOG     DictationButton: isRecording changed to false
+[00:00:44.251] Browser LOG     SpeechService: isRecording changed to false
+[00:00:44.251] Browser LOG     Speech recognition result received
+[00:00:44.251] Browser LOG     New transcription: I like this a lot
+[00:00:44.251] Browser LOG     Recognition ended event fired
+[00:04:34.260] Server  LOG      ✓ Compiled in 79ms
+[00:04:37.897] Browser LOG     Start button clicked, calling onStartRecording
+[00:04:37.897] Browser LOG     Start recording called
+[00:04:37.897] Browser LOG     Starting recognition...
+[00:04:37.897] Browser LOG     Recognition started!
+[00:04:37.897] Browser LOG     DictationButton: isRecording changed to true
+[00:04:37.897] Browser LOG     SpeechService: isRecording changed to true
+[00:04:39.353] Browser LOG     Speech recognition result received
+[00:04:39.353] Browser LOG     New transcription: hello
+[00:04:39.731] Browser LOG     Speech recognition result received
+[00:04:39.731] Browser LOG     New transcription: hello how
+[00:04:39.731] Browser LOG     Speech recognition result received
+[00:04:39.731] Browser LOG     New transcription: hello how are you
+[00:04:40.034] Browser LOG     Stop button clicked, calling onStopRecording
+[00:04:40.034] Browser LOG     Stopping recording called
+[00:04:40.034] Browser LOG     Attempting to stop recognition, current state: true
+[00:04:40.034] Browser LOG     Recognition stopped successfully
+[00:04:40.034] Browser LOG     DictationButton: isRecording changed to false
+[00:04:40.034] Browser LOG     SpeechService: isRecording changed to false
+[00:04:40.034] Browser LOG     Speech recognition result received
+[00:04:40.034] Browser LOG     New transcription: hello how are you
+[00:04:40.034] Browser LOG     Speech recognition result received
+[00:04:40.034] Browser LOG     New transcription: hello how are you
+[00:04:40.034] Browser LOG     Speech recognition result received
+[00:04:40.034] Browser LOG     New transcription: hello how are you
+[00:04:40.034] Browser LOG     Recognition ended event fired
+[00:05:22.571] Browser LOG     Start button clicked, calling onStartRecording
+[00:05:22.571] Browser LOG     Start recording called
+[00:05:22.571] Browser LOG     Starting recognition...
+[00:05:22.571] Browser LOG     Recognition started!
+[00:05:22.571] Browser LOG     DictationButton: isRecording changed to true
+[00:05:22.571] Browser LOG     SpeechService: isRecording changed to true
+[00:05:24.316] Browser LOG     Speech recognition result received
+[00:05:24.316] Browser LOG     New transcription: this
+[00:05:24.572] Browser LOG     Speech recognition result received
+[00:05:24.572] Browser LOG     New transcription: this is
+[00:05:24.722] Browser LOG     Speech recognition result received
+[00:05:24.722] Browser LOG     New transcription: this is cool
+[00:05:24.887] Browser LOG     Speech recognition result received
+[00:05:24.887] Browser LOG     New transcription: this is cool
+[00:05:25.194] Browser LOG     Stop button clicked, calling onStopRecording
+[00:05:25.194] Browser LOG     Stopping recording called
+[00:05:25.194] Browser LOG     Attempting to stop recognition, current state: true
+[00:05:25.194] Browser LOG     Recognition stopped successfully
+[00:05:25.194] Browser LOG     DictationButton: isRecording changed to false
+[00:05:25.194] Browser LOG     SpeechService: isRecording changed to false
+[00:05:25.194] Browser LOG     Speech recognition result received
+[00:05:25.194] Browser LOG     New transcription: this is cool
+[00:05:25.194] Browser LOG     Recognition ended event fired
+[00:05:27.397] Browser LOG     Start button clicked, calling onStartRecording
+[00:05:27.397] Browser LOG     Start recording called
+[00:05:27.397] Browser LOG     Starting recognition...
+[00:05:27.397] Browser LOG     Recognition started!
+[00:05:27.397] Browser LOG     DictationButton: isRecording changed to true
+[00:05:27.397] Browser LOG     SpeechService: isRecording changed to true
+[00:05:29.815] Browser LOG     Speech recognition result received
+[00:05:29.815] Browser LOG     New transcription: got
+[00:05:29.815] Browser LOG     Speech recognition result received
+[00:05:29.815] Browser LOG     New transcription: got to
+[00:05:29.815] Browser LOG     Speech recognition result received
+[00:05:29.815] Browser LOG     New transcription: got to do
+[00:05:29.815] Browser LOG     Speech recognition result received
+[00:05:29.815] Browser LOG     New transcription: got to do more
+[00:05:30.114] Browser LOG     Speech recognition result received
+[00:05:30.114] Browser LOG     New transcription: got to do more of
+[00:05:30.114] Browser LOG     Speech recognition result received
+[00:05:30.114] Browser LOG     New transcription: got to do more of these
+[00:05:30.114] Browser LOG     Speech recognition result received
+[00:05:30.114] Browser LOG     New transcription: got to do more of these
+[00:05:30.114] Browser LOG     Speech recognition result received
+[00:05:30.114] Browser LOG     New transcription: got to do more of these
+[00:05:30.373] Browser LOG     Stop button clicked, calling onStopRecording
+[00:05:30.373] Browser LOG     Stopping recording called
+[00:05:30.373] Browser LOG     Attempting to stop recognition, current state: true
+[00:05:30.373] Browser LOG     Recognition stopped successfully
+[00:05:30.373] Browser LOG     DictationButton: isRecording changed to false
+[00:05:30.373] Browser LOG     SpeechService: isRecording changed to false
+[00:05:30.373] Browser LOG     Speech recognition result received
+[00:05:30.373] Browser LOG     New transcription: got to do more of these
+[00:05:30.373] Browser LOG     Speech recognition result received
+[00:05:30.373] Browser LOG     New transcription: got to do more of these
+[00:05:30.373] Browser LOG     Speech recognition result received
+[00:05:30.373] Browser LOG     New transcription: got to do more of these
+[00:05:30.373] Browser LOG     Recognition ended event fired
+[00:05:31.839] Browser LOG     Start button clicked, calling onStartRecording
+[00:05:31.840] Browser LOG     Start recording called
+[00:05:31.840] Browser LOG     Starting recognition...
+[00:05:31.840] Browser LOG     Recognition started!
+[00:05:31.840] Browser LOG     DictationButton: isRecording changed to true
+[00:05:31.840] Browser LOG     SpeechService: isRecording changed to true
+[00:05:33.914] Browser LOG     Speech recognition result received
+[00:05:33.914] Browser LOG     New transcription: I'm
+[00:05:34.255] Browser LOG     Speech recognition result received
+[00:05:34.256] Browser LOG     New transcription: I'm trying
+[00:05:34.256] Browser LOG     Speech recognition result received
+[00:05:34.256] Browser LOG     New transcription: I'm trying to
+[00:05:34.397] Browser LOG     Speech recognition result received
+[00:05:34.397] Browser LOG     New transcription: I'm trying to think
+[00:05:34.614] Browser LOG     Speech recognition result received
+[00:05:34.614] Browser LOG     New transcription: I'm trying to think of
+[00:05:34.614] Browser LOG     Speech recognition result received
+[00:05:34.614] Browser LOG     New transcription: I'm trying to think of
+[00:05:34.764] Browser LOG     Speech recognition result received
+[00:05:34.764] Browser LOG     New transcription: I'm trying to think of
+[00:05:34.939] Browser LOG     Speech recognition result received
+[00:05:34.939] Browser LOG     New transcription: I'm trying to think of a
+[00:05:34.939] Browser LOG     Speech recognition result received
+[00:05:34.939] Browser LOG     New transcription: I'm trying to think of a
+[00:05:35.240] Browser LOG     Speech recognition result received
+[00:05:35.240] Browser LOG     New transcription: I'm trying to think of a way
+[00:05:35.240] Browser LOG     Speech recognition result received
+[00:05:35.240] Browser LOG     New transcription: I'm trying to think of a way
+[00:05:35.240] Browser LOG     Speech recognition result received
+[00:05:35.240] Browser LOG     New transcription: I'm trying to think of a way to
+[00:05:35.481] Browser LOG     Speech recognition result received
+[00:05:35.481] Browser LOG     New transcription: I'm trying to think of a way to come
+[00:05:35.481] Browser LOG     Speech recognition result received
+[00:05:35.481] Browser LOG     New transcription: I'm trying to think of a way to come
+[00:05:35.647] Browser LOG     Speech recognition result received
+[00:05:35.647] Browser LOG     New transcription: I'm trying to think of a way to come up
+[00:05:35.647] Browser LOG     Speech recognition result received
+[00:05:35.647] Browser LOG     New transcription: I'm trying to think of a way to come up
+[00:05:35.997] Browser LOG     Speech recognition result received
+[00:05:35.997] Browser LOG     New transcription: I'm trying to think of a way to come up
+[00:05:35.997] Browser LOG     Speech recognition result received
+[00:05:35.997] Browser LOG     New transcription: I'm trying to think of a way to come up with
+[00:05:35.997] Browser LOG     Speech recognition result received
+[00:05:35.997] Browser LOG     New transcription: I'm trying to think of a way to come up with a
+[00:05:36.192] Browser LOG     Speech recognition result received
+[00:05:36.192] Browser LOG     New transcription: I'm trying to think of a way to come up with a better
+[00:05:36.314] Browser LOG     Speech recognition result received
+[00:05:36.314] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way
+[00:05:36.564] Browser LOG     Speech recognition result received
+[00:05:36.564] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of
+[00:05:36.564] Browser LOG     Speech recognition result received
+[00:05:36.564] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of
+[00:05:36.722] Browser LOG     Speech recognition result received
+[00:05:36.722] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of
+[00:05:36.722] Browser LOG     Speech recognition result received
+[00:05:36.722] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing
+[00:05:36.722] Browser LOG     Speech recognition result received
+[00:05:36.722] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing
+[00:05:36.881] Browser LOG     Speech recognition result received
+[00:05:36.881] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing this
+[00:05:36.881] Browser LOG     Speech recognition result received
+[00:05:36.881] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing this
+[00:05:37.047] Browser LOG     Speech recognition result received
+[00:05:37.047] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing this
+[00:05:37.247] Browser LOG     Speech recognition result received
+[00:05:37.247] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing this
+[00:05:37.556] Browser LOG     Speech recognition result received
+[00:05:37.556] Browser LOG     New transcription: I'm trying to think of a way to come up with a better way of doing this
+[00:05:37.956] Browser LOG     Stop button clicked, calling onStopRecording
+[00:05:37.957] Browser LOG     Stopping recording called
+[00:05:37.957] Browser LOG     Attempting to stop recognition, current state: true
+[00:05:37.957] Browser LOG     Recognition stopped successfully
+[00:05:37.957] Browser LOG     DictationButton: isRecording changed to false
+[00:05:37.957] Browser LOG     SpeechService: isRecording changed to false
+[00:05:37.957] Browser LOG     Recognition ended event fired
+[00:07:11.855] Browser LOG     DictationButton: isRecording changed to false
+[00:07:11.855] Browser LOG     SpeechService: isRecording changed to false
+[00:07:11.855] Browser LOG     Initializing speech recognition...
+[00:07:11.855] Browser LOG     Speech recognition initialized successfully
+[00:07:11.855] Browser LOG     Setting up speech recognition event listeners
+[00:07:13.178] Browser LOG     DictationButton: isRecording changed to false
+[00:07:13.178] Browser LOG     SpeechService: isRecording changed to false
+[00:07:13.178] Browser LOG     Initializing speech recognition...
+[00:07:13.178] Browser LOG     Speech recognition initialized successfully
+[00:07:13.178] Browser LOG     Setting up speech recognition event listeners
+[00:08:18.475] Browser LOG     Start button clicked, calling onStartRecording
+[00:08:18.475] Browser LOG     Start recording called
+[00:08:18.475] Browser LOG     Starting recognition...
+[00:08:18.475] Browser LOG     Recognition started!
+[00:08:18.475] Browser LOG     DictationButton: isRecording changed to true
+[00:08:18.475] Browser LOG     SpeechService: isRecording changed to true
+[00:08:19.715] Browser LOG     Speech recognition result received
+[00:08:19.715] Browser LOG     New transcription: that's
+[00:08:19.949] Browser LOG     Speech recognition result received
+[00:08:19.949] Browser LOG     New transcription: that's right
+[00:08:20.315] Browser LOG     Speech recognition result received
+[00:08:20.315] Browser LOG     New transcription: that's right
+[00:08:20.463] Browser LOG     Speech recognition result received
+[00:08:20.463] Browser LOG     New transcription: that's right let's
+[00:08:20.640] Browser LOG     Speech recognition result received
+[00:08:20.640] Browser LOG     New transcription: that's right let's
+[00:08:20.832] Browser LOG     Speech recognition result received
+[00:08:20.832] Browser LOG     New transcription: that's right let's let
+[00:08:20.971] Browser LOG     Speech recognition result received
+[00:08:20.971] Browser LOG     New transcription: that's right let's
+[00:08:21.148] Browser LOG     Speech recognition result received
+[00:08:21.148] Browser LOG     New transcription: that's right let's know
+[00:08:21.441] Browser LOG     Speech recognition result received
+[00:08:21.441] Browser LOG     New transcription: that's right let's know a little
+[00:08:21.665] Browser LOG     Speech recognition result received
+[00:08:21.665] Browser LOG     New transcription: that's right let's know a little bit
+[00:08:21.665] Browser LOG     Speech recognition result received
+[00:08:21.665] Browser LOG     New transcription: that's right let's know a little bit more
+[00:08:21.665] Browser LOG     Speech recognition result received
+[00:08:21.665] Browser LOG     New transcription: that's right let's know a little bit more
+[00:08:21.790] Browser LOG     Speech recognition result received
+[00:08:21.790] Browser LOG     New transcription: that's right let's know a little bit more
+[00:08:22.147] Browser LOG     Stop button clicked, calling onStopRecording
+[00:08:22.147] Browser LOG     Stopping recording called
+[00:08:22.147] Browser LOG     Attempting to stop recognition, current state: true
+[00:08:22.147] Browser LOG     Recognition stopped successfully
+[00:08:22.147] Browser LOG     DictationButton: isRecording changed to false
+[00:08:22.147] Browser LOG     SpeechService: isRecording changed to false
+[00:08:22.147] Browser LOG     Speech recognition result received
+[00:08:22.147] Browser LOG     New transcription: that's right let's know a little bit more
+[00:08:22.147] Browser LOG     Speech recognition result received
+[00:08:22.147] Browser LOG     New transcription: that's right let's know a little bit more
+[00:08:22.147] Browser LOG     Recognition ended event fired
+[00:08:31.232] Browser LOG     Forcing history clear
+[00:09:16.131] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.133] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.135] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.137] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.139] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.141] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.142] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.144] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.146] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.147] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.149] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.151] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.153] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.154] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.155] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.156] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.158] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.159] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.159] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.160] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.161] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.162] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.163] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.164] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.165] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.165] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.166] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.167] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.169] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.169] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.170] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.171] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:09:16.172] Server  LOG      ✓ Compiled in 72ms
+[00:09:16.857] Browser ERROR   ./repo/voice-to-text-next/app/components/DictationApp.tsx:7:1
+Module not found: Can't resolve './DictationButton'
+   5 | import Modal from "./Modal";
+   6 | import { ModeToggle } from "./DarkLightToggle";
+>  7 | import DictationButton from "./DictationButton";
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   8 | import { useSpeechRecognition } from "./SpeechRecognitionService";
+   9 | import { Button } from "@/components/ui/button";
+  10 | import { Trash2 } from "lucide-react";
+
+Import trace:
+  Server Component:
+    ./repo/voice-to-text-next/app/components/DictationApp.tsx
+    ./repo/voice-to-text-next/app/page.tsx
+
+https://nextjs.org/docs/messages/module-not-found
+[00:09:20.137] Server  LOG      ✓ Compiled in 42ms
+[00:09:26.728] Browser LOG     Start button clicked, calling onStartRecording
+[00:09:26.728] Browser LOG     Start recording called
+[00:09:26.728] Browser LOG     Starting recognition...
+[00:09:26.728] Browser LOG     Recognition started!
+[00:09:26.728] Browser LOG     DictationButton: isRecording changed to true
+[00:09:26.728] Browser LOG     SpeechService: isRecording changed to true
+[00:09:28.744] Browser LOG     Stop button clicked, calling onStopRecording
+[00:09:28.744] Browser LOG     Stopping recording called
+[00:09:28.744] Browser LOG     Attempting to stop recognition, current state: true
+[00:09:28.744] Browser LOG     Recognition stopped successfully
+[00:09:28.744] Browser LOG     DictationButton: isRecording changed to false
+[00:09:28.745] Browser LOG     SpeechService: isRecording changed to false
+[00:09:28.745] Browser LOG     Recognition ended event fired
+[00:09:30.136] Browser LOG     DictationButton: isRecording changed to false
+[00:09:30.136] Browser LOG     SpeechService: isRecording changed to false
+[00:09:30.136] Browser LOG     Initializing speech recognition...
+[00:09:30.136] Browser LOG     Speech recognition initialized successfully
+[00:09:30.136] Browser LOG     Setting up speech recognition event listeners
+[00:09:31.861] Browser LOG     Start button clicked, calling onStartRecording
+[00:09:31.861] Browser LOG     Start recording called
+[00:09:31.861] Browser LOG     Starting recognition...
+[00:09:31.861] Browser LOG     Recognition started!
+[00:09:31.861] Browser LOG     DictationButton: isRecording changed to true
+[00:09:31.861] Browser LOG     SpeechService: isRecording changed to true
+[00:09:32.503] Browser LOG     Stop button clicked, calling onStopRecording
+[00:09:32.503] Browser LOG     Stopping recording called
+[00:09:32.503] Browser LOG     Attempting to stop recognition, current state: true
+[00:09:32.503] Browser LOG     Recognition stopped successfully
+[00:09:32.503] Browser LOG     DictationButton: isRecording changed to false
+[00:09:32.503] Browser LOG     SpeechService: isRecording changed to false
+[00:09:32.503] Browser LOG     Recognition ended event fired
+[00:09:47.120] Browser LOG     Start button clicked, calling onStartRecording
+[00:09:47.120] Browser LOG     Start recording called
+[00:09:47.120] Browser LOG     Starting recognition...
+[00:09:47.120] Browser LOG     Recognition started!
+[00:09:47.120] Browser LOG     DictationButton: isRecording changed to true
+[00:09:47.120] Browser LOG     SpeechService: isRecording changed to true
+[00:09:48.210] Browser LOG     Stop button clicked, calling onStopRecording
+[00:09:48.210] Browser LOG     Stopping recording called
+[00:09:48.210] Browser LOG     Attempting to stop recognition, current state: true
+[00:09:48.210] Browser LOG     Recognition stopped successfully
+[00:09:48.210] Browser LOG     DictationButton: isRecording changed to false
+[00:09:48.210] Browser LOG     SpeechService: isRecording changed to false
+[00:09:48.210] Browser LOG     Recognition ended event fired
+[00:10:07.341] Browser LOG     DictationButton: isRecording changed to false
+[00:10:07.341] Browser LOG     SpeechService: isRecording changed to false
+[00:10:07.341] Browser LOG     Initializing speech recognition...
+[00:10:07.341] Browser LOG     Speech recognition initialized successfully
+[00:10:07.341] Browser LOG     Setting up speech recognition event listeners
+[00:10:08.446] Browser LOG     Start button clicked, calling onStartRecording
+[00:10:08.446] Browser LOG     Start recording called
+[00:10:08.446] Browser LOG     Starting recognition...
+[00:10:08.446] Browser LOG     Recognition started!
+[00:10:08.446] Browser LOG     DictationButton: isRecording changed to true
+[00:10:08.446] Browser LOG     SpeechService: isRecording changed to true
+[00:10:09.458] Browser LOG     Speech recognition result received
+[00:10:09.458] Browser LOG     New transcription: how
+[00:10:09.809] Browser LOG     Speech recognition result received
+[00:10:09.809] Browser LOG     New transcription: how are you
+[00:10:09.809] Browser LOG     Speech recognition result received
+[00:10:09.809] Browser LOG     New transcription: how are you doing
+[00:10:10.054] Browser LOG     Speech recognition result received
+[00:10:10.055] Browser LOG     New transcription: how are you doing
+[00:10:10.355] Browser LOG     Speech recognition result received
+[00:10:10.355] Browser LOG     New transcription: how are you doing today
+[00:10:10.355] Browser LOG     Speech recognition result received
+[00:10:10.355] Browser LOG     New transcription: how are you doing today
+[00:10:10.355] Browser LOG     Speech recognition result received
+[00:10:10.355] Browser LOG     New transcription: how are you doing today
+[00:10:10.940] Browser LOG     Speech recognition result received
+[00:10:10.940] Browser LOG     New transcription: how are you doing today
+[00:10:10.940] Browser LOG     Stop button clicked, calling onStopRecording
+[00:10:10.940] Browser LOG     Stopping recording called
+[00:10:10.940] Browser LOG     Attempting to stop recognition, current state: true
+[00:10:10.940] Browser LOG     Recognition stopped successfully
+[00:10:10.940] Browser LOG     DictationButton: isRecording changed to false
+[00:10:10.940] Browser LOG     SpeechService: isRecording changed to false
+[00:10:10.940] Browser LOG     Recognition ended event fired
+[00:10:18.397] Browser LOG     DictationButton: isRecording changed to false
+[00:10:18.397] Browser LOG     SpeechService: isRecording changed to false
+[00:10:18.397] Browser LOG     Initializing speech recognition...
+[00:10:18.397] Browser LOG     Speech recognition initialized successfully
+[00:10:18.397] Browser LOG     Setting up speech recognition event listeners
+[00:11:29.010] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.011] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.012] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.013] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.013] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.015] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.016] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.017] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.019] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.021] Server  ERROR    ⨯ ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:11:29.047] Server  LOG      ✓ Compiled in 70ms
+[00:11:29.085] Server  LOG      ✓ Compiled in 24ms
+[00:11:29.099] Browser ERROR   ./repo/voice-to-text-next/app/page.tsx:1:1
+Module not found: Can't resolve './components/DictationApp'
+> 1 | import DictationApp from "./components/DictationApp";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  2 |
+  3 | export default function Home() {
+  4 |   return (
+
+https://nextjs.org/docs/messages/module-not-found
+[00:11:29.564] Server  LOG      ✓ Compiled in 263ms
+[00:11:29.714] Browser ERROR   uncaughtError: Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `Home`.
+[00:11:29.714] Browser LOG     Cleaning up speech recognition
+[00:11:29.714] Browser LOG     Removing speech recognition event listeners
+[00:11:29.725] Server  WARN     ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[00:11:30.370] Browser LOG     DictationButton: isRecording changed to false
+[00:11:30.370] Browser LOG     SpeechService: isRecording changed to false
+[00:11:30.370] Browser LOG     Initializing speech recognition...
+[00:11:30.370] Browser LOG     Speech recognition initialized successfully
+[00:11:30.370] Browser LOG     Setting up speech recognition event listeners
+[00:11:31.326] Browser LOG     Start button clicked, calling onStartRecording
+[00:11:31.326] Browser LOG     Start recording called
+[00:11:31.326] Browser LOG     Starting recognition...
+[00:11:31.326] Browser LOG     Recognition started!
+[00:11:31.326] Browser LOG     DictationButton: isRecording changed to true
+[00:11:31.326] Browser LOG     SpeechService: isRecording changed to true
+[00:11:33.076] Browser LOG     Speech recognition result received
+[00:11:33.076] Browser LOG     New transcription: this
+[00:11:33.285] Browser LOG     Speech recognition result received
+[00:11:33.285] Browser LOG     New transcription: this is
+[00:11:33.485] Browser LOG     Speech recognition result received
+[00:11:33.485] Browser LOG     New transcription: this is pretty
+[00:11:33.485] Browser LOG     Speech recognition result received
+[00:11:33.485] Browser LOG     New transcription: this is pretty cool
+[00:11:33.646] Browser LOG     Speech recognition result received
+[00:11:33.646] Browser LOG     New transcription: this is pretty cool
+[00:11:33.941] Browser LOG     Speech recognition result received
+[00:11:33.941] Browser LOG     New transcription: this is pretty cool
+[00:11:33.941] Browser LOG     Speech recognition result received
+[00:11:33.941] Browser LOG     New transcription: this is pretty cool
+[00:11:34.106] Browser LOG     Speech recognition result received
+[00:11:34.106] Browser LOG     New transcription: this is pretty cool
+[00:11:34.106] Browser LOG     Stop button clicked, calling onStopRecording
+[00:11:34.106] Browser LOG     Stopping recording called
+[00:11:34.106] Browser LOG     Attempting to stop recognition, current state: true
+[00:11:34.106] Browser LOG     Recognition stopped successfully
+[00:11:34.106] Browser LOG     DictationButton: isRecording changed to false
+[00:11:34.106] Browser LOG     SpeechService: isRecording changed to false
+[00:11:34.106] Browser LOG     Speech recognition result received
+[00:11:34.106] Browser LOG     New transcription: this is pretty cool
+[00:11:34.106] Browser LOG     Recognition ended event fired
+[00:11:36.285] Browser LOG     Start button clicked, calling onStartRecording
+[00:11:36.285] Browser LOG     Start recording called
+[00:11:36.285] Browser LOG     Starting recognition...
+[00:11:36.285] Browser LOG     Recognition started!
+[00:11:36.285] Browser LOG     DictationButton: isRecording changed to true
+[00:11:36.285] Browser LOG     SpeechService: isRecording changed to true
+[00:11:38.818] Browser LOG     Speech recognition result received
+[00:11:38.818] Browser LOG     New transcription: what
+[00:11:38.818] Browser LOG     Speech recognition result received
+[00:11:38.818] Browser LOG     New transcription: what are you
+[00:11:38.818] Browser LOG     Speech recognition result received
+[00:11:38.818] Browser LOG     New transcription: what are you going
+[00:11:38.818] Browser LOG     Speech recognition result received
+[00:11:38.818] Browser LOG     New transcription: what are you going to
+[00:11:38.818] Browser LOG     Speech recognition result received
+[00:11:38.818] Browser LOG     New transcription: what are you going to do
+[00:11:38.818] Browser LOG     Speech recognition result received
+[00:11:38.818] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Speech recognition result received
+[00:11:39.385] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Speech recognition result received
+[00:11:39.385] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Speech recognition result received
+[00:11:39.385] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Speech recognition result received
+[00:11:39.385] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Speech recognition result received
+[00:11:39.385] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Stop button clicked, calling onStopRecording
+[00:11:39.385] Browser LOG     Stopping recording called
+[00:11:39.385] Browser LOG     Attempting to stop recognition, current state: true
+[00:11:39.385] Browser LOG     Recognition stopped successfully
+[00:11:39.385] Browser LOG     DictationButton: isRecording changed to false
+[00:11:39.385] Browser LOG     SpeechService: isRecording changed to false
+[00:11:39.385] Browser LOG     Speech recognition result received
+[00:11:39.385] Browser LOG     New transcription: what are you going to do today
+[00:11:39.385] Browser LOG     Recognition ended event fired
+[00:11:40.969] Browser LOG     Start button clicked, calling onStartRecording
+[00:11:40.969] Browser LOG     Start recording called
+[00:11:40.969] Browser LOG     Starting recognition...
+[00:11:40.969] Browser LOG     Recognition started!
+[00:11:40.969] Browser LOG     DictationButton: isRecording changed to true
+[00:11:40.969] Browser LOG     SpeechService: isRecording changed to true
+[00:11:42.418] Browser LOG     Speech recognition result received
+[00:11:42.418] Browser LOG     New transcription: I
+[00:11:42.583] Browser LOG     Speech recognition result received
+[00:11:42.583] Browser LOG     New transcription: I need
+[00:11:42.793] Browser LOG     Speech recognition result received
+[00:11:42.793] Browser LOG     New transcription: I need to
+[00:11:42.793] Browser LOG     Speech recognition result received
+[00:11:42.793] Browser LOG     New transcription: I need to go
+[00:11:43.283] Browser LOG     Speech recognition result received
+[00:11:43.283] Browser LOG     New transcription: I need to go
+[00:11:43.283] Browser LOG     Speech recognition result received
+[00:11:43.283] Browser LOG     New transcription: I need to go over
+[00:11:43.283] Browser LOG     Speech recognition result received
+[00:11:43.283] Browser LOG     New transcription: I need to go over
+[00:11:43.283] Browser LOG     Speech recognition result received
+[00:11:43.283] Browser LOG     New transcription: I need to go over
+[00:11:43.283] Browser LOG     Speech recognition result received
+[00:11:43.283] Browser LOG     New transcription: I need to go over some
+[00:11:43.485] Browser LOG     Speech recognition result received
+[00:11:43.485] Browser LOG     New transcription: I need to go over some
+[00:11:43.485] Browser LOG     Speech recognition result received
+[00:11:43.485] Browser LOG     New transcription: I need to go over some stuff
+[00:11:43.668] Browser LOG     Speech recognition result received
+[00:11:43.668] Browser LOG     New transcription: I need to go over some stuff
+[00:11:43.869] Browser LOG     Speech recognition result received
+[00:11:43.869] Browser LOG     New transcription: I need to go over some stuff
+[00:11:44.177] Browser LOG     Stop button clicked, calling onStopRecording
+[00:11:44.177] Browser LOG     Stopping recording called
+[00:11:44.177] Browser LOG     Attempting to stop recognition, current state: true
+[00:11:44.177] Browser LOG     Recognition stopped successfully
+[00:11:44.177] Browser LOG     DictationButton: isRecording changed to false
+[00:11:44.177] Browser LOG     SpeechService: isRecording changed to false
+[00:11:44.177] Browser LOG     Speech recognition result received
+[00:11:44.177] Browser LOG     New transcription: I need to go over some stuff
+[00:11:44.177] Browser LOG     Speech recognition result received
+[00:11:44.177] Browser LOG     New transcription: I need to go over some stuff
+[00:11:44.177] Browser LOG     Recognition ended event fired
+[00:12:15.204] Browser LOG     Start button clicked, calling onStartRecording
+[00:12:15.204] Browser LOG     Start recording called
+[00:12:15.204] Browser LOG     Starting recognition...
+[00:12:15.204] Browser LOG     Recognition started!
+[00:12:15.204] Browser LOG     DictationButton: isRecording changed to true
+[00:12:15.204] Browser LOG     SpeechService: isRecording changed to true
+[00:12:17.454] Browser LOG     Speech recognition result received
+[00:12:17.454] Browser LOG     New transcription: a lot
+[00:12:17.712] Browser LOG     Speech recognition result received
+[00:12:17.712] Browser LOG     New transcription: a lot of
+[00:12:17.712] Browser LOG     Speech recognition result received
+[00:12:17.712] Browser LOG     New transcription: a lot of fix
+[00:12:18.018] Browser LOG     Speech recognition result received
+[00:12:18.018] Browser LOG     New transcription: got to fix this
+[00:12:18.018] Browser LOG     Speech recognition result received
+[00:12:18.018] Browser LOG     New transcription: a lot of fix this
+[00:12:18.018] Browser LOG     Speech recognition result received
+[00:12:18.018] Browser LOG     New transcription: a lot of fix this from
+[00:12:18.370] Browser LOG     Speech recognition result received
+[00:12:18.370] Browser LOG     New transcription: a lot of fix this from the
+[00:12:18.370] Browser LOG     Speech recognition result received
+[00:12:18.370] Browser LOG     New transcription: a lot of fix this from that
+[00:12:18.370] Browser LOG     Speech recognition result received
+[00:12:18.370] Browser LOG     New transcription: a lot of fix this from the air
+[00:12:18.612] Browser LOG     Speech recognition result received
+[00:12:18.612] Browser LOG     New transcription: a lot of fix this from the air
+[00:12:18.929] Browser LOG     Speech recognition result received
+[00:12:18.929] Browser LOG     New transcription: got to fix this from the air
+[00:12:20.479] Browser LOG     Stop button clicked, calling onStopRecording
+[00:12:20.479] Browser LOG     Stopping recording called
+[00:12:20.479] Browser LOG     Attempting to stop recognition, current state: true
+[00:12:20.479] Browser LOG     Recognition stopped successfully
+[00:12:20.479] Browser LOG     DictationButton: isRecording changed to false
+[00:12:20.479] Browser LOG     SpeechService: isRecording changed to false
+[00:12:20.479] Browser LOG     Recognition ended event fired
+[00:12:21.906] Browser LOG     Forcing history clear
+[00:12:38.807] Browser LOG     Start button clicked, calling onStartRecording
+[00:12:38.807] Browser LOG     Start recording called
+[00:12:38.807] Browser LOG     Starting recognition...
+[00:12:38.807] Browser LOG     Recognition started!
+[00:12:38.807] Browser LOG     DictationButton: isRecording changed to true
+[00:12:38.807] Browser LOG     SpeechService: isRecording changed to true
+[00:12:40.539] Browser LOG     Speech recognition result received
+[00:12:40.539] Browser LOG     New transcription: this
+[00:12:40.922] Browser LOG     Speech recognition result received
+[00:12:40.922] Browser LOG     New transcription: this app
+[00:12:41.147] Browser LOG     Speech recognition result received
+[00:12:41.147] Browser LOG     New transcription: this app is
+[00:12:41.147] Browser LOG     Speech recognition result received
+[00:12:41.147] Browser LOG     New transcription: this app is
+[00:12:41.147] Browser LOG     Speech recognition result received
+[00:12:41.147] Browser LOG     New transcription: this app is now
+[00:12:41.552] Browser LOG     Speech recognition result received
+[00:12:41.552] Browser LOG     New transcription: this app is now fix
+[00:12:41.552] Browser LOG     Speech recognition result received
+[00:12:41.552] Browser LOG     New transcription: this app is now fix
+[00:12:41.552] Browser LOG     Speech recognition result received
+[00:12:41.552] Browser LOG     New transcription: this app is now fixed
+[00:12:41.738] Browser LOG     Speech recognition result received
+[00:12:41.738] Browser LOG     New transcription: this app is now fixed from
+[00:12:41.738] Browser LOG     Speech recognition result received
+[00:12:41.738] Browser LOG     New transcription: this app is now fixed from the
+[00:12:41.738] Browser LOG     Speech recognition result received
+[00:12:41.738] Browser LOG     New transcription: this app is now fixed from the
+[00:12:42.105] Browser LOG     Speech recognition result received
+[00:12:42.105] Browser LOG     New transcription: this app is now fixed from the
+[00:12:42.249] Browser LOG     Speech recognition result received
+[00:12:42.249] Browser LOG     New transcription: this app is now fixed from the problem
+[00:12:42.372] Browser LOG     Speech recognition result received
+[00:12:42.372] Browser LOG     New transcription: this app is now fixed from the problems
+[00:12:42.964] Browser LOG     Speech recognition result received
+[00:12:42.964] Browser LOG     New transcription: this app is now fixed from the problems
+[00:12:42.964] Browser LOG     Stop button clicked, calling onStopRecording
+[00:12:42.964] Browser LOG     Stopping recording called
+[00:12:42.964] Browser LOG     Attempting to stop recognition, current state: true
+[00:12:42.964] Browser LOG     Recognition stopped successfully
+[00:12:42.964] Browser LOG     DictationButton: isRecording changed to false
+[00:12:42.964] Browser LOG     SpeechService: isRecording changed to false
+[00:12:42.964] Browser LOG     Recognition ended event fired
+[00:12:53.009] Browser LOG     Start button clicked, calling onStartRecording
+[00:12:53.009] Browser LOG     Start recording called
+[00:12:53.009] Browser LOG     Starting recognition...
+[00:12:53.009] Browser LOG     Recognition started!
+[00:12:53.009] Browser LOG     DictationButton: isRecording changed to true
+[00:12:53.009] Browser LOG     SpeechService: isRecording changed to true
+[00:12:55.056] Browser LOG     Speech recognition result received
+[00:12:55.056] Browser LOG     New transcription: this
+[00:12:55.172] Browser LOG     Speech recognition result received
+[00:12:55.172] Browser LOG     New transcription: this afternoon
+[00:12:55.858] Browser LOG     Speech recognition result received
+[00:12:55.858] Browser LOG     New transcription: this afternoon Laur
+[00:12:55.858] Browser LOG     Speech recognition result received
+[00:12:55.858] Browser LOG     New transcription: this afternoon
+[00:12:55.858] Browser LOG     Speech recognition result received
+[00:12:55.858] Browser LOG     New transcription: this afternoon Laura
+[00:12:55.858] Browser LOG     Speech recognition result received
+[00:12:55.858] Browser LOG     New transcription: this afternoon Laura
+[00:12:55.858] Browser LOG     Speech recognition result received
+[00:12:55.858] Browser LOG     New transcription: this afternoon Laura has
+[00:12:56.156] Browser LOG     Speech recognition result received
+[00:12:56.156] Browser LOG     New transcription: this afternoon Laura has re
+[00:12:56.273] Browser LOG     Speech recognition result received
+[00:12:56.273] Browser LOG     New transcription: this afternoon Laura has react
+[00:12:56.531] Browser LOG     Speech recognition result received
+[00:12:56.531] Browser LOG     New transcription: this afternoon Laura has react to
+[00:12:56.973] Browser LOG     Speech recognition result received
+[00:12:56.973] Browser LOG     New transcription: this afternoon Laura has react to Shell
+[00:12:56.973] Browser LOG     Speech recognition result received
+[00:12:56.973] Browser LOG     New transcription: this afternoon Laura has react to Shell
+[00:12:56.973] Browser LOG     Speech recognition result received
+[00:12:56.973] Browser LOG     New transcription: this afternoon Laura has react to shellware
+[00:12:57.098] Browser LOG     Speech recognition result received
+[00:12:57.098] Browser LOG     New transcription: this afternoon Laura has react to shellware
+[00:12:57.514] Browser LOG     Speech recognition result received
+[00:12:57.514] Browser LOG     New transcription: this afternoon Laura has react to shellware
+[00:12:58.032] Browser LOG     Stop button clicked, calling onStopRecording
+[00:12:58.032] Browser LOG     Stopping recording called
+[00:12:58.032] Browser LOG     Attempting to stop recognition, current state: true
+[00:12:58.032] Browser LOG     Recognition stopped successfully
+[00:12:58.032] Browser LOG     DictationButton: isRecording changed to false
+[00:12:58.032] Browser LOG     SpeechService: isRecording changed to false
+[00:12:58.032] Browser LOG     Recognition ended event fired
+[00:13:02.640] Browser LOG     Start button clicked, calling onStartRecording
+[00:13:02.640] Browser LOG     Start recording called
+[00:13:02.640] Browser LOG     Starting recognition...
+[00:13:02.640] Browser LOG     Recognition started!
+[00:13:02.640] Browser LOG     DictationButton: isRecording changed to true
+[00:13:02.640] Browser LOG     SpeechService: isRecording changed to true
+[00:13:04.618] Browser LOG     Speech recognition result received
+[00:13:04.618] Browser LOG     New transcription: APPL
+[00:13:04.618] Browser LOG     Speech recognition result received
+[00:13:04.618] Browser LOG     New transcription: plot
+[00:13:04.748] Browser LOG     Speech recognition result received
+[00:13:04.748] Browser LOG     New transcription: plotted
+[00:13:04.943] Browser LOG     Speech recognition result received
+[00:13:04.943] Browser LOG     New transcription: plotted this
+[00:13:05.195] Browser LOG     Speech recognition result received
+[00:13:05.195] Browser LOG     New transcription: plotted this app
+[00:13:05.195] Browser LOG     Speech recognition result received
+[00:13:05.195] Browser LOG     New transcription: plotted this app is
+[00:13:05.429] Browser LOG     Speech recognition result received
+[00:13:05.429] Browser LOG     New transcription: plotted this app is fix
+[00:13:05.429] Browser LOG     Speech recognition result received
+[00:13:05.429] Browser LOG     New transcription: plotted this app is fixed
+[00:13:05.429] Browser LOG     Speech recognition result received
+[00:13:05.429] Browser LOG     New transcription: plotted this app is fixed
+[00:13:05.680] Browser LOG     Speech recognition result received
+[00:13:05.680] Browser LOG     New transcription: plotted this app is fixed
+[00:13:05.680] Browser LOG     Speech recognition result received
+[00:13:05.680] Browser LOG     New transcription: plotted this app is fixed
+[00:13:05.865] Browser LOG     Speech recognition result received
+[00:13:05.865] Browser LOG     New transcription: plotted this app is fixed
+[00:13:06.316] Browser LOG     Stop button clicked, calling onStopRecording
+[00:13:06.316] Browser LOG     Stopping recording called
+[00:13:06.316] Browser LOG     Attempting to stop recognition, current state: true
+[00:13:06.316] Browser LOG     Recognition stopped successfully
+[00:13:06.316] Browser LOG     DictationButton: isRecording changed to false
+[00:13:06.316] Browser LOG     SpeechService: isRecording changed to false
+[00:13:06.316] Browser LOG     Recognition ended event fired
+[00:13:07.558] Browser LOG     Forcing history clear
+[00:13:08.265] Browser LOG     Start button clicked, calling onStartRecording
+[00:13:08.265] Browser LOG     Start recording called
+[00:13:08.265] Browser LOG     Starting recognition...
+[00:13:08.265] Browser LOG     Recognition started!
+[00:13:08.265] Browser LOG     DictationButton: isRecording changed to true
+[00:13:08.265] Browser LOG     SpeechService: isRecording changed to true
+[00:13:09.598] Browser LOG     Speech recognition result received
+[00:13:09.598] Browser LOG     New transcription: I
+[00:13:09.598] Browser LOG     Speech recognition result received
+[00:13:09.598] Browser LOG     New transcription: I am
+[00:13:10.273] Browser LOG     Speech recognition result received
+[00:13:10.274] Browser LOG     New transcription: I am GL
+[00:13:10.274] Browser LOG     Speech recognition result received
+[00:13:10.274] Browser LOG     New transcription: I am glad
+[00:13:10.274] Browser LOG     Speech recognition result received
+[00:13:10.274] Browser LOG     New transcription: I am glad
+[00:13:10.432] Browser LOG     Speech recognition result received
+[00:13:10.432] Browser LOG     New transcription: I am glad that
+[00:13:10.648] Browser LOG     Speech recognition result received
+[00:13:10.648] Browser LOG     New transcription: I am glad that this
+[00:13:10.807] Browser LOG     Speech recognition result received
+[00:13:10.807] Browser LOG     New transcription: I am glad that this
+[00:13:11.157] Browser LOG     Speech recognition result received
+[00:13:11.157] Browser LOG     New transcription: I am glad that this app
+[00:13:11.157] Browser LOG     Speech recognition result received
+[00:13:11.157] Browser LOG     New transcription: I am glad that this app
+[00:13:11.157] Browser LOG     Speech recognition result received
+[00:13:11.157] Browser LOG     New transcription: I am glad that this app is
+[00:13:11.157] Browser LOG     Speech recognition result received
+[00:13:11.157] Browser LOG     New transcription: I am glad that this app is fix
+[00:13:11.293] Browser LOG     Speech recognition result received
+[00:13:11.293] Browser LOG     New transcription: I am glad that this app is fixed
+[00:13:11.490] Browser LOG     Speech recognition result received
+[00:13:11.490] Browser LOG     New transcription: I am glad that this app is fixed
+[00:13:11.773] Browser LOG     Speech recognition result received
+[00:13:11.773] Browser LOG     New transcription: I am glad that this app is fixed
+[00:13:12.982] Browser LOG     Stop button clicked, calling onStopRecording
+[00:13:12.982] Browser LOG     Stopping recording called
+[00:13:12.982] Browser LOG     Attempting to stop recognition, current state: true
+[00:13:12.982] Browser LOG     Recognition stopped successfully
+[00:13:12.982] Browser LOG     DictationButton: isRecording changed to false
+[00:13:12.982] Browser LOG     SpeechService: isRecording changed to false
+[00:13:12.982] Browser LOG     Recognition ended event fired
+[00:13:14.007] Browser LOG     Start button clicked, calling onStartRecording
+[00:13:14.007] Browser LOG     Start recording called
+[00:13:14.007] Browser LOG     Starting recognition...
+[00:13:14.007] Browser LOG     Recognition started!
+[00:13:14.007] Browser LOG     DictationButton: isRecording changed to true
+[00:13:14.007] Browser LOG     SpeechService: isRecording changed to true
+[00:13:15.116] Browser LOG     Speech recognition result received
+[00:13:15.116] Browser LOG     New transcription: I
+[00:13:15.296] Browser LOG     Speech recognition result received
+[00:13:15.296] Browser LOG     New transcription: I can
+[00:13:15.441] Browser LOG     Speech recognition result received
+[00:13:15.441] Browser LOG     New transcription: I can make
+[00:13:15.790] Browser LOG     Speech recognition result received
+[00:13:15.790] Browser LOG     New transcription: I can make
+[00:13:15.790] Browser LOG     Speech recognition result received
+[00:13:15.790] Browser LOG     New transcription: I can make more
+[00:13:16.121] Browser LOG     Speech recognition result received
+[00:13:16.121] Browser LOG     New transcription: I can make more record
+[00:13:16.121] Browser LOG     Speech recognition result received
+[00:13:16.121] Browser LOG     New transcription: I can make more record
+[00:13:16.121] Browser LOG     Speech recognition result received
+[00:13:16.121] Browser LOG     New transcription: I can make more recordings
+[00:13:16.324] Browser LOG     Speech recognition result received
+[00:13:16.324] Browser LOG     New transcription: I can make more recordings now
+[00:13:16.324] Browser LOG     Speech recognition result received
+[00:13:16.324] Browser LOG     New transcription: I can make more recordings now
+[00:13:16.816] Browser LOG     Speech recognition result received
+[00:13:16.816] Browser LOG     New transcription: I can make more recordings now
+[00:13:16.816] Browser LOG     Stop button clicked, calling onStopRecording
+[00:13:16.816] Browser LOG     Stopping recording called
+[00:13:16.816] Browser LOG     Attempting to stop recognition, current state: true
+[00:13:16.816] Browser LOG     Recognition stopped successfully
+[00:13:16.816] Browser LOG     DictationButton: isRecording changed to false
+[00:13:16.816] Browser LOG     SpeechService: isRecording changed to false
+[00:13:16.816] Browser LOG     Speech recognition result received
+[00:13:16.816] Browser LOG     New transcription: I can make more recordings now
+[00:13:16.816] Browser LOG     Recognition ended event fired
+[00:13:17.941] Browser LOG     Start button clicked, calling onStartRecording
+[00:13:17.941] Browser LOG     Start recording called
+[00:13:17.941] Browser LOG     Starting recognition...
+[00:13:17.941] Browser LOG     Recognition started!
+[00:13:17.941] Browser LOG     DictationButton: isRecording changed to true
+[00:13:17.941] Browser LOG     SpeechService: isRecording changed to true
+[00:13:19.174] Browser LOG     Speech recognition result received
+[00:13:19.174] Browser LOG     New transcription: speak
+[00:13:19.374] Browser LOG     Speech recognition result received
+[00:13:19.374] Browser LOG     New transcription: speak with
+[00:13:19.568] Browser LOG     Speech recognition result received
+[00:13:19.568] Browser LOG     New transcription: speak with my
+[00:13:19.716] Browser LOG     Speech recognition result received
+[00:13:19.716] Browser LOG     New transcription: speak with my voice
+[00:13:19.716] Browser LOG     Speech recognition result received
+[00:13:19.716] Browser LOG     New transcription: speak with my voice
+[00:13:19.957] Browser LOG     Speech recognition result received
+[00:13:19.957] Browser LOG     New transcription: speak with my voice
+[00:13:20.149] Browser LOG     Speech recognition result received
+[00:13:20.150] Browser LOG     New transcription: speak with my voice
+[00:13:20.349] Browser LOG     Speech recognition result received
+[00:13:20.349] Browser LOG     New transcription: speak with my voice
+[00:13:21.191] Browser LOG     Stop button clicked, calling onStopRecording
+[00:13:21.191] Browser LOG     Stopping recording called
+[00:13:21.191] Browser LOG     Attempting to stop recognition, current state: true
+[00:13:21.191] Browser LOG     Recognition stopped successfully
+[00:13:21.191] Browser LOG     DictationButton: isRecording changed to false
+[00:13:21.191] Browser LOG     SpeechService: isRecording changed to false
+[00:13:21.191] Browser LOG     Recognition ended event fired
+[00:22:02.124] Server  LOG      ✓ Compiled in 341ms
+[00:22:16.522] Browser LOG     Start button clicked, calling onStartRecording
+[00:22:16.522] Browser LOG     Start recording called
+[00:22:16.522] Browser LOG     Starting recognition...
+[00:22:16.522] Browser LOG     Recognition started!
+[00:22:16.522] Browser LOG     DictationButton: isRecording changed to true
+[00:22:16.522] Browser LOG     SpeechService: isRecording changed to true
+[00:22:18.181] Browser LOG     Speech recognition result received
+[00:22:18.181] Browser LOG     New transcription: what's
+[00:22:18.471] Browser LOG     Speech recognition result received
+[00:22:18.471] Browser LOG     New transcription: What's happen
+[00:22:18.605] Browser LOG     Speech recognition result received
+[00:22:18.605] Browser LOG     New transcription: what's happening
+[00:22:18.764] Browser LOG     Speech recognition result received
+[00:22:18.764] Browser LOG     New transcription: what's happening
+[00:22:19.147] Browser LOG     Speech recognition result received
+[00:22:19.147] Browser LOG     New transcription: what's happening
+[00:22:19.613] Browser LOG     Stop button clicked, calling onStopRecording
+[00:22:19.614] Browser LOG     Stopping recording called
+[00:22:19.614] Browser LOG     Attempting to stop recognition, current state: true
+[00:22:19.614] Browser LOG     Recognition stopped successfully
+[00:22:19.614] Browser LOG     DictationButton: isRecording changed to false
+[00:22:19.614] Browser LOG     SpeechService: isRecording changed to false
+[00:22:19.614] Browser LOG     Recognition ended event fired
