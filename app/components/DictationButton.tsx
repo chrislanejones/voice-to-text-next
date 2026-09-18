@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mic, StopCircle } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Mic, MicOff, StopCircle } from "lucide-react";
 
 interface DictationButtonProps {
   isRecording: boolean;
@@ -31,6 +31,10 @@ export default function DictationButton({
     onStopRecording();
   };
 
+  // Reduced motion: the atom still appears, but the electrons hold still,
+  // the glow stops pulsing, and hover/press scaling is off.
+  const reduceMotion = useReducedMotion();
+
   // Electron configuration - 3 electrons with different speeds and starting positions
   const electrons = [
     { duration: 2, startAngle: 0, color: "#ef4444", orbitSize: 100 },
@@ -38,31 +42,39 @@ export default function DictationButton({
     { duration: 3, startAngle: 240, color: "#22c55e", orbitSize: 100 },
   ];
 
+  const label = disabled
+    ? "Dictation unavailable"
+    : isRecording
+      ? "Stop recording"
+      : "Start recording";
+  const hint = disabled ? "" : isRecording ? "Tap to stop" : "Tap to talk";
+
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex w-full flex-col items-center justify-center gap-1">
       <div className="relative w-[120px] h-[120px] flex items-center justify-center">
         {/* Dashed orbit ring */}
         <AnimatePresence>
           {isRecording && (
             <motion.svg
-              className="absolute"
+              className="absolute text-slate-400 dark:text-slate-500"
+              aria-hidden="true"
               width="100"
               height="100"
               viewBox="0 0 100 100"
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.8 }}
+              transition={{ duration: reduceMotion ? 0.15 : 0.3 }}
             >
               <circle
                 cx="50"
                 cy="50"
                 r="46"
                 fill="none"
-                stroke="#9ca3af"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 strokeDasharray="4,4"
-                opacity="0.5"
+                opacity="0.6"
               />
             </motion.svg>
           )}
@@ -75,16 +87,24 @@ export default function DictationButton({
               <motion.div
                 key={`electron-${index}`}
                 className="absolute w-[100px] h-[100px]"
+                aria-hidden="true"
                 initial={{ opacity: 0, rotate: electron.startAngle }}
-                animate={{ opacity: 1, rotate: electron.startAngle + 360 }}
+                animate={{
+                  opacity: 1,
+                  rotate: reduceMotion
+                    ? electron.startAngle
+                    : electron.startAngle + 360,
+                }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  opacity: { duration: 0.3 },
-                  rotate: {
-                    duration: electron.duration,
-                    repeat: Infinity,
-                    ease: "linear",
-                  },
+                  opacity: { duration: reduceMotion ? 0.15 : 0.3 },
+                  rotate: reduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: electron.duration,
+                        repeat: Infinity,
+                        ease: "linear",
+                      },
                 }}
               >
                 <div
@@ -106,41 +126,54 @@ export default function DictationButton({
           {isRecording && (
             <motion.div
               className="absolute w-16 h-16 rounded-full bg-red-500/20 z-0"
+              aria-hidden="true"
               initial={{ opacity: 0, scale: 1 }}
-              animate={{
-                opacity: [0.2, 0.4, 0.2],
-                scale: [1, 1.3, 1],
-              }}
+              animate={
+                reduceMotion
+                  ? { opacity: 0.3, scale: 1.15 }
+                  : { opacity: [0.2, 0.4, 0.2], scale: [1, 1.3, 1] }
+              }
               exit={{ opacity: 0, scale: 1 }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
+              transition={
+                reduceMotion
+                  ? { duration: 0.15 }
+                  : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+              }
             />
           )}
         </AnimatePresence>
 
-        {/* Center button - 64px size */}
+        {/* Center button - 64px size. White icon: 5.3:1 on blue-600,
+            4.8:1 on red-600. */}
         <motion.button
-          className={`relative z-10 w-16 h-16 rounded-full shadow-lg flex items-center justify-center transition-colors ${
-            isRecording
-              ? "bg-red-500 hover:bg-red-600"
-              : "bg-blue-500 hover:bg-blue-600"
-          } disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-500`}
-          whileHover={disabled ? undefined : { scale: 1.05 }}
-          whileTap={disabled ? undefined : { scale: 0.95 }}
+          type="button"
+          className={`relative z-10 w-16 h-16 rounded-full flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-card ${
+            disabled
+              ? "cursor-not-allowed bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-300"
+              : isRecording
+                ? "bg-red-600 text-white shadow-lg hover:bg-red-700"
+                : "bg-blue-600 text-white shadow-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+          }`}
+          whileHover={disabled || reduceMotion ? undefined : { scale: 1.05 }}
+          whileTap={disabled || reduceMotion ? undefined : { scale: 0.95 }}
           disabled={disabled}
           onClick={isRecording ? handleStopClick : handleStartClick}
-          aria-label={isRecording ? "Stop recording" : "Start recording"}
+          aria-label={label}
         >
-          {isRecording ? (
-            <StopCircle className="w-8 h-8 text-white" />
+          {disabled ? (
+            <MicOff className="w-8 h-8" aria-hidden="true" />
+          ) : isRecording ? (
+            <StopCircle className="w-8 h-8" aria-hidden="true" />
           ) : (
-            <Mic className="w-8 h-8 text-white" />
+            <Mic className="w-8 h-8" aria-hidden="true" />
           )}
         </motion.button>
       </div>
+      {/* Visible cue for the icon-only button; the button's own label
+          already says this to screen readers. */}
+      <p className="min-h-5 text-sm text-muted-foreground" aria-hidden="true">
+        {hint}
+      </p>
     </div>
   );
 }

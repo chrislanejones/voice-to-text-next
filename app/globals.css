@@ -1,27 +1,46 @@
 @import "tailwindcss";
 
+/* `dark:` follows the theme toggle (the .dark class from next-themes),
+   not the OS setting. Without this, picking "Light" on a dark-mode OS
+   still rendered every dark: utility. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Tailwind CSS v4 - Theme configuration via CSS */
 @theme {
-  /* Colors */
-  --color-background: oklch(100% 0 0);
-  --color-foreground: oklch(14.1% 0 0);
+  /* Colors — slate family, matching the app's original look.
+     Page = background, panel = card, transcript well = muted. */
+  --color-background: oklch(96.8% 0.007 247.896); /* slate-100 */
+  --color-foreground: oklch(20.8% 0.042 265.755); /* slate-900 */
   --color-card: oklch(100% 0 0);
-  --color-card-foreground: oklch(14.1% 0 0);
+  --color-card-foreground: oklch(20.8% 0.042 265.755);
   --color-popover: oklch(100% 0 0);
-  --color-popover-foreground: oklch(14.1% 0 0);
-  --color-primary: oklch(20.5% 0 0);
-  --color-primary-foreground: oklch(98.5% 0 0);
-  --color-secondary: oklch(96.9% 0 0);
-  --color-secondary-foreground: oklch(20.5% 0 0);
-  --color-muted: oklch(96.9% 0 0);
-  --color-muted-foreground: oklch(55.8% 0 0);
-  --color-accent: oklch(96.9% 0 0);
-  --color-accent-foreground: oklch(20.5% 0 0);
+  --color-popover-foreground: oklch(20.8% 0.042 265.755);
+  --color-primary: oklch(20.8% 0.042 265.755);
+  --color-primary-foreground: oklch(98.4% 0.003 247.858);
+  --color-secondary: oklch(96.8% 0.007 247.896);
+  --color-secondary-foreground: oklch(20.8% 0.042 265.755);
+  --color-muted: oklch(96.8% 0.007 247.896);
+  --color-muted-foreground: oklch(44.6% 0.043 257.281); /* slate-600: 6.9:1 on muted */
+  --color-accent: oklch(96.8% 0.007 247.896);
+  --color-accent-foreground: oklch(20.8% 0.042 265.755);
   --color-destructive: oklch(57.7% 0.245 27.325);
   --color-destructive-foreground: oklch(98.5% 0 0);
-  --color-border: oklch(91.4% 0 0);
-  --color-input: oklch(91.4% 0 0);
-  --color-ring: oklch(14.1% 0 0);
+  --color-border: oklch(92.9% 0.013 255.508); /* slate-200 */
+  --color-input: oklch(92.9% 0.013 255.508);
+  --color-ring: oklch(54.6% 0.245 262.881); /* blue-600: 4.8:1+ on page and panel */
+
+  /* History note cards. One pastel family: same chroma, every hue inside
+     sRGB (the old 0.89/0.16 values clipped on 7 of 9 hues). Black text
+     is 12.7:1 or better on all of them. */
+  --color-note-1: oklch(0.86 0.08 0);
+  --color-note-2: oklch(0.855 0.08 40);
+  --color-note-3: oklch(0.9 0.08 80);
+  --color-note-4: oklch(0.9 0.08 120);
+  --color-note-5: oklch(0.9 0.08 160);
+  --color-note-6: oklch(0.9 0.08 200);
+  --color-note-7: oklch(0.855 0.08 240);
+  --color-note-8: oklch(0.84 0.08 280);
+  --color-note-9: oklch(0.895 0.08 320);
 
   /* Chart colors */
   --color-chart-1: oklch(64.6% 0.222 16.439);
@@ -43,25 +62,25 @@
 
 /* Dark mode */
 .dark {
-  --color-background: oklch(14.1% 0 0);
-  --color-foreground: oklch(98.5% 0 0);
-  --color-card: oklch(14.1% 0 0);
-  --color-card-foreground: oklch(98.5% 0 0);
-  --color-popover: oklch(14.1% 0 0);
-  --color-popover-foreground: oklch(98.5% 0 0);
-  --color-primary: oklch(98.5% 0 0);
-  --color-primary-foreground: oklch(20.5% 0 0);
-  --color-secondary: oklch(26.9% 0 0);
-  --color-secondary-foreground: oklch(98.5% 0 0);
-  --color-muted: oklch(26.9% 0 0);
-  --color-muted-foreground: oklch(71.2% 0 0);
-  --color-accent: oklch(26.9% 0 0);
-  --color-accent-foreground: oklch(98.5% 0 0);
+  --color-background: oklch(20.8% 0.042 265.755); /* slate-900 */
+  --color-foreground: oklch(98.4% 0.003 247.858); /* slate-50 */
+  --color-card: oklch(27.9% 0.041 260.031); /* slate-800 */
+  --color-card-foreground: oklch(98.4% 0.003 247.858);
+  --color-popover: oklch(27.9% 0.041 260.031);
+  --color-popover-foreground: oklch(98.4% 0.003 247.858);
+  --color-primary: oklch(98.4% 0.003 247.858);
+  --color-primary-foreground: oklch(20.8% 0.042 265.755);
+  --color-secondary: oklch(37.2% 0.044 257.287);
+  --color-secondary-foreground: oklch(98.4% 0.003 247.858);
+  --color-muted: oklch(20.8% 0.042 265.755);
+  --color-muted-foreground: oklch(70.4% 0.04 256.788); /* slate-400: 5.6:1 on card */
+  --color-accent: oklch(37.2% 0.044 257.287);
+  --color-accent-foreground: oklch(98.4% 0.003 247.858);
   --color-destructive: oklch(39.2% 0.141 25.723);
   --color-destructive-foreground: oklch(98.5% 0 0);
-  --color-border: oklch(26.9% 0 0);
-  --color-input: oklch(26.9% 0 0);
-  --color-ring: oklch(84.2% 0 0);
+  --color-border: oklch(37.2% 0.044 257.287); /* slate-700 */
+  --color-input: oklch(37.2% 0.044 257.287);
+  --color-ring: oklch(70.7% 0.165 254.624); /* blue-400: 5.5:1+ on page and panel */
 
   /* Dark mode chart colors */
   --color-chart-1: oklch(54.6% 0.245 262.881);
@@ -86,6 +105,18 @@
   }
   to {
     height: 0;
+  }
+}
+
+/* Tailwind v4 made a bare `border` use currentColor, so the shadcn menu
+   and toast drew near-black outlines. Point it back at the theme token. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-border);
   }
 }
 
@@ -185,5 +216,19 @@ body {
   to {
     opacity: var(--tw-exit-opacity, 1);
     transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0) scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), var(--tw-exit-scale, 1));
+  }
+}
+
+/* Reduced motion: dialogs, menus, and toasts keep their fade but drop
+   the zoom and slide. Unlayered, so it wins over the utilities above. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-in,
+  .animate-out {
+    --tw-enter-scale: 1;
+    --tw-exit-scale: 1;
+    --tw-enter-translate-x: 0;
+    --tw-enter-translate-y: 0;
+    --tw-exit-translate-x: 0;
+    --tw-exit-translate-y: 0;
   }
 }

@@ -29,7 +29,8 @@ export function Toaster() {
           </Toast>
         )
       })}
-      <ToastViewport />
+      {/* Sit above the fixed theme/delete toolbar in the bottom-right. */}
+      <ToastViewport className="sm:bottom-16" />
     </ToastProvider>
   )
 }

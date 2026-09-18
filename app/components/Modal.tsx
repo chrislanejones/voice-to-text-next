@@ -4,10 +4,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { X, Copy, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 
 export interface ModalProps {
@@ -29,37 +29,31 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, content }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-gray-900 border border-gray-700">
-        <div className="absolute right-4 top-4">
-          <DialogClose className="rounded-sm opacity-70 ring-offset-gray-900 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-800">
-            <X className="h-4 w-4 text-white" />
-            <span className="sr-only">Close</span>
-          </DialogClose>
-        </div>
-        <DialogHeader>
-          <DialogTitle className="text-white">{title}</DialogTitle>
+      {/* Capped to the viewport; the text scrolls inside so the close and
+          copy buttons stay on screen for long transcripts. The close
+          button comes from DialogContent. */}
+      <DialogContent
+        aria-describedby={undefined}
+        className="flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] flex-col rounded-2xl border-border bg-card text-card-foreground sm:rounded-2xl"
+      >
+        <DialogHeader className="pr-10">
+          <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <div className="mt-2">
-          <p className="text-sm text-white">{content}</p>
+        <div
+          role="region"
+          aria-label="Full text"
+          tabIndex={0}
+          className="-mx-2 min-h-0 overflow-y-auto rounded-md px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <p className="whitespace-pre-wrap text-base leading-relaxed">
+            {content}
+          </p>
         </div>
         <DialogFooter>
-          <button
-            onClick={handleCopy}
-            className="p-1 hover:bg-gray-300/50 bg-gray-100/50 rounded ml-auto flex items-center gap-2"
-            aria-label="Copy to clipboard"
-          >
-            {copied ? (
-              <>
-                <Check className="h-4 w-4" />
-                <span className="text-sm">Copied!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="h-4 w-4" />
-                <span className="text-sm">Copy</span>
-              </>
-            )}
-          </button>
+          <Button variant="secondary" onClick={handleCopy}>
+            {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+            <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

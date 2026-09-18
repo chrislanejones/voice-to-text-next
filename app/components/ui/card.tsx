@@ -1,26 +1,30 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-const brightColors = {
-  one: "oklch(0.89 0.16 0)",
-  two: "oklch(0.89 0.16 40)",
-  three: "oklch(0.89 0.16 80)",
-  four: "oklch(0.89 0.16 120)",
-  five: "oklch(0.89 0.16 160)",
-  six: "oklch(0.89 0.16 200)",
-  seven: "oklch(0.89 0.16 240)",
-  eight: "oklch(0.89 0.16 280)",
-  nine: "oklch(0.89 0.16 320)",
-};
+// Pastel note colors live as tokens in app/globals.css (--color-note-*).
+const noteColors = {
+  one: "bg-note-1",
+  two: "bg-note-2",
+  three: "bg-note-3",
+  four: "bg-note-4",
+  five: "bg-note-5",
+  six: "bg-note-6",
+  seven: "bg-note-7",
+  eight: "bg-note-8",
+  nine: "bg-note-9",
+} as const;
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { color?: keyof typeof brightColors }
+  React.HTMLAttributes<HTMLDivElement> & { color?: keyof typeof noteColors }
 >(({ className, color = "one", ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("rounded-lg text-black shadow-md hover:shadow-lg", className)}
-    style={{ backgroundColor: brightColors[color] }}
+    className={cn(
+      "rounded-xl text-slate-900 shadow-sm ring-1 ring-black/5 transition-[background-color,box-shadow] duration-200 hover:shadow-md",
+      noteColors[color],
+      className
+    )}
     {...props}
   />
 ));
@@ -32,7 +36,7 @@ const CardHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col p-4 min-h-20", className)}
+    className={cn("flex flex-col p-4 pb-2", className)}
     {...props}
   />
 ));
@@ -77,7 +81,7 @@ const CardFooter = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "flex items-center justify-end gap-2 p-2 pt-0 mt-auto",
+      "mt-auto flex items-center justify-end gap-1 p-2 pt-0",
       className
     )}
     {...props}
