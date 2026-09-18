@@ -6,12 +6,14 @@ import { Mic, StopCircle } from "lucide-react";
 
 interface DictationButtonProps {
   isRecording: boolean;
+  disabled?: boolean;
   onStartRecording: () => void;
   onStopRecording: () => void;
 }
 
 export default function DictationButton({
   isRecording,
+  disabled = false,
   onStartRecording,
   onStopRecording,
 }: DictationButtonProps) {
@@ -125,9 +127,10 @@ export default function DictationButton({
             isRecording
               ? "bg-red-500 hover:bg-red-600"
               : "bg-blue-500 hover:bg-blue-600"
-          }`}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          } disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-blue-500`}
+          whileHover={disabled ? undefined : { scale: 1.05 }}
+          whileTap={disabled ? undefined : { scale: 0.95 }}
+          disabled={disabled}
           onClick={isRecording ? handleStopClick : handleStartClick}
           aria-label={isRecording ? "Stop recording" : "Start recording"}
         >

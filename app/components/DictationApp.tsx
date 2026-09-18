@@ -1,65 +1,30 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import CardSection from "./CardSection";
 import Modal from "./Modal";
 import { ModeToggle } from "./DarkLightToggle";
 import DictationButton from "./DictationButton";
 import { useSpeechRecognition } from "./SpeechRecognitionService";
+import { useHistory } from "@/hooks/use-history";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 
-const STORAGE_KEY = "voice-to-text-history";
-
 export default function DictationApp(): React.ReactElement {
+  const { history, addEntry, removeEntry, clear } = useHistory();
   const {
+    isSupported,
     isRecording,
     transcription,
+    interimTranscription,
     error,
     startRecording,
     stopRecording,
     clearTranscription,
-  } = useSpeechRecognition();
+  } = useSpeechRecognition(addEntry);
 
-  const [history, setHistory] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [selectedText, setSelectedText] = useState<string>("");
-  const [lastSavedTranscription, setLastSavedTranscription] =
-    useState<string>("");
-
-  useEffect(() => {
-    const savedHistory = localStorage.getItem(STORAGE_KEY);
-    if (savedHistory) {
-      try {
-        setHistory(JSON.parse(savedHistory));
-      } catch (error) {
-        console.error("Failed to parse saved history:", error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-  }, [history]);
-
-  useEffect(() => {
-    if (
-      !isRecording &&
-      transcription.trim() &&
-      transcription !== lastSavedTranscription
-    ) {
-      setHistory((prev) => [transcription, ...prev].slice(0, 10));
-      setLastSavedTranscription(transcription);
-    }
-  }, [isRecording, transcription, lastSavedTranscription]);
-
-  const handleDeleteHistory = (index: number): void => {
-    setHistory((prev) => {
-      const newHistory = [...prev];
-      newHistory.splice(index, 1);
-      return newHistory;
-    });
-  };
 
   const handleOpenModal = (text: string): void => {
     setSelectedText(text);
@@ -67,17 +32,11 @@ export default function DictationApp(): React.ReactElement {
   };
 
   const handleDeleteAll = (): void => {
-    setHistory(() => []);
+    clear();
     clearTranscription();
-    setLastSavedTranscription("");
-    localStorage.removeItem(STORAGE_KEY);
-    setTimeout(() => {
-      if (history.length > 0) {
-        console.log("Forcing history clear");
-        setHistory(() => []);
-      }
-    }, 100);
   };
+
+  const showTranscript = isRecording || transcription || interimTranscription;
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center p-4">
@@ -85,22 +44,39 @@ export default function DictationApp(): React.ReactElement {
         <div className="w-full flex justify-center mb-4">
           <DictationButton
             isRecording={isRecording}
+            disabled={!isSupported}
             onStartRecording={startRecording}
             onStopRecording={stopRecording}
           />
         </div>
         <div className="w-full max-w-[800px] mt-4">
           {error && (
-            <div className="text-red-500 text-center mb-4">{error}</div>
+            <div role="alert" className="text-red-500 text-center mb-4">
+              {error}
+            </div>
           )}
-          {transcription && (
-            <div className="p-4 bg-white/10 rounded-lg mb-4">
-              <p className="text-white">{transcription}</p>
+          {showTranscript && (
+            <div
+              className="p-4 bg-white/10 rounded-lg mb-4"
+              aria-live="polite"
+            >
+              <p className="text-white">
+                {transcription}
+                {interimTranscription && (
+                  <span className="text-white/60">
+                    {transcription ? " " : ""}
+                    {interimTranscription}
+                  </span>
+                )}
+                {isRecording && !transcription && !interimTranscription && (
+                  <span className="text-white/60">Listening…</span>
+                )}
+              </p>
             </div>
           )}
           <CardSection
             history={history}
-            onDeleteHistory={handleDeleteHistory}
+            onDeleteHistory={removeEntry}
             onOpenModal={handleOpenModal}
           />
         </div>
