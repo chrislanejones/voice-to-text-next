@@ -18,7 +18,13 @@ export interface Note {
   tags: NoteTag[];
   // Set when the note is a translation, e.g. "Spanish".
   language?: string;
+  // Index into the board's paper colors. Chosen when the note is pinned so
+  // nearby notes never share a color, then kept, so taking a note down
+  // doesn't recolor the rest.
+  paper?: number;
 }
+
+export const PAPER_COUNT = 6;
 
 const STORAGE_KEY = "voice-to-text-notes";
 const LEGACY_KEY = "voice-to-text-history";
@@ -90,7 +96,32 @@ function toNote(value: unknown): Note | null {
     speakers: typeof raw.speakers === "number" ? raw.speakers : 0,
     tags: Array.isArray(raw.tags) ? raw.tags.filter((t): t is NoteTag => TAGS.has(t)) : [],
     language: typeof raw.language === "string" ? raw.language : undefined,
+    paper:
+      Number.isInteger(raw.paper) && raw.paper! >= 0 && raw.paper! < PAPER_COUNT ? raw.paper : undefined,
   };
+}
+
+// The first paper not used by the given neighbors. With six papers and at
+// most five neighbors there's always one free, so any six notes in a row
+// are six different colors (that covers side-by-side and above/below on
+// the board's grid).
+function freePaper(neighbors: Note[]): number {
+  const used = new Set(neighbors.map((n) => n.paper));
+  for (let i = 0; i < PAPER_COUNT; i++) if (!used.has(i)) return i;
+  return 0;
+}
+
+// Gives notes without a paper one, oldest first, each avoiding the five
+// notes pinned before it. Returns the same array when nothing changed.
+function withPapers(list: Note[]): Note[] {
+  if (list.every((n) => n.paper !== undefined)) return list;
+  const oldestFirst = [...list].reverse();
+  oldestFirst.forEach((note, i) => {
+    if (note.paper === undefined) {
+      oldestFirst[i] = { ...note, paper: freePaper(oldestFirst.slice(Math.max(0, i - (PAPER_COUNT - 1)), i)) };
+    }
+  });
+  return oldestFirst.reverse();
 }
 
 function load(): Note[] {
@@ -98,9 +129,12 @@ function load(): Note[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw !== null) {
       const parsed: unknown = JSON.parse(raw);
-      return Array.isArray(parsed)
-        ? parsed.map(toNote).filter((n): n is Note => n !== null)
-        : EMPTY;
+      if (!Array.isArray(parsed)) return EMPTY;
+      const list = parsed.map(toNote).filter((n): n is Note => n !== null);
+      const colored = withPapers(list);
+      // Notes saved before papers existed get theirs once, for good.
+      if (colored !== list) localStorage.setItem(STORAGE_KEY, JSON.stringify(colored));
+      return colored;
     }
     if (localStorage.getItem(MIGRATED_KEY)) return EMPTY;
     // First run on this build: carry over the old string notes, or seed
@@ -119,7 +153,7 @@ function load(): Note[] {
         speakers: 0,
         tags: [] as NoteTag[],
       }));
-    const first = migrated.length ? migrated : demoNotes(now);
+    const first = withPapers(migrated.length ? migrated : demoNotes(now));
     localStorage.setItem(STORAGE_KEY, JSON.stringify(first));
     localStorage.setItem(MIGRATED_KEY, "1");
     return first;
@@ -166,7 +200,8 @@ function save(next: Note[]): void {
   notify();
 }
 
-function addNote(input: Omit<Note, "id" | "createdAt" | "title"> & { title?: string }): void {
+function addNote(input: Omit<Note, "id" | "createdAt" | "title" | "paper"> & { title?: string }): void {
+  const current = getSnapshot();
   const note: Note = {
     id: newId(),
     createdAt: Date.now(),
@@ -175,8 +210,9 @@ function addNote(input: Omit<Note, "id" | "createdAt" | "title"> & { title?: str
     speakers: input.speakers,
     tags: input.tags,
     language: input.language,
+    paper: freePaper(current.slice(0, PAPER_COUNT - 1)),
   };
-  save([note, ...getSnapshot()].slice(0, MAX_NOTES));
+  save([note, ...current].slice(0, MAX_NOTES));
 }
 
 // Hand edits from the board. An emptied title falls back to one made
