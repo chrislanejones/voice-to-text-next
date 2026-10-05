@@ -2,3 +2,4 @@ node_modules
 
 # Local secrets (REPLICATE_API_TOKEN lives in .env.local)
 .env*
+.vercel
