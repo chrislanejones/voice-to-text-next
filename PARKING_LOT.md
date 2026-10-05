@@ -37,3 +37,7 @@ Found during the 10-05-2026 Portal redesign (ADR-004).
 - **Translate is a single language at a time.** Changing the language drops the cached translation.
 
 Fixed by the redesign (from the 09-18-2026 list): Delete all now asks first ("Clear board" / "Keep") and is disabled when the board is empty. Copy waits for the clipboard and reports failure. Note colors follow the note, not its position. The `console.log` calls went away with `DictationButton.tsx`.
+
+Found while publishing on 10-05-2026.
+
+- **AI calls stop at 55 seconds.** Vercel Hobby caps functions at 60 s, so long Whisper jobs (several minutes of audio) can time out with "The AI took too long." Fix: return the prediction id right away and have the browser poll a status route, or move to Vercel Pro. ADR-003 still says 280 s / 300 s and needs that number updated.

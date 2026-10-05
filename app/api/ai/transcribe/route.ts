@@ -2,7 +2,8 @@ import { MODELS, errorResponse, run, uploadFile } from "@/lib/replicate";
 import { requireSignIn } from "@/lib/ai-auth";
 import { formatTranscript } from "@/lib/transcript";
 
-export const maxDuration = 300;
+// Vercel Hobby caps functions at 60 seconds.
+export const maxDuration = 60;
 
 // Vercel caps request bodies at 4.5 MB.
 const MAX_BYTES = 4_400_000;

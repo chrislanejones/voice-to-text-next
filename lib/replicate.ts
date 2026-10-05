@@ -11,8 +11,9 @@ export const MODELS = {
   speech: process.env.REPLICATE_SPEECH_MODEL ?? "jaaari/kokoro-82m",
 };
 
-// Stay under the 300-second function limit, leaving room to respond.
-const DEADLINE_MS = 280_000;
+// Stay under the 60-second function limit (Vercel Hobby), leaving room
+// to cancel and respond.
+const DEADLINE_MS = 55_000;
 const POLL_MS = 1_500;
 
 export class ReplicateError extends Error {
@@ -63,8 +64,8 @@ async function readJson<T>(response: Response): Promise<T> {
 }
 
 // Runs a model and returns its output. `model` is "owner/name" (latest
-// version) or "owner/name:version". Waits up to 60 seconds in the first
-// request, then polls.
+// version) or "owner/name:version". Waits up to 30 seconds in the first
+// request, then polls until the deadline.
 export async function run(
   model: string,
   input: Record<string, unknown>,
@@ -77,7 +78,7 @@ export async function run(
       headers: {
         ...authHeaders(),
         "Content-Type": "application/json",
-        Prefer: "wait=60",
+        Prefer: "wait=30",
       },
       body: JSON.stringify({ version: model, input }),
       signal,

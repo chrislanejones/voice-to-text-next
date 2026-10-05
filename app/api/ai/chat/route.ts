@@ -1,7 +1,8 @@
 import { MODELS, errorResponse, outputText, run } from "@/lib/replicate";
 import { requireSignIn } from "@/lib/ai-auth";
 
-export const maxDuration = 300;
+// Vercel Hobby caps functions at 60 seconds.
+export const maxDuration = 60;
 
 // History holds at most 10 notes, so they all fit in the prompt. No search
 // index needed.

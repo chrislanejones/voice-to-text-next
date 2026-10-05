@@ -1,7 +1,8 @@
 import { MODELS, errorResponse, run } from "@/lib/replicate";
 import { requireSignIn } from "@/lib/ai-auth";
 
-export const maxDuration = 300;
+// Vercel Hobby caps functions at 60 seconds.
+export const maxDuration = 60;
 
 const MAX_CHARS = 5_000;
 const VOICES = new Set(["af_bella", "af_nicole", "af_sarah", "am_adam", "am_michael", "bf_emma", "bm_george"]);
