@@ -50,3 +50,6 @@ telemetry, so quality erodes unnoticed until the cloud API rejected here
 gets built anyway, after months of patching.
 Early warning sign to watch for: the first user-agent or platform check
 added inside `DictationSession` to handle one browser's quirk.
+
+---
+← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)

@@ -55,3 +55,6 @@ back through migration. "Delete all" is safe today only because it writes
 `[]` and leaves the key in place.
 Early warning sign to watch for: a diff that changes `Note` without adding
 a version key, or a bug report of deleted notes coming back.
+
+---
+← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)

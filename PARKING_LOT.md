@@ -4,7 +4,7 @@ Found during the 09-18-2026 visual and accessibility pass. Out of scope there, s
 
 - **Delete all has no confirmation or undo.** One tap clears every saved note and the transcript. (Behavior, QC lane.)
 - **Debug logs in `app/components/DictationButton.tsx`.** Three `console.log` calls (lines 21, 25, 30) fire on every start, stop, and state change.
-- **README is out of date.** `Readme.md` line 21 says Next.js 14. The app is on Next 16.
+- ~~**README is out of date.**~~ Fixed 10-05-2026: rewritten for the current app, with links to the ADRs.
 - **Copy always reports success.** `navigator.clipboard.writeText` isn't awaited in `CardSection.tsx` or `Modal.tsx`, so "Copied" shows even when the write is blocked.
 - **Note colors shift on delete.** Color comes from list position, so deleting one note recolors every note after it.
 - **Delete all is enabled with nothing to delete.**
@@ -22,7 +22,7 @@ Found during the 09-18-2026 dependency and recording work.
 
 Found during the 10-05-2026 Replicate AI work (ADR-003).
 
-- **AI routes are open to anyone.** `/api/ai/*` has no auth or rate limit, so anyone with the URL can spend the Replicate budget. Add rate limiting (Vercel Firewall rule or Upstash) or login before a public deploy.
+- ~~**AI routes are open to anyone.**~~ Fixed 10-05-2026: every `/api/ai/*` route now needs the `AI_PASSWORD` session (ADR-005). Still open: password guesses are slowed (800 ms each) but not rate-limited, so add a Vercel Firewall rate-limit rule on `/api/ai/login` before a public deploy.
 - **Not tested against real Replicate yet.** No token on this machine. Unverified: the Files API field name `content`, the whisper-diarization `segments` shape, and Kokoro returning a single URL.
 - **Community models are unpinned.** `thomasmol/whisper-diarization` and `jaaari/kokoro-82m` run their latest version. Pin `owner/name:version` through the `REPLICATE_*_MODEL` env vars once tested.
 - **No streaming.** Clean up and chat replies show up all at once. Revisit once the design is in.

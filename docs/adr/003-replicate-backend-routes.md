@@ -54,3 +54,6 @@ Early warning sign to watch for: Replicate spend or prediction count
 rising faster than the number of people actually using the app, or the
 first `console.error("Replicate prediction"...)` line in Vercel logs
 nobody can tie to a real session.
+
+---
+← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)

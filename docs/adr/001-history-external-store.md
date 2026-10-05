@@ -46,3 +46,6 @@ hand-rolled store lets it slide.
 Early warning sign to watch for: a diff that changes the `string[]` type in
 `hooks/use-history.ts` without adding a version key and a migration in
 `load()`.
+
+---
+← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)
