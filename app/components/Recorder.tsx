@@ -8,6 +8,7 @@ import {
   ListBulletsIcon,
   MicrophoneIcon,
   PauseIcon,
+  PencilSimpleIcon,
   PushPinIcon,
   SparkleIcon,
   SpeakerHighIcon,
@@ -103,6 +104,8 @@ export default function Recorder({
   const [fromUpload, setFromUpload] = useState(false);
   const [transcribing, setTranscribing] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Hand-editing the shown version, for words the transcriber got wrong.
+  const [editing, setEditing] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [unsupportedOpen, setUnsupportedOpen] = useState(false);
@@ -119,6 +122,7 @@ export default function Recorder({
     setVersion("original");
     setGenerating(null);
     setFromUpload(upload);
+    setEditing(false);
   }, []);
 
   useEffect(() => () => abortRef.current?.abort(), []);
@@ -229,6 +233,11 @@ export default function Recorder({
   const interim = !useWhisper && speech.isRecording ? speech.interimTranscription : "";
   const finalText = flatten(paras, showLabels);
   const hasTranscript = Boolean(versions.original) && !isRecording;
+
+  // Fixing the original makes the AI versions out of date, so they're
+  // dropped and made again from the fixed text when picked.
+  const editText = (text: string) =>
+    setVersions((v) => (version === "original" ? { original: text } : { ...v, [version]: text }));
 
   const discard = () => {
     if (readAloud.playing === "live" || readAloud.loading === "live") readAloud.stop();
@@ -505,44 +514,60 @@ export default function Recorder({
           </Gated>
         </nav>
 
-        <div className="vt-text" aria-live="polite">
-          {generating && (
-            <p className="vt-placeholder">
-              {generating === "translate" ? `Translating to ${language}…` : "Rewriting…"}
-            </p>
-          )}
-          {!generating && paras.length === 0 && !interim && (
-            <p className="vt-placeholder">
-              {transcribing ? "Transcribing…" : isRecording ? "Listening…" : "Your words will show up here."}
-            </p>
-          )}
-          {paras.map((p, i) => (
-            <div key={i} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              {showLabels && p.speaker && (
-                <span className="vt-speaker" data-alt={/[02468]$/.test(p.speaker)}>
-                  {p.speaker}
-                </span>
-              )}
-              <p className="vt-para">
-                {p.bullet ? "• " : ""}
-                {p.text}
-                {interim && i === paras.length - 1 && (
-                  <span className="vt-interim" aria-hidden="true">
-                    {" "}
-                    {interim}
+        {editing && canAct ? (
+          <>
+            <label className="vt-sr-only" htmlFor="vt-editor">
+              Edit transcript
+            </label>
+            <textarea
+              id="vt-editor"
+              className="input vt-editor"
+              value={versions[version] ?? ""}
+              onChange={(e) => editText(e.target.value)}
+              rows={Math.max(6, (versions[version] ?? "").split("\n").length + 2)}
+              autoFocus
+            />
+          </>
+        ) : (
+          <div className="vt-text" aria-live="polite">
+            {generating && (
+              <p className="vt-placeholder">
+                {generating === "translate" ? `Translating to ${language}…` : "Rewriting…"}
+              </p>
+            )}
+            {!generating && paras.length === 0 && !interim && (
+              <p className="vt-placeholder">
+                {transcribing ? "Transcribing…" : isRecording ? "Listening…" : "Your words will show up here."}
+              </p>
+            )}
+            {paras.map((p, i) => (
+              <div key={i} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {showLabels && p.speaker && (
+                  <span className="vt-speaker" data-alt={/[02468]$/.test(p.speaker)}>
+                    {p.speaker}
                   </span>
                 )}
+                <p className="vt-para">
+                  {p.bullet ? "• " : ""}
+                  {p.text}
+                  {interim && i === paras.length - 1 && (
+                    <span className="vt-interim" aria-hidden="true">
+                      {" "}
+                      {interim}
+                    </span>
+                  )}
+                </p>
+              </div>
+            ))}
+            {interim && paras.length === 0 && (
+              <p className="vt-para">
+                <span className="vt-interim" aria-hidden="true">
+                  {interim}
+                </span>
               </p>
-            </div>
-          ))}
-          {interim && paras.length === 0 && (
-            <p className="vt-para">
-              <span className="vt-interim" aria-hidden="true">
-                {interim}
-              </span>
-            </p>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {liveReading && (
           <div className="vt-reading vt-muted">
@@ -575,6 +600,17 @@ export default function Recorder({
           >
             <CopyIcon {...ICON} aria-hidden="true" />
             Copy
+          </button>
+          <button
+            type="button"
+            className="btn btn-secondary btn-icon"
+            onClick={() => setEditing((on) => !on)}
+            disabled={!canAct}
+            aria-pressed={editing && canAct}
+            aria-label={editing ? "Done editing" : "Edit transcript"}
+            title={editing ? "Done editing" : "Edit"}
+          >
+            <PencilSimpleIcon {...ICON} aria-hidden="true" />
           </button>
           <button
             type="button"

@@ -175,3 +175,7 @@ kbd {
 .vt-settings { display: flex; flex-direction: column; gap: 15px; }
 .vt-check { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
 .vt-check input { width: 18px; height: 18px; accent-color: var(--color-accent); }
+
+/* — transcript editor — */
+.vt-editor { min-height: 180px; font-size: 20px; line-height: 1.5; resize: vertical; max-width: 40em; }
+.vt-actions .btn-icon[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
