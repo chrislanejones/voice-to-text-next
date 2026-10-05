@@ -18,7 +18,7 @@ Found during the 09-18-2026 dependency and recording work.
 - **`next dev` writes `AGENTS.md` and `CLAUDE.md` at the repo root.** They're left uncommitted. Either commit them or set `agentRules: false` in `next.config.ts`.
 - **pnpm skipped build scripts for `sharp` and `unrs-resolver`.** Local image optimization falls back to slower paths. Approve them with `pnpm approve-builds` if needed.
 - **Android Chrome repeats earlier text in continuous results.** `DictationSession` doesn't de-duplicate it (see ADR-002).
-- **Held-back majors:** eslint 10, @types/node 26, framer-motion 13, lucide-react 1.x.
+- **Held-back majors (updated 10-05-2026):** eslint 10 (eslint-plugin-react, pulled in by eslint-config-next, crashes on it: `getFilename is not a function`) and TypeScript 7 (typescript-eslint doesn't support it yet). @types/node 26 is in. framer-motion and lucide-react were removed instead.
 
 Found during the 10-05-2026 Replicate AI work (ADR-003).
 
@@ -31,8 +31,8 @@ Found during the 10-05-2026 Replicate AI work (ADR-003).
 Found during the 10-05-2026 Portal redesign (ADR-004).
 
 - **Primary button text fails contrast.** Broadsheet's `.btn-primary` puts `--color-bg` on `--color-accent`: 3.65:1, under the 4.5:1 AA bar. It's the design system's token, so the fix belongs in the Claude Design project, then here.
-- **Dark mode is gone.** Broadsheet has no dark theme. `next-themes` and `components/theme-provider.tsx` are now unused.
-- **Unused dependencies and files.** `lucide-react`, `framer-motion`, `next-themes`, `tailwindcss-animate`, `components/ui/*`, `hooks/use-toast.ts`, and most of `app/globals.css` (Tailwind theme) no longer render anything.
+- **Dark mode is gone.** Broadsheet has no dark theme. `next-themes` and the theme provider were removed 10-05-2026.
+- **Tailwind is still installed but unused by the UI.** The dead shadcn files and packages were removed 10-05-2026. `app/globals.css` still holds the old Tailwind/shadcn theme, and Tailwind's base reset still styles buttons and inputs. Removing Tailwind needs a visual pass.
 - **Old notes have made-up times.** Migrated notes get timestamps a minute apart, because the old store kept no dates.
 - **Translate is a single language at a time.** Changing the language drops the cached translation.
 
