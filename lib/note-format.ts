@@ -59,6 +59,8 @@ export function noteTags(note: Note): { label: string; className: string }[] {
         return { label: note.language ?? "Translated", className: "tag tag-accent-2" };
       case "upload":
         return { label: "From audio file", className: "tag tag-neutral" };
+      case "demo":
+        return { label: "Sample", className: "tag tag-neutral" };
     }
   });
 }

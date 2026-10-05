@@ -7,7 +7,7 @@ import { useSyncExternalStore } from "react";
 // notes over and is left in place, so going back to the old build loses
 // nothing.
 
-export type NoteTag = "clean" | "email" | "bullets" | "summary" | "translate" | "upload";
+export type NoteTag = "clean" | "email" | "bullets" | "summary" | "translate" | "upload" | "demo";
 
 export interface Note {
   id: string;
@@ -27,7 +27,35 @@ const LEGACY_KEY = "voice-to-text-history";
 const MIGRATED_KEY = "voice-to-text-notes-migrated";
 const MAX_NOTES = 10;
 const EMPTY: Note[] = [];
-const TAGS = new Set<NoteTag>(["clean", "email", "bullets", "summary", "translate", "upload"]);
+const TAGS = new Set<NoteTag>(["clean", "email", "bullets", "summary", "translate", "upload", "demo"]);
+
+// Sample notes so a brand-new board isn't empty. Seeded once, on a
+// browser with no notes and nothing to carry over; taking them down or
+// clearing the board keeps them gone.
+const DEMO_NOTES: Omit<Note, "id" | "createdAt">[] = [
+  {
+    title: "Welcome to the board",
+    text: "Tap the red button, talk, and pin what you said here. The board keeps your last ten notes in this browser. Take this one down with the X when you're done with it.",
+    speakers: 0,
+    tags: ["demo"],
+  },
+  {
+    title: "Groceries for the weekend",
+    text: "- Coffee beans\n- Two lemons\n- Sourdough\n- Something for Sunday dinner",
+    speakers: 0,
+    tags: ["demo", "bullets"],
+  },
+  {
+    title: "Idea: read notes aloud on the drive",
+    text: "Pin the morning plan, then hit the speaker button to hear it back. Open a note to read the whole thing, or copy it into an email.",
+    speakers: 0,
+    tags: ["demo"],
+  },
+];
+
+function demoNotes(now: number): Note[] {
+  return DEMO_NOTES.map((note, i) => ({ ...note, id: newId(), createdAt: now - i * 60_000 }));
+}
 
 const listeners = new Set<() => void>();
 let notes: Note[] | null = null;
@@ -75,13 +103,12 @@ function load(): Note[] {
         : EMPTY;
     }
     if (localStorage.getItem(MIGRATED_KEY)) return EMPTY;
-    // First run on this build: carry over the old string notes. Their
-    // real times are unknown, so they're stamped a minute apart, newest
-    // first.
+    // First run on this build: carry over the old string notes, or seed
+    // the samples when there are none. Old notes' real times are unknown,
+    // so they're stamped a minute apart, newest first.
     const legacy: unknown = JSON.parse(localStorage.getItem(LEGACY_KEY) ?? "[]");
-    if (!Array.isArray(legacy)) return EMPTY;
     const now = Date.now();
-    const migrated = legacy
+    const migrated = (Array.isArray(legacy) ? legacy : [])
       .filter((entry): entry is string => typeof entry === "string" && entry.trim() !== "")
       .slice(0, MAX_NOTES)
       .map((text, i) => ({
@@ -92,9 +119,10 @@ function load(): Note[] {
         speakers: 0,
         tags: [] as NoteTag[],
       }));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+    const first = migrated.length ? migrated : demoNotes(now);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(first));
     localStorage.setItem(MIGRATED_KEY, "1");
-    return migrated.length ? migrated : EMPTY;
+    return first;
   } catch {
     return EMPTY;
   }

@@ -7,17 +7,24 @@ import { speak } from "@/lib/ai-client";
 // otherwise the browser's built-in voice. One thing plays at a time,
 // keyed by an id the caller picks ("live", a note id, …).
 
-export function useReadAloud(useAi: boolean, onError: (message: string) => void) {
+export function useReadAloud(useAi: boolean, onError: (message: string) => void, speed = 1) {
   const [playing, setPlaying] = useState<string | null>(null);
   const [loading, setLoading] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const onErrorRef = useRef(onError);
+  const speedRef = useRef(speed);
 
   useEffect(() => {
     onErrorRef.current = onError;
   }, [onError]);
+
+  // A new speed applies to whatever is playing now, too.
+  useEffect(() => {
+    speedRef.current = speed;
+    if (audioRef.current) audioRef.current.playbackRate = speed;
+  }, [speed]);
 
   const stop = useCallback(() => {
     abortRef.current?.abort();
@@ -49,6 +56,7 @@ export function useReadAloud(useAi: boolean, onError: (message: string) => void)
           return;
         }
         const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = speedRef.current;
         utterance.onboundary = (e) => setProgress(Math.min(100, (e.charIndex / text.length) * 100));
         utterance.onend = () => {
           setPlaying((current) => (current === id ? null : current));
@@ -66,6 +74,7 @@ export function useReadAloud(useAi: boolean, onError: (message: string) => void)
         const url = await speak(text, controller.signal);
         if (controller.signal.aborted) return;
         const audio = new Audio(url);
+        audio.playbackRate = speedRef.current;
         audio.ontimeupdate = () => {
           if (audio.duration) setProgress((audio.currentTime / audio.duration) * 100);
         };

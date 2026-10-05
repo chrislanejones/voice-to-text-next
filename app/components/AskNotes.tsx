@@ -5,6 +5,7 @@ import { ArrowBendDownRightIcon, PaperPlaneRightIcon } from "@phosphor-icons/rea
 import type { Note } from "@/hooks/use-notes";
 import { askNotes, type ChatTurn } from "@/lib/ai-client";
 import { noteDate } from "@/lib/note-format";
+import Gated from "./Gated";
 
 // Chat over the pinned notes. Answers cite the notes they used.
 
@@ -14,7 +15,15 @@ interface Message extends ChatTurn {
 
 const SUGGESTIONS = ["What do I need to do?", "Summarize my notes", "Who did I mention?"];
 
-export default function AskNotes({ notes, onOpen }: { notes: Note[]; onOpen: (id: string) => void }) {
+interface AskNotesProps {
+  notes: Note[];
+  onOpen: (id: string) => void;
+  // Signed out or AI off: shown dimmed, and a click asks to sign in.
+  locked: boolean;
+  onUnlock: () => void;
+}
+
+export default function AskNotes({ notes, onOpen, locked, onUnlock }: AskNotesProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [thinking, setThinking] = useState(false);
@@ -68,84 +77,87 @@ export default function AskNotes({ notes, onOpen }: { notes: Note[]; onOpen: (id
         </p>
       </div>
 
-      {(messages.length > 0 || thinking) && (
-        <ol className="vt-chat" aria-live="polite">
-          {messages.map((m, i) => (
-            <li key={i}>
-              {m.role === "user" ? (
-                <p className="vt-q">
-                  <span className="vt-sr-only">You asked: </span>&ldquo;{m.content}&rdquo;
+      <Gated locked={locked} onUnlock={onUnlock} className="vt-aside-body">
+        {(messages.length > 0 || thinking) && (
+          <ol className="vt-chat" aria-live="polite">
+            {messages.map((m, i) => (
+              <li key={i}>
+                {m.role === "user" ? (
+                  <p className="vt-q">
+                    <span className="vt-sr-only">You asked: </span>&ldquo;{m.content}&rdquo;
+                  </p>
+                ) : (
+                  <>
+                    <p className="vt-a">{m.content}</p>
+                    {(m.sourceIds ?? []).map((id) => {
+                      const note = byId(id);
+                      if (!note) return null;
+                      return (
+                        <button key={id} type="button" className="btn btn-ghost vt-src" onClick={() => onOpen(id)}>
+                          <ArrowBendDownRightIcon size={15} weight="duotone" aria-hidden="true" />
+                          {note.title} · {noteDate(note.createdAt)}
+                        </button>
+                      );
+                    })}
+                  </>
+                )}
+              </li>
+            ))}
+            {thinking && (
+              <li>
+                <p className="vt-faint" style={{ margin: 0, fontSize: 14, fontStyle: "italic" }}>
+                  Reading your notes…
                 </p>
-              ) : (
-                <>
-                  <p className="vt-a">{m.content}</p>
-                  {(m.sourceIds ?? []).map((id) => {
-                    const note = byId(id);
-                    if (!note) return null;
-                    return (
-                      <button key={id} type="button" className="btn btn-ghost vt-src" onClick={() => onOpen(id)}>
-                        <ArrowBendDownRightIcon size={15} weight="duotone" aria-hidden="true" />
-                        {note.title} · {noteDate(note.createdAt)}
-                      </button>
-                    );
-                  })}
-                </>
-              )}
-            </li>
-          ))}
-          {thinking && (
-            <li>
-              <p className="vt-faint" style={{ margin: 0, fontSize: 14, fontStyle: "italic" }}>
-                Reading your notes…
-              </p>
-            </li>
-          )}
-        </ol>
-      )}
+              </li>
+            )}
+          </ol>
+        )}
 
-      {error && (
-        <p role="alert" className="vt-error" style={{ margin: 0 }}>
-          {error}
-        </p>
-      )}
+        {error && (
+          <p role="alert" className="vt-error" style={{ margin: 0 }}>
+            {error}
+          </p>
+        )}
 
-      {notes.length > 0 && (
-        <div className="vt-suggestions">
-          {SUGGESTIONS.map((s) => (
-            <button key={s} type="button" className="btn btn-ghost" onClick={() => ask(s)} disabled={thinking}>
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
+        {notes.length > 0 && (
+          <div className="vt-suggestions">
+            {SUGGESTIONS.map((s) => (
+              <button key={s} type="button" className="btn btn-ghost" onClick={() => ask(s)} disabled={!locked && thinking}>
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
 
-      <form
-        className="vt-ask"
-        onSubmit={(e) => {
-          e.preventDefault();
-          void ask(draft);
-        }}
-      >
-        <label htmlFor="ask-input" className="vt-sr-only">
-          Question about your notes
-        </label>
-        <input
-          id="ask-input"
-          className="input"
-          placeholder={notes.length ? "What did I say about…" : "Pin a note first"}
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          disabled={notes.length === 0}
-        />
-        <button
-          type="submit"
-          className="btn btn-primary btn-icon"
-          aria-label="Ask"
-          disabled={thinking || !draft.trim() || notes.length === 0}
+        <form
+          className="vt-ask"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void ask(draft);
+          }}
         >
-          <PaperPlaneRightIcon size={18} weight="duotone" aria-hidden="true" />
-        </button>
-      </form>
+          <label htmlFor="ask-input" className="vt-sr-only">
+            Question about your notes
+          </label>
+          <input
+            id="ask-input"
+            className="input"
+            placeholder={notes.length ? "What did I say about…" : "Pin a note first"}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            readOnly={locked}
+            disabled={!locked && notes.length === 0}
+          />
+          <button
+            type="submit"
+            className="btn btn-primary btn-icon"
+            aria-label="Ask"
+            disabled={!locked && (thinking || !draft.trim() || notes.length === 0)}
+          >
+            <PaperPlaneRightIcon size={18} weight="duotone" aria-hidden="true" />
+          </button>
+        </form>
+      </Gated>
     </aside>
   );
 }
