@@ -21,7 +21,7 @@
 .vt-masthead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin-bottom: clamp(36px, 5vw, 60px); }
 .vt-masthead h1 { margin: 0; }
 .vt-masthead p { margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
-.vt-masthead .vt-cog { align-self: center; width: 44px; height: 44px; color: var(--color-accent-700); }
+.vt-masthead .vt-cog { align-self: center; margin-left: auto; width: 44px; height: 44px; color: var(--color-accent-700); }
 .vt-shortcuts { border-collapse: collapse; font-size: 14px; }
 .vt-shortcuts td { padding: 4px 14px 4px 0; }
 kbd {

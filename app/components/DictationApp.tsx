@@ -69,6 +69,10 @@ export default function DictationApp(): React.ReactElement {
     <div className="vt-page">
       <header className="vt-masthead">
         <h1>Voice to Text</h1>
+        <p className="vt-muted">
+          {prefs.name ? `${prefs.name}’s notes` : "Notes"} stay in this browser
+          {ai.active ? " · AI tools use Replicate" : ""}
+        </p>
         <button
           type="button"
           className="btn btn-secondary btn-icon vt-cog"
@@ -78,10 +82,6 @@ export default function DictationApp(): React.ReactElement {
         >
           <GearSixIcon size={26} weight="duotone" aria-hidden="true" />
         </button>
-        <p className="vt-muted">
-          {prefs.name ? `${prefs.name}’s notes` : "Notes"} stay in this browser
-          {ai.active ? " · AI tools use Replicate" : ""}
-        </p>
       </header>
 
       <div className="vt-columns">
