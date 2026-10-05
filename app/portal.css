@@ -21,7 +21,7 @@
 .vt-masthead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 20px; margin-bottom: clamp(36px, 5vw, 60px); }
 .vt-masthead h1 { margin: 0; }
 .vt-masthead p { margin: 0; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
-.vt-masthead .vt-cog { align-self: center; margin-left: auto; width: 44px; height: 44px; color: var(--color-accent-700); }
+.vt-masthead .vt-cog { align-self: center; margin-left: auto; }
 .vt-shortcuts { border-collapse: collapse; font-size: 14px; }
 .vt-shortcuts td { padding: 4px 14px 4px 0; }
 kbd {
@@ -36,12 +36,7 @@ kbd {
 .vt-locked:hover, .vt-locked:focus-within { opacity: 0.75; }
 .vt-locked * { cursor: pointer !important; }
 .vt-locked :disabled, .vt-locked .seg-opt:has(input:disabled) { opacity: 1; }
-.vt-ai-group { display: flex; flex-wrap: wrap; gap: 20px 30px; align-items: flex-end; }
 .vt-aside-body { display: flex; flex-direction: column; gap: 20px; }
-.vt-link {
-  border: 0; padding: 0; background: none; font: inherit; font-style: normal; font-weight: 700;
-  color: var(--color-accent-700); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
-}
 
 .vt-columns { display: flex; flex-wrap: wrap; gap: 60px clamp(40px, 6vw, 90px); align-items: flex-start; }
 .vt-main { flex: 1 1 540px; min-width: 0; display: flex; flex-direction: column; gap: 30px; }
@@ -178,4 +173,26 @@ kbd {
 
 /* — transcript editor — */
 .vt-editor { min-height: 180px; font-size: 20px; line-height: 1.5; resize: vertical; max-width: 40em; }
-.vt-actions .btn-icon[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
+.vt-actions .vt-edit[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
+
+/* — right column: settings panel above Ask your notes — */
+.vt-side { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 44px; }
+.vt-side .vt-aside { flex: none; }
+.vt-panel { display: flex; flex-direction: column; gap: 14px; }
+.vt-panel h2.vt-kicker { margin: 0; font-weight: inherit; font-family: inherit; }
+.vt-panel-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 14px; }
+.vt-cell { border: 0; margin: 0; padding: 0; min-width: 0; }
+.vt-cell .field-label { padding: 0; font-size: 12px; margin-bottom: 5px; }
+/* Every control fills its cell and shares one height. */
+.vt-cell .seg { display: flex; width: 100%; }
+.vt-cell .seg-opt { flex: 1 1 0; min-width: 0; justify-content: center; gap: 5px; height: 38px; padding: 0 6px; white-space: nowrap; }
+.vt-cell-btn { width: 100%; height: 40px; font-size: 13px; }
+/* Draw the divider inside the option so both halves measure the same. */
+.vt-cell .seg-opt + .seg-opt { border-left: 0; box-shadow: inset 1px 0 0 var(--color-divider); }
+
+/* — editing a pinned note — */
+.vt-note-form { display: flex; flex-direction: column; gap: 15px; min-height: 0; }
+.vt-note-title-input { font-size: 20px; font-weight: 700; background: color-mix(in srgb, var(--color-surface) 70%, transparent); }
+.vt-note-text-input { font-size: 17px; line-height: 1.55; resize: vertical; background: color-mix(in srgb, var(--color-surface) 70%, transparent); }
+.vt-note { cursor: pointer; }
+.vt-dialog:focus { outline: none; }

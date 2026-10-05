@@ -76,6 +76,8 @@ interface RecorderProps {
   // transcript goes straight to the clipboard.
   defaultLanguage: string;
   autoCopy: boolean;
+  // Shown in the right column, under the settings panel.
+  aside: React.ReactNode;
 }
 
 function flatten(paras: Para[], withLabels: boolean): string {
@@ -92,6 +94,7 @@ export default function Recorder({
   onRequestSignIn,
   defaultLanguage,
   autoCopy,
+  aside,
 }: RecorderProps) {
   // The transcript being edited, before it's pinned. Each AI version is
   // made once per transcript and cached.
@@ -316,39 +319,17 @@ export default function Recorder({
   const liveReading = readAloud.playing === "live";
   const liveLoading = readAloud.loading === "live";
 
-  return (
-    <div className="vt-main">
-      <div className="vt-rec-row">
-        <div className="vt-rec">
-          {isRecording && <span className="vt-rec-pulse" aria-hidden="true" />}
-          <button
-            type="button"
-            className="vt-rec-btn"
-            data-recording={isRecording}
-            onClick={toggleRec}
-            disabled={micDisabled}
-            aria-label={isRecording ? "Stop recording" : "Start recording"}
-            aria-keyshortcuts="Space"
-            title={isRecording ? "Stop (Space)" : "Talk (Space)"}
-          >
-            {isRecording ? (
-              <StopIcon size={38} weight="duotone" aria-hidden="true" />
-            ) : (
-              <MicrophoneIcon size={38} weight="duotone" aria-hidden="true" />
-            )}
-          </button>
-        </div>
-        <div className="vt-status" aria-live="polite">
-          <h2>{statusTitle}</h2>
-          <p className="vt-muted">{statusSub}</p>
-        </div>
-      </div>
-
-      <div className="vt-controls">
-        <fieldset className="field" style={{ border: 0, margin: 0, padding: 0 }} disabled={busy}>
-          <legend className="field-label" style={{ padding: 0, fontSize: 12, marginBottom: 5 }}>
-            AI tools
-          </legend>
+  // The settings panel, shown at the top of the right column: AI tools and
+  // Transcription on the first row, Speakers and Audio file on the second.
+  // The three AI-only cells dim while AI is off; a click asks to sign in.
+  const controls = (
+    <section className="vt-panel" aria-labelledby="controls-heading">
+      <h2 id="controls-heading" className="vt-kicker">
+        Recording
+      </h2>
+      <div className="vt-panel-grid">
+        <fieldset className="field vt-cell" disabled={busy}>
+          <legend className="field-label">AI tools</legend>
           <div className="seg">
             <label className="seg-opt">
               <input type="radio" name="ai" checked={ai.active} onChange={turnAiOn} />
@@ -361,18 +342,10 @@ export default function Recorder({
             </label>
           </div>
         </fieldset>
-        {ai.signedIn && (
-          <button type="button" className="btn btn-ghost" onClick={() => void ai.signOut()} disabled={busy}>
-            Sign out
-          </button>
-        )}
 
-        {/* Shown dimmed while AI is off; a click asks to sign in. */}
-        <Gated locked={!ai.active} onUnlock={turnAiOn} className="vt-ai-group">
-          <fieldset className="field" style={{ border: 0, margin: 0, padding: 0 }} disabled={ai.active && busy}>
-            <legend className="field-label" style={{ padding: 0, fontSize: 12, marginBottom: 5 }}>
-              Transcription
-            </legend>
+        <Gated locked={!ai.active} onUnlock={turnAiOn}>
+          <fieldset className="field vt-cell" disabled={ai.active && busy}>
+            <legend className="field-label">Transcription</legend>
             <div className="seg">
               <label className="seg-opt">
                 <input type="radio" name="eng" checked={!ai.active || useWhisper} onChange={() => ai.setEngine("whisper")} />
@@ -392,14 +365,11 @@ export default function Recorder({
               </label>
             </div>
           </fieldset>
-          <fieldset
-            className="field"
-            style={{ border: 0, margin: 0, padding: 0 }}
-            disabled={ai.active && (busy || !useWhisper)}
-          >
-            <legend className="field-label" style={{ padding: 0, fontSize: 12, marginBottom: 5 }}>
-              Speakers
-            </legend>
+        </Gated>
+
+        <Gated locked={!ai.active} onUnlock={turnAiOn}>
+          <fieldset className="field vt-cell" disabled={ai.active && (busy || !useWhisper)}>
+            <legend className="field-label">Speakers</legend>
             <div className="seg">
               <label className="seg-opt">
                 <input type="radio" name="spk" checked={ai.labelSpeakers} onChange={() => ai.setLabelSpeakers(true)} />
@@ -412,220 +382,247 @@ export default function Recorder({
               </label>
             </div>
           </fieldset>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="audio/*"
-            className="vt-sr-only"
-            tabIndex={-1}
-            aria-hidden="true"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) void handleAudio(file, true);
-              e.target.value = "";
-            }}
-          />
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => fileRef.current?.click()}
-            disabled={ai.active && (!useWhisper || busy)}
-          >
-            <UploadSimpleIcon {...ICON} aria-hidden="true" />
-            Upload audio
-          </button>
+        </Gated>
+
+        <Gated locked={!ai.active} onUnlock={turnAiOn}>
+          <div className="field vt-cell">
+            <span className="field-label">Audio file</span>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="audio/*"
+              className="vt-sr-only"
+              tabIndex={-1}
+              aria-hidden="true"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) void handleAudio(file, true);
+                e.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              className="btn btn-secondary vt-cell-btn"
+              onClick={() => fileRef.current?.click()}
+              disabled={ai.active && (!useWhisper || busy)}
+            >
+              <UploadSimpleIcon {...ICON} aria-hidden="true" />
+              Upload
+            </button>
+          </div>
         </Gated>
       </div>
+    </section>
+  );
 
-      {!ai.active && (
-        <p className="vt-hint" style={{ color: "inherit" }}>
-          <span className="vt-muted">
-            {ai.signedIn
-              ? "AI tools send your words to Replicate to clean them up, translate, read aloud, and answer questions."
-              : "AI tools need a password. Everything else works without one."}
-          </span>{" "}
-          {!ai.signedIn && (
-            <button type="button" className="vt-link" onClick={onRequestSignIn}>
-              Sign in
-            </button>
-          )}
-        </p>
-      )}
-      <UnsupportedDialog
-        open={unsupportedOpen}
-        canSignIn={ai.configured === true && !ai.signedIn}
-        onClose={() => setUnsupportedOpen(false)}
-        onSignIn={() => {
-          setUnsupportedOpen(false);
-          onRequestSignIn();
-        }}
-      />
-      {ai.active && !useWhisper && (
-        <p className="vt-hint">
-          The browser engine works in Chrome, Edge, and Safari, and can&rsquo;t read files or label speakers. Whisper works everywhere.
-        </p>
-      )}
-      {shownError && (
-        <p role="alert" className="vt-error">
-          {shownError}
-        </p>
-      )}
-
-      <section className="vt-transcript" aria-label="Transcript">
-        {/* The four rewrite tabs stay full strength with AI off, so people
-            see what the app does; tapping one asks to sign in. Translate
-            and its language picker dim like the other AI controls. */}
-        <nav aria-label="Versions" className="vt-versions">
-          {VERSIONS.filter(({ key }) => key !== "translate").map(({ key, label, icon: VersionIcon }) => (
-            <button
-              key={key}
-              type="button"
-              className="vt-version"
-              aria-pressed={hasTranscript && version === key}
-              disabled={ai.active && (!hasTranscript || generating !== null)}
-              onClick={() => (ai.active || key === "original" ? pick(key) : turnAiOn())}
-            >
-              <VersionIcon size={17} weight="duotone" aria-hidden="true" />
-              {label}
-            </button>
-          ))}
-          <Gated locked={!ai.active} onUnlock={turnAiOn} className="vt-versions">
+  return (
+    <>
+      <div className="vt-main">
+        <div className="vt-rec-row">
+          <div className="vt-rec">
+            {isRecording && <span className="vt-rec-pulse" aria-hidden="true" />}
             <button
               type="button"
-              className="vt-version"
-              aria-pressed={hasTranscript && version === "translate"}
-              disabled={ai.active && (!hasTranscript || generating !== null)}
-              onClick={() => pick("translate")}
+              className="vt-rec-btn"
+              data-recording={isRecording}
+              onClick={toggleRec}
+              disabled={micDisabled}
+              aria-label={isRecording ? "Stop recording" : "Start recording"}
+              aria-keyshortcuts="Space"
+              title={isRecording ? "Stop (Space)" : "Talk (Space)"}
             >
-              <TranslateIcon size={17} weight="duotone" aria-hidden="true" />
-              {language}
+              {isRecording ? (
+                <StopIcon size={38} weight="duotone" aria-hidden="true" />
+              ) : (
+                <MicrophoneIcon size={38} weight="duotone" aria-hidden="true" />
+              )}
             </button>
-            <label className="vt-sr-only" htmlFor="vt-language">
-              Translate to
-            </label>
-            <select
-              id="vt-language"
-              className="input vt-lang"
-              value={language}
-              onChange={(e) => changeLanguage(e.target.value)}
-              disabled={ai.active && generating !== null}
-            >
-              {LANGUAGES.map((name) => (
-                <option key={name}>{name}</option>
-              ))}
-            </select>
-          </Gated>
-        </nav>
+          </div>
+          <div className="vt-status" aria-live="polite">
+            <h2>{statusTitle}</h2>
+            <p className="vt-muted">{statusSub}</p>
+          </div>
+        </div>
 
-        {editing && canEdit ? (
-          <>
-            <label className="vt-sr-only" htmlFor="vt-editor">
-              Edit transcript
-            </label>
-            <textarea
-              id="vt-editor"
-              className="input vt-editor"
-              value={versions[version] ?? ""}
-              onChange={(e) => editText(e.target.value)}
-              placeholder="Type your note, or fix what the mic heard."
-              rows={Math.max(6, (versions[version] ?? "").split("\n").length + 2)}
-              autoFocus
-            />
-          </>
-        ) : (
-          <div className="vt-text" aria-live="polite">
-            {generating && (
-              <p className="vt-placeholder">
-                {generating === "translate" ? `Translating to ${language}…` : "Rewriting…"}
-              </p>
-            )}
-            {!generating && paras.length === 0 && !interim && (
-              <p className="vt-placeholder">
-                {transcribing ? "Transcribing…" : isRecording ? "Listening…" : "Your words will show up here."}
-              </p>
-            )}
-            {paras.map((p, i) => (
-              <div key={i} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {showLabels && p.speaker && (
-                  <span className="vt-speaker" data-alt={/[02468]$/.test(p.speaker)}>
-                    {p.speaker}
-                  </span>
-                )}
-                <p className="vt-para">
-                  {p.bullet ? "• " : ""}
-                  {p.text}
-                  {interim && i === paras.length - 1 && (
-                    <span className="vt-interim" aria-hidden="true">
-                      {" "}
-                      {interim}
+        <UnsupportedDialog
+          open={unsupportedOpen}
+          canSignIn={ai.configured === true && !ai.signedIn}
+          onClose={() => setUnsupportedOpen(false)}
+          onSignIn={() => {
+            setUnsupportedOpen(false);
+            onRequestSignIn();
+          }}
+        />
+        {ai.active && !useWhisper && (
+          <p className="vt-hint">
+            The browser engine works in Chrome, Edge, and Safari, and can&rsquo;t read files or label speakers. Whisper works everywhere.
+          </p>
+        )}
+        {shownError && (
+          <p role="alert" className="vt-error">
+            {shownError}
+          </p>
+        )}
+
+        <section className="vt-transcript" aria-label="Transcript">
+          {/* The four rewrite tabs stay full strength with AI off, so people
+              see what the app does; tapping one asks to sign in. Translate
+              and its language picker dim like the other AI controls. */}
+          <nav aria-label="Versions" className="vt-versions">
+            {VERSIONS.filter(({ key }) => key !== "translate").map(({ key, label, icon: VersionIcon }) => (
+              <button
+                key={key}
+                type="button"
+                className="vt-version"
+                aria-pressed={hasTranscript && version === key}
+                disabled={ai.active && (!hasTranscript || generating !== null)}
+                onClick={() => (ai.active || key === "original" ? pick(key) : turnAiOn())}
+              >
+                <VersionIcon size={17} weight="duotone" aria-hidden="true" />
+                {label}
+              </button>
+            ))}
+            <Gated locked={!ai.active} onUnlock={turnAiOn} className="vt-versions">
+              <button
+                type="button"
+                className="vt-version"
+                aria-pressed={hasTranscript && version === "translate"}
+                disabled={ai.active && (!hasTranscript || generating !== null)}
+                onClick={() => pick("translate")}
+              >
+                <TranslateIcon size={17} weight="duotone" aria-hidden="true" />
+                {language}
+              </button>
+              <label className="vt-sr-only" htmlFor="vt-language">
+                Translate to
+              </label>
+              <select
+                id="vt-language"
+                className="input vt-lang"
+                value={language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                disabled={ai.active && generating !== null}
+              >
+                {LANGUAGES.map((name) => (
+                  <option key={name}>{name}</option>
+                ))}
+              </select>
+            </Gated>
+          </nav>
+
+          {editing && canEdit ? (
+            <>
+              <label className="vt-sr-only" htmlFor="vt-editor">
+                Edit transcript
+              </label>
+              <textarea
+                id="vt-editor"
+                className="input vt-editor"
+                value={versions[version] ?? ""}
+                onChange={(e) => editText(e.target.value)}
+                placeholder="Type your note, or fix what the mic heard."
+                rows={Math.max(6, (versions[version] ?? "").split("\n").length + 2)}
+                autoFocus
+              />
+            </>
+          ) : (
+            <div className="vt-text" aria-live="polite">
+              {generating && (
+                <p className="vt-placeholder">
+                  {generating === "translate" ? `Translating to ${language}…` : "Rewriting…"}
+                </p>
+              )}
+              {!generating && paras.length === 0 && !interim && (
+                <p className="vt-placeholder">
+                  {transcribing ? "Transcribing…" : isRecording ? "Listening…" : "Your words will show up here."}
+                </p>
+              )}
+              {paras.map((p, i) => (
+                <div key={i} style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {showLabels && p.speaker && (
+                    <span className="vt-speaker" data-alt={/[02468]$/.test(p.speaker)}>
+                      {p.speaker}
                     </span>
                   )}
+                  <p className="vt-para">
+                    {p.bullet ? "• " : ""}
+                    {p.text}
+                    {interim && i === paras.length - 1 && (
+                      <span className="vt-interim" aria-hidden="true">
+                        {" "}
+                        {interim}
+                      </span>
+                    )}
+                  </p>
+                </div>
+              ))}
+              {interim && paras.length === 0 && (
+                <p className="vt-para">
+                  <span className="vt-interim" aria-hidden="true">
+                    {interim}
+                  </span>
                 </p>
-              </div>
-            ))}
-            {interim && paras.length === 0 && (
-              <p className="vt-para">
-                <span className="vt-interim" aria-hidden="true">
-                  {interim}
-                </span>
-              </p>
-            )}
-          </div>
-        )}
-
-        {liveReading && (
-          <div className="vt-reading vt-muted">
-            <span>Reading aloud · {ai.active ? "Natural voice" : "Browser voice"}</span>
-            <div className="vt-track">
-              <div style={{ width: `${readAloud.progress}%` }} />
+              )}
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="vt-actions">
-          <button type="button" className="btn btn-primary" onClick={pin} disabled={!hasTranscript || generating !== null}>
-            <PushPinIcon {...ICON} aria-hidden="true" />
-            Pin to board
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => readAloud.toggle("live", finalText)}
-            disabled={!hasTranscript || generating !== null}
-          >
-            {liveReading ? <PauseIcon {...ICON} aria-hidden="true" /> : <SpeakerHighIcon {...ICON} aria-hidden="true" />}
-            {liveLoading ? "Loading voice…" : liveReading ? "Pause" : "Read aloud"}
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => onCopy(finalText)}
-            disabled={!hasTranscript || generating !== null}
-          >
-            <CopyIcon {...ICON} aria-hidden="true" />
-            Copy
-          </button>
-          <button
-            type="button"
-            className="btn btn-secondary btn-icon"
-            onClick={() => setEditing((on) => !on)}
-            disabled={!canEdit}
-            aria-pressed={editing && canEdit}
-            aria-label={editing ? "Done editing" : "Edit transcript"}
-            title={editing ? "Done editing" : "Edit"}
-          >
-            <PencilSimpleIcon {...ICON} aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            className="btn btn-ghost vt-push"
-            onClick={discard}
-            disabled={!hasTranscript}
-          >
-            Discard
-          </button>
-        </div>
-      </section>
-    </div>
+          {liveReading && (
+            <div className="vt-reading vt-muted">
+              <span>Reading aloud · {ai.active ? "Natural voice" : "Browser voice"}</span>
+              <div className="vt-track">
+                <div style={{ width: `${readAloud.progress}%` }} />
+              </div>
+            </div>
+          )}
+
+          <div className="vt-actions">
+            <button type="button" className="btn btn-primary" onClick={pin} disabled={!hasTranscript || generating !== null}>
+              <PushPinIcon {...ICON} aria-hidden="true" />
+              Pin to board
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => readAloud.toggle("live", finalText)}
+              disabled={!hasTranscript || generating !== null}
+            >
+              {liveReading ? <PauseIcon {...ICON} aria-hidden="true" /> : <SpeakerHighIcon {...ICON} aria-hidden="true" />}
+              {liveLoading ? "Loading voice…" : liveReading ? "Pause" : "Read aloud"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => onCopy(finalText)}
+              disabled={!hasTranscript || generating !== null}
+            >
+              <CopyIcon {...ICON} aria-hidden="true" />
+              Copy
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary vt-edit"
+              onClick={() => setEditing((on) => !on)}
+              disabled={!canEdit}
+              aria-pressed={editing && canEdit}
+            >
+              <PencilSimpleIcon {...ICON} aria-hidden="true" />
+              {editing && canEdit ? "Done" : "Edit"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost vt-push"
+              onClick={discard}
+              disabled={!hasTranscript}
+            >
+              Discard
+            </button>
+          </div>
+        </section>
+      </div>
+      <div className="vt-side">
+        {controls}
+        {aside}
+      </div>
+    </>
   );
 }

@@ -5,6 +5,7 @@ import {
   ArrowsOutSimpleIcon,
   CopyIcon,
   PauseIcon,
+  PencilSimpleIcon,
   SpeakerHighIcon,
   TrashIcon,
   XIcon,
@@ -20,6 +21,7 @@ interface BoardProps {
   onRead: (note: Note) => void;
   onCopy: (text: string) => void;
   onOpen: (id: string) => void;
+  onEdit: (id: string) => void;
   onRemove: (id: string) => void;
   onClear: () => void;
 }
@@ -34,6 +36,7 @@ export default function Board({
   onRead,
   onCopy,
   onOpen,
+  onEdit,
   onRemove,
   onClear,
 }: BoardProps) {
@@ -97,6 +100,14 @@ export default function Board({
               <article
                 className="vt-note"
                 style={{ "--paper": look.paper, "--tape": look.tape } as React.CSSProperties}
+                // A click anywhere on the note opens it, except on its own
+                // buttons or while selecting text. Keyboard users get the
+                // title button, which does the same.
+                onClick={(event) => {
+                  if ((event.target as HTMLElement).closest("button")) return;
+                  if (window.getSelection()?.toString()) return;
+                  onOpen(note.id);
+                }}
               >
                 <span className="vt-tape" aria-hidden="true" />
                 <span className="vt-dateline">{noteDateline(note)}</span>
@@ -131,6 +142,15 @@ export default function Board({
                     title="Copy"
                   >
                     <CopyIcon {...ICON} aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-icon"
+                    onClick={() => onEdit(note.id)}
+                    aria-label={`Edit ${note.title}`}
+                    title="Edit"
+                  >
+                    <PencilSimpleIcon {...ICON} aria-hidden="true" />
                   </button>
                   <button
                     type="button"

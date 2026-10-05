@@ -20,7 +20,7 @@ const hasSpeechEngine = () =>
 // "Voice to Text - Portal" design, minus the scroll hero: recorder and
 // versions, Ask your notes beside it, the board of pinned notes below.
 export default function DictationApp(): React.ReactElement {
-  const { notes, addNote, removeNote, clearNotes, maxNotes } = useNotes();
+  const { notes, addNote, updateNote, removeNote, clearNotes, maxNotes } = useNotes();
   const ai = useAiSettings();
   const prefs = usePreferences();
   const [loginOpen, setLoginOpen] = useState(false);
@@ -44,6 +44,12 @@ export default function DictationApp(): React.ReactElement {
 
   const readAloud = useReadAloud(ai.active, flash, prefs.speed);
   const [openId, setOpenId] = useState<string | null>(null);
+  // Opened from a card's pencil, so the dialog starts in edit mode.
+  const [editOnOpen, setEditOnOpen] = useState(false);
+  const open = (id: string, edit = false) => {
+    setEditOnOpen(edit);
+    setOpenId(id);
+  };
   const openNote = notes.find((n) => n.id === openId);
 
   const copy = useCallback(
@@ -75,12 +81,11 @@ export default function DictationApp(): React.ReactElement {
         </p>
         <button
           type="button"
-          className="btn btn-secondary btn-icon vt-cog"
+          className="btn btn-secondary vt-cog"
           onClick={() => setSettingsOpen(true)}
-          aria-label="Settings"
-          title="Settings"
         >
-          <GearSixIcon size={26} weight="duotone" aria-hidden="true" />
+          <GearSixIcon size={20} weight="duotone" aria-hidden="true" />
+          Settings
         </button>
       </header>
 
@@ -96,8 +101,8 @@ export default function DictationApp(): React.ReactElement {
           onRequestSignIn={() => setLoginOpen(true)}
           defaultLanguage={prefs.language}
           autoCopy={prefs.autoCopy}
+          aside={<AskNotes notes={notes} onOpen={(id) => open(id)} locked={!ai.active} onUnlock={unlockAi} />}
         />
-        <AskNotes notes={notes} onOpen={setOpenId} locked={!ai.active} onUnlock={unlockAi} />
       </div>
 
       <Board
@@ -107,7 +112,8 @@ export default function DictationApp(): React.ReactElement {
         loading={readAloud.loading}
         onRead={readNote}
         onCopy={copy}
-        onOpen={setOpenId}
+        onOpen={(id) => open(id)}
+        onEdit={(id) => open(id, true)}
         onRemove={removeOne}
         onClear={() => {
           readAloud.stop();
@@ -117,6 +123,11 @@ export default function DictationApp(): React.ReactElement {
 
       <NoteDialog
         note={openNote}
+        startEditing={editOnOpen}
+        onSave={(id, patch) => {
+          updateNote(id, patch);
+          flash("Note saved");
+        }}
         reading={Boolean(openNote) && (readAloud.playing === openId || readAloud.loading === openId)}
         onClose={() => setOpenId(null)}
         onRead={readNote}

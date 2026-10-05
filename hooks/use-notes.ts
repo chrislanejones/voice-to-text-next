@@ -179,6 +179,14 @@ function addNote(input: Omit<Note, "id" | "createdAt" | "title"> & { title?: str
   save([note, ...getSnapshot()].slice(0, MAX_NOTES));
 }
 
+// Hand edits from the board. An emptied title falls back to one made
+// from the text, like a new note gets.
+function updateNote(id: string, patch: { title: string; text: string }): void {
+  const text = patch.text;
+  const title = patch.title.trim() || titleFrom(text);
+  save(getSnapshot().map((note) => (note.id === id ? { ...note, title, text } : note)));
+}
+
 function removeNote(id: string): void {
   save(getSnapshot().filter((note) => note.id !== id));
 }
@@ -189,5 +197,5 @@ function clearNotes(): void {
 
 export function useNotes() {
   const entries = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  return { notes: entries, addNote, removeNote, clearNotes, maxNotes: MAX_NOTES };
+  return { notes: entries, addNote, updateNote, removeNote, clearNotes, maxNotes: MAX_NOTES };
 }
