@@ -2,7 +2,7 @@ import DictationApp from "./components/DictationApp";
 
 export default function Home() {
   return (
-    <main className="min-h-dvh bg-background text-foreground">
+    <main>
       <DictationApp />
     </main>
   );

@@ -1,0 +1,165 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+
+// Pinned notes, kept in this browser. Replaces the old plain-string
+// history ("voice-to-text-history"); that key is read once to carry old
+// notes over and is left in place, so going back to the old build loses
+// nothing.
+
+export type NoteTag = "clean" | "email" | "bullets" | "summary" | "translate" | "upload";
+
+export interface Note {
+  id: string;
+  createdAt: number;
+  title: string;
+  text: string;
+  speakers: number;
+  tags: NoteTag[];
+  // Set when the note is a translation, e.g. "Spanish".
+  language?: string;
+}
+
+const STORAGE_KEY = "voice-to-text-notes";
+const LEGACY_KEY = "voice-to-text-history";
+// Set once the legacy notes have been carried over, so removing the new key
+// later can't bring old, already-deleted notes back.
+const MIGRATED_KEY = "voice-to-text-notes-migrated";
+const MAX_NOTES = 10;
+const EMPTY: Note[] = [];
+const TAGS = new Set<NoteTag>(["clean", "email", "bullets", "summary", "translate", "upload"]);
+
+const listeners = new Set<() => void>();
+let notes: Note[] | null = null;
+
+function newId(): string {
+  return typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+// First few words of the first sentence, without speaker labels.
+export function titleFrom(text: string): string {
+  const firstLine = text
+    .replace(/^[^\s:]{1,20} \d{1,2}:\s*/gm, "")
+    .replace(/^[-•*]\s+/gm, "")
+    .trim();
+  const sentence = firstLine.split(/(?<=[.!?])\s|\n/)[0] ?? "";
+  const words = sentence.replace(/[.!?,;:]+$/, "").split(/\s+/).filter(Boolean);
+  const title = words.slice(0, 6).join(" ");
+  if (!title) return "Untitled note";
+  return words.length > 6 ? `${title}…` : title;
+}
+
+function toNote(value: unknown): Note | null {
+  const raw = value as Partial<Note>;
+  if (!raw || typeof raw !== "object" || typeof raw.text !== "string") return null;
+  return {
+    id: typeof raw.id === "string" ? raw.id : newId(),
+    createdAt: typeof raw.createdAt === "number" ? raw.createdAt : Date.now(),
+    title: typeof raw.title === "string" && raw.title ? raw.title : titleFrom(raw.text),
+    text: raw.text,
+    speakers: typeof raw.speakers === "number" ? raw.speakers : 0,
+    tags: Array.isArray(raw.tags) ? raw.tags.filter((t): t is NoteTag => TAGS.has(t)) : [],
+    language: typeof raw.language === "string" ? raw.language : undefined,
+  };
+}
+
+function load(): Note[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw !== null) {
+      const parsed: unknown = JSON.parse(raw);
+      return Array.isArray(parsed)
+        ? parsed.map(toNote).filter((n): n is Note => n !== null)
+        : EMPTY;
+    }
+    if (localStorage.getItem(MIGRATED_KEY)) return EMPTY;
+    // First run on this build: carry over the old string notes. Their
+    // real times are unknown, so they're stamped a minute apart, newest
+    // first.
+    const legacy: unknown = JSON.parse(localStorage.getItem(LEGACY_KEY) ?? "[]");
+    if (!Array.isArray(legacy)) return EMPTY;
+    const now = Date.now();
+    const migrated = legacy
+      .filter((entry): entry is string => typeof entry === "string" && entry.trim() !== "")
+      .slice(0, MAX_NOTES)
+      .map((text, i) => ({
+        id: newId(),
+        createdAt: now - i * 60_000,
+        title: titleFrom(text),
+        text,
+        speakers: 0,
+        tags: [] as NoteTag[],
+      }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+    localStorage.setItem(MIGRATED_KEY, "1");
+    return migrated.length ? migrated : EMPTY;
+  } catch {
+    return EMPTY;
+  }
+}
+
+function getSnapshot(): Note[] {
+  if (notes === null) notes = load();
+  return notes;
+}
+
+function getServerSnapshot(): Note[] {
+  return EMPTY;
+}
+
+function notify(): void {
+  listeners.forEach((listener) => listener());
+}
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  // Keep other open tabs in step.
+  const onStorage = (event: StorageEvent) => {
+    if (event.key !== STORAGE_KEY && event.key !== null) return;
+    notes = load();
+    notify();
+  };
+  window.addEventListener("storage", onStorage);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
+function save(next: Note[]): void {
+  notes = next;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    // Storage is full or blocked; the in-memory copy still works.
+  }
+  notify();
+}
+
+function addNote(input: Omit<Note, "id" | "createdAt" | "title"> & { title?: string }): void {
+  const note: Note = {
+    id: newId(),
+    createdAt: Date.now(),
+    title: input.title || titleFrom(input.text),
+    text: input.text,
+    speakers: input.speakers,
+    tags: input.tags,
+    language: input.language,
+  };
+  save([note, ...getSnapshot()].slice(0, MAX_NOTES));
+}
+
+function removeNote(id: string): void {
+  save(getSnapshot().filter((note) => note.id !== id));
+}
+
+function clearNotes(): void {
+  save([]);
+}
+
+export function useNotes() {
+  const entries = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  return { notes: entries, addNote, removeNote, clearNotes, maxNotes: MAX_NOTES };
+}
