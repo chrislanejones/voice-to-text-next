@@ -262,6 +262,9 @@ export default function Recorder({
   // anywhere except while typing. Nothing fires with a dialog open.
   const micDisabled = (!recSupported && !explainUnsupported) || transcribing !== null;
   const canAct = hasTranscript && generating === null;
+  // The pencil works with AI on or off, and with no transcript yet: then
+  // it opens an empty box to type a note by hand.
+  const canEdit = !isRecording && transcribing === null && generating === null;
   const keysRef = useRef<Record<string, () => void>>({});
   useEffect(() => {
     keysRef.current = {
@@ -514,7 +517,7 @@ export default function Recorder({
           </Gated>
         </nav>
 
-        {editing && canAct ? (
+        {editing && canEdit ? (
           <>
             <label className="vt-sr-only" htmlFor="vt-editor">
               Edit transcript
@@ -524,6 +527,7 @@ export default function Recorder({
               className="input vt-editor"
               value={versions[version] ?? ""}
               onChange={(e) => editText(e.target.value)}
+              placeholder="Type your note, or fix what the mic heard."
               rows={Math.max(6, (versions[version] ?? "").split("\n").length + 2)}
               autoFocus
             />
@@ -605,8 +609,8 @@ export default function Recorder({
             type="button"
             className="btn btn-secondary btn-icon"
             onClick={() => setEditing((on) => !on)}
-            disabled={!canAct}
-            aria-pressed={editing && canAct}
+            disabled={!canEdit}
+            aria-pressed={editing && canEdit}
             aria-label={editing ? "Done editing" : "Edit transcript"}
             title={editing ? "Done editing" : "Edit"}
           >
