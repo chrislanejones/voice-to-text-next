@@ -19,3 +19,21 @@ Found during the 09-18-2026 dependency and recording work.
 - **pnpm skipped build scripts for `sharp` and `unrs-resolver`.** Local image optimization falls back to slower paths. Approve them with `pnpm approve-builds` if needed.
 - **Android Chrome repeats earlier text in continuous results.** `DictationSession` doesn't de-duplicate it (see ADR-002).
 - **Held-back majors:** eslint 10, @types/node 26, framer-motion 13, lucide-react 1.x.
+
+Found during the 10-05-2026 Replicate AI work (ADR-003).
+
+- **AI routes are open to anyone.** `/api/ai/*` has no auth or rate limit, so anyone with the URL can spend the Replicate budget. Add rate limiting (Vercel Firewall rule or Upstash) or login before a public deploy.
+- **Not tested against real Replicate yet.** No token on this machine. Unverified: the Files API field name `content`, the whisper-diarization `segments` shape, and Kokoro returning a single URL.
+- **Community models are unpinned.** `thomasmol/whisper-diarization` and `jaaari/kokoro-82m` run their latest version. Pin `owner/name:version` through the `REPLICATE_*_MODEL` env vars once tested.
+- **No streaming.** Clean up and chat replies show up all at once. Revisit once the design is in.
+- **Audio over 4.4 MB is rejected** (about 15 min of recording, often less for uploaded files). Large uploads would need direct-to-storage uploads.
+
+Found during the 10-05-2026 Portal redesign (ADR-004).
+
+- **Primary button text fails contrast.** Broadsheet's `.btn-primary` puts `--color-bg` on `--color-accent`: 3.65:1, under the 4.5:1 AA bar. It's the design system's token, so the fix belongs in the Claude Design project, then here.
+- **Dark mode is gone.** Broadsheet has no dark theme. `next-themes` and `components/theme-provider.tsx` are now unused.
+- **Unused dependencies and files.** `lucide-react`, `framer-motion`, `next-themes`, `tailwindcss-animate`, `components/ui/*`, `hooks/use-toast.ts`, and most of `app/globals.css` (Tailwind theme) no longer render anything.
+- **Old notes have made-up times.** Migrated notes get timestamps a minute apart, because the old store kept no dates.
+- **Translate is a single language at a time.** Changing the language drops the cached translation.
+
+Fixed by the redesign (from the 09-18-2026 list): Delete all now asks first ("Clear board" / "Keep") and is disabled when the board is empty. Copy waits for the clipboard and reports failure. Note colors follow the note, not its position. The `console.log` calls went away with `DictationButton.tsx`.

@@ -1,5 +1,5 @@
 # ADR-001: Dictation history lives in a module-level localStorage store read through useSyncExternalStore
-Date: 2026-09-18   Status: draft
+Date: 2026-09-18   Status: superseded by [004](004-broadsheet-portal-rebuild.md)
 
 ## Context
 History (up to 10 strings under the localStorage key
