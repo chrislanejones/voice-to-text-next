@@ -1,4 +1,5 @@
 import { MODELS, errorResponse, outputText, run } from "@/lib/replicate";
+import { requireSignIn } from "@/lib/ai-auth";
 
 export const maxDuration = 300;
 
@@ -24,6 +25,9 @@ function isTurn(value: unknown): value is Turn {
 }
 
 export async function POST(request: Request) {
+  const denied = requireSignIn(request);
+  if (denied) return denied;
+
   const body = (await request.json().catch(() => null)) as {
     notes?: unknown;
     messages?: unknown;

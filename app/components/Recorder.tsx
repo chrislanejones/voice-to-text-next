@@ -20,6 +20,8 @@ import {
   type Icon,
 } from "@phosphor-icons/react";
 import { useSpeechRecognition } from "./SpeechRecognitionService";
+import LoginDialog from "./LoginDialog";
+import UnsupportedDialog from "./UnsupportedDialog";
 import { isRecorderSupported, useAudioRecorder } from "@/hooks/use-audio-recorder";
 import type { Engine } from "@/hooks/use-ai-settings";
 import type { Note, NoteTag } from "@/hooks/use-notes";
@@ -46,6 +48,7 @@ const ICON = { size: 18, weight: "duotone" } as const;
 
 export interface AiState {
   configured: boolean | null;
+  signedIn: boolean;
   enabled: boolean;
   active: boolean;
   engine: Engine;
@@ -53,6 +56,8 @@ export interface AiState {
   setEnabled: (value: boolean) => void;
   setEngine: (value: Engine) => void;
   setLabelSpeakers: (value: boolean) => void;
+  signIn: (password: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 interface ReadAloud {
@@ -77,7 +82,6 @@ function flatten(paras: Para[], withLabels: boolean): string {
 }
 
 export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps) {
-  const useWhisper = ai.engine === "whisper";
   // The transcript being edited, before it's pinned. Each AI version is
   // made once per transcript and cached.
   const [versions, setVersions] = useState<Partial<Record<VersionKey, string>>>({});
@@ -89,6 +93,14 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [unsupportedOpen, setUnsupportedOpen] = useState(false);
+
+  // Turning AI on needs a session; without one, ask for the password.
+  const turnAiOn = () => {
+    if (ai.signedIn) ai.setEnabled(true);
+    else setLoginOpen(true);
+  };
 
   const startTranscript = useCallback((text: string, upload: boolean) => {
     abortRef.current?.abort();
@@ -126,12 +138,22 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
     useCallback((audio: File) => handleAudio(audio, false), [handleAudio])
   );
 
+  // Signed in on a browser without a speech engine: Whisper regardless of
+  // the saved choice.
+  const useWhisper = ai.engine === "whisper" || (ai.active && !speech.isSupported);
   const isRecording = useWhisper ? recorder.isRecording : speech.isRecording;
   const recSupported = useWhisper ? isRecorderSupported() : speech.isSupported;
+  // No speech engine (Firefox): the mic stays tappable and explains why.
+  const explainUnsupported = !useWhisper && !speech.isSupported;
   const busy = isRecording || transcribing !== null;
-  const shownError = error ?? (useWhisper ? recorder.error : speech.error);
+  const shownError =
+    error ?? (useWhisper ? recorder.error : explainUnsupported ? null : speech.error);
 
   const toggleRec = () => {
+    if (explainUnsupported) {
+      setUnsupportedOpen(true);
+      return;
+    }
     if (isRecording) {
       if (useWhisper) recorder.stop();
       else speech.stopRecording();
@@ -218,7 +240,9 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
           : "Pin it to the board, or turn on AI tools for more versions."
         : ai.active && useWhisper
           ? "Or upload an audio file to transcribe it."
-          : "Your words will show up below.";
+          : explainUnsupported
+            ? "Dictation isn't available in this browser. Tap the mic for options."
+            : "Your words will show up below.";
 
   const liveReading = readAloud.playing === "live";
   const liveLoading = readAloud.loading === "live";
@@ -233,7 +257,7 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
             className="vt-rec-btn"
             data-recording={isRecording}
             onClick={toggleRec}
-            disabled={!recSupported || transcribing !== null}
+            disabled={(!recSupported && !explainUnsupported) || transcribing !== null}
             aria-label={isRecording ? "Stop recording" : "Start recording"}
           >
             {isRecording ? (
@@ -257,16 +281,21 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
             </legend>
             <div className="seg">
               <label className="seg-opt">
-                <input type="radio" name="ai" checked={ai.enabled} onChange={() => ai.setEnabled(true)} />
+                <input type="radio" name="ai" checked={ai.active} onChange={turnAiOn} />
                 <SparkleIcon {...ICON} aria-hidden="true" />
                 On
               </label>
               <label className="seg-opt">
-                <input type="radio" name="ai" checked={!ai.enabled} onChange={() => ai.setEnabled(false)} />
+                <input type="radio" name="ai" checked={!ai.active} onChange={() => ai.setEnabled(false)} />
                 Off
               </label>
             </div>
           </fieldset>
+          {ai.signedIn && (
+            <button type="button" className="btn btn-ghost" onClick={() => void ai.signOut()} disabled={busy}>
+              Sign out
+            </button>
+          )}
 
           {ai.active && (
             <>
@@ -281,7 +310,13 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
                     Whisper
                   </label>
                   <label className="seg-opt">
-                    <input type="radio" name="eng" checked={!useWhisper} onChange={() => ai.setEngine("browser")} />
+                    <input
+                      type="radio"
+                      name="eng"
+                      checked={!useWhisper}
+                      onChange={() => ai.setEngine("browser")}
+                      disabled={!speech.isSupported}
+                    />
                     <BrowserIcon {...ICON} aria-hidden="true" />
                     Browser
                   </label>
@@ -330,16 +365,36 @@ export default function Recorder({ ai, readAloud, onPin, onCopy }: RecorderProps
         </div>
       )}
 
-      {ai.configured && !ai.enabled && (
+      {ai.configured && !ai.active && (
         <p className="vt-hint" style={{ color: "inherit" }}>
           <span className="vt-muted">
-            AI tools send your words to Replicate to clean them up, translate, read aloud, and answer questions.
+            {ai.signedIn
+              ? "AI tools send your words to Replicate to clean them up, translate, read aloud, and answer questions."
+              : "AI tools need a password. Everything else works without one."}
           </span>
         </p>
       )}
+      <LoginDialog
+        open={loginOpen}
+        onClose={() => setLoginOpen(false)}
+        onSignIn={async (password) => {
+          await ai.signIn(password);
+          // Without a browser speech engine, Whisper is the only way to dictate.
+          if (!speech.isSupported) ai.setEngine("whisper");
+        }}
+      />
+      <UnsupportedDialog
+        open={unsupportedOpen}
+        canSignIn={ai.configured === true && !ai.signedIn}
+        onClose={() => setUnsupportedOpen(false)}
+        onSignIn={() => {
+          setUnsupportedOpen(false);
+          setLoginOpen(true);
+        }}
+      />
       {ai.active && !useWhisper && (
         <p className="vt-hint">
-          The browser engine works in Chrome and Edge only, and can&rsquo;t read files or label speakers. Whisper works everywhere.
+          The browser engine works in Chrome, Edge, and Safari, and can&rsquo;t read files or label speakers. Whisper works everywhere.
         </p>
       )}
       {shownError && (

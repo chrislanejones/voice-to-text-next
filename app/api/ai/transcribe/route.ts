@@ -1,4 +1,5 @@
 import { MODELS, errorResponse, run, uploadFile } from "@/lib/replicate";
+import { requireSignIn } from "@/lib/ai-auth";
 import { formatTranscript } from "@/lib/transcript";
 
 export const maxDuration = 300;
@@ -7,6 +8,9 @@ export const maxDuration = 300;
 const MAX_BYTES = 4_400_000;
 
 export async function POST(request: Request) {
+  const denied = requireSignIn(request);
+  if (denied) return denied;
+
   const form = await request.formData().catch(() => null);
   const audio = form?.get("audio");
   if (!(audio instanceof Blob) || audio.size === 0) {

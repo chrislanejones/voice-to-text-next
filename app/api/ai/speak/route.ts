@@ -1,4 +1,5 @@
 import { MODELS, errorResponse, run } from "@/lib/replicate";
+import { requireSignIn } from "@/lib/ai-auth";
 
 export const maxDuration = 300;
 
@@ -6,6 +7,9 @@ const MAX_CHARS = 5_000;
 const VOICES = new Set(["af_bella", "af_nicole", "af_sarah", "am_adam", "am_michael", "bf_emma", "bm_george"]);
 
 export async function POST(request: Request) {
+  const denied = requireSignIn(request);
+  if (denied) return denied;
+
   const body = (await request.json().catch(() => null)) as {
     text?: unknown;
     voice?: unknown;

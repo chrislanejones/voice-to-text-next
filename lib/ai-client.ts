@@ -18,8 +18,35 @@ async function request<T>(path: string, init: RequestInit): Promise<T> {
   const data = (await response.json().catch(() => ({}))) as T & {
     error?: string;
   };
+  if (response.status === 401) {
+    // Session missing or expired: let the settings hook flip to signed out.
+    window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+  }
   if (!response.ok) throw new Error(data.error ?? "The AI request failed.");
   return data;
+}
+
+export const AUTH_EXPIRED_EVENT = "vt-ai-auth-expired";
+
+export async function signIn(password: string): Promise<void> {
+  let response: Response;
+  try {
+    response = await fetch("/api/ai/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+  } catch {
+    throw new Error("Couldn't reach the server. Check your connection.");
+  }
+  if (!response.ok) {
+    const data = (await response.json().catch(() => ({}))) as { error?: string };
+    throw new Error(data.error ?? "Sign-in failed.");
+  }
+}
+
+export async function signOut(): Promise<void> {
+  await fetch("/api/ai/login", { method: "DELETE" }).catch(() => {});
 }
 
 function postJson<T>(path: string, body: unknown, signal?: AbortSignal) {
