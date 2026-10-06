@@ -1,5 +1,5 @@
 # ADR-002: Each dictation runs through a DictationSession class that restarts the browser recognizer until the user stops
-Date: 2026-09-18   Status: draft
+Date: 2026-09-18   Status: accepted (2026-10-06)
 
 ## Context
 Chrome ends continuous Web Speech recognition on its own (about a minute

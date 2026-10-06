@@ -1,5 +1,5 @@
 # ADR-003: AI features run through Next.js route handlers that call Replicate's HTTP API with plain fetch
-Date: 2026-10-05   Status: draft
+Date: 2026-10-05   Status: accepted (2026-10-06)
 
 ## Context
 Until now the app had no backend: dictation used the browser Web Speech API

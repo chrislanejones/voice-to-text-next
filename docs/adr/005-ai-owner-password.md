@@ -1,5 +1,5 @@
 # ADR-005: AI features sit behind a single owner password with a signed-cookie session
-Date: 2026-10-05   Status: draft
+Date: 2026-10-05   Status: accepted (2026-10-06)
 
 ## Context
 ADR-003 shipped the AI routes public with no auth: anyone with the URL could

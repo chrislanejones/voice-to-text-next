@@ -1,5 +1,5 @@
 # ADR-004: The UI is rebuilt on the Broadsheet design system, and notes become structured objects the user pins on purpose
-Date: 2026-10-05   Status: draft
+Date: 2026-10-05   Status: accepted (2026-10-06)
 
 ## Context
 The Claude Design file "Voice to Text - Portal" redesigned the app on the
