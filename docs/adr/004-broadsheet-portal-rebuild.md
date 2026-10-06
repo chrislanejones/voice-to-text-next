@@ -56,5 +56,25 @@ back through migration. "Delete all" is safe today only because it writes
 Early warning sign to watch for: a diff that changes `Note` without adding
 a version key, or a bug report of deleted notes coming back.
 
+## Amendment 2026-10-06
+Same store, same key, no version field. Since `7219e56`..`5fa1490`:
+- `Note` has an optional `paper` (0-5, `PAPER_COUNT = 6`). `addNote` picks
+  the first paper not used by the five newest notes (`freePaper`); on load,
+  `withPapers` fills in missing ones oldest first and writes them back once.
+  A note keeps its paper for good, so taking one down recolors nothing.
+  `lib/note-format.ts` maps the six to distinct hues; notes without a paper
+  fall back to an id hash.
+- Notes are editable: `updateNote(id, {title, text})`, from a card's pencil
+  or the note dialog's Edit. An emptied title falls back to `titleFrom`.
+- A fresh browser (no notes, nothing to migrate) gets three sample notes
+  tagged `demo`. A new `voice-to-text-notes-migrated` flag means migration
+  and seeding run once; removing the notes key no longer brings legacy
+  notes back, which retires half of the pre-mortem below.
+- lucide-react, framer-motion, next-themes, and `components/ui/*` were
+  removed in `cb17eae`. Tailwind is still installed.
+Cost: `paper` is one more field added without a version key, the exact
+pattern the pre-mortem warns about. Hand edits overwrite the text with no
+undo.
+
 ---
 ← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)

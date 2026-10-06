@@ -55,5 +55,17 @@ rising faster than the number of people actually using the app, or the
 first `console.error("Replicate prediction"...)` line in Vercel logs
 nobody can tie to a real session.
 
+## Amendment 2026-10-06
+The numbers above are the original plan. As of `c3f448e`, Vercel Hobby
+caps functions at 60 s, so the four model routes (`text`, `transcribe`,
+`speak`, `chat`) set `maxDuration = 60`. `lib/replicate.ts` sends
+`Prefer: wait=30`, then polls every 1.5 s until a 55 s deadline, then
+cancels and returns 504 ("The AI took too long"). Cost: Whisper on several
+minutes of audio can now time out; the fix is Vercel Pro or returning the
+prediction id and polling from the browser (PARKING_LOT.md). Two other
+lines above no longer hold: the routes need the owner password (ADR-005),
+and since `7219e56` the AI controls stay on screen, dimmed, even when
+`/api/ai/status` reports the server isn't configured.
+
 ---
 ← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)
