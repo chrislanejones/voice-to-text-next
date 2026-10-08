@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { speak } from "@/lib/ai-client";
+import { claimPlayback, PLAYBACK_EVENT } from "@/lib/playback";
 
 // Reads text aloud. With AI on it uses Replicate's natural voice (Kokoro);
 // otherwise the browser's built-in voice. One thing plays at a time,
@@ -12,6 +13,7 @@ export function useReadAloud(useAi: boolean, onError: (message: string) => void,
   const [loading, setLoading] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const ownSpeechRef = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
   const onErrorRef = useRef(onError);
   const speedRef = useRef(speed);
@@ -36,19 +38,25 @@ export function useReadAloud(useAi: boolean, onError: (message: string) => void,
       audio.ontimeupdate = null;
       audio.pause();
     }
-    if (typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
+    if (ownSpeechRef.current && typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
+    ownSpeechRef.current = false;
     setPlaying(null);
     setLoading(null);
     setProgress(0);
   }, []);
 
-  useEffect(() => stop, [stop]);
+  useEffect(() => {
+    const onOther = (event: Event) => { if ((event as CustomEvent).detail !== "notes") stop(); };
+    window.addEventListener(PLAYBACK_EVENT, onOther);
+    return () => { window.removeEventListener(PLAYBACK_EVENT, onOther); stop(); };
+  }, [stop]);
 
   const toggle = useCallback(
     async (id: string, text: string) => {
       const wasPlaying = playing === id || loading === id;
       stop();
       if (wasPlaying || !text.trim()) return;
+      claimPlayback("notes");
 
       if (!useAi) {
         if (typeof speechSynthesis === "undefined") {
@@ -59,9 +67,11 @@ export function useReadAloud(useAi: boolean, onError: (message: string) => void,
         utterance.rate = speedRef.current;
         utterance.onboundary = (e) => setProgress(Math.min(100, (e.charIndex / text.length) * 100));
         utterance.onend = () => {
+          ownSpeechRef.current = false;
           setPlaying((current) => (current === id ? null : current));
           setProgress(0);
         };
+        ownSpeechRef.current = true;
         speechSynthesis.speak(utterance);
         setPlaying(id);
         return;

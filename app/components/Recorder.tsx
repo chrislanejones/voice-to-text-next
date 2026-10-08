@@ -1,5 +1,7 @@
 "use client";
 
+import { claimPlayback } from "@/lib/playback";
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   BrowserIcon,
@@ -67,6 +69,7 @@ interface ReadAloud {
 }
 
 interface RecorderProps {
+  active?: boolean;
   ai: AiState;
   readAloud: ReadAloud;
   onPin: (note: Omit<Note, "id" | "createdAt" | "title">) => void;
@@ -76,8 +79,6 @@ interface RecorderProps {
   // transcript goes straight to the clipboard.
   defaultLanguage: string;
   autoCopy: boolean;
-  // Shown in the right column, under the settings panel.
-  aside: React.ReactNode;
 }
 
 function flatten(paras: Para[], withLabels: boolean): string {
@@ -87,6 +88,7 @@ function flatten(paras: Para[], withLabels: boolean): string {
 }
 
 export default function Recorder({
+  active = true,
   ai,
   readAloud,
   onPin,
@@ -94,7 +96,6 @@ export default function Recorder({
   onRequestSignIn,
   defaultLanguage,
   autoCopy,
-  aside,
 }: RecorderProps) {
   // The transcript being edited, before it's pinned. Each AI version is
   // made once per transcript and cached.
@@ -183,6 +184,11 @@ export default function Recorder({
   const shownError =
     error ?? (useWhisper ? recorder.error : explainUnsupported ? null : speech.error);
 
+  const stopMicrophone = useWhisper ? recorder.stop : speech.stopRecording;
+  useEffect(() => {
+    if (!active && isRecording) stopMicrophone();
+  }, [active, isRecording, stopMicrophone]);
+
   const toggleRec = () => {
     if (explainUnsupported) {
       setUnsupportedOpen(true);
@@ -193,6 +199,7 @@ export default function Recorder({
       else speech.stopRecording();
       return;
     }
+    claimPlayback("dictation");
     setError(null);
     startTranscript("", false);
     if (useWhisper) void recorder.start();
@@ -279,19 +286,20 @@ export default function Recorder({
   });
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (!active) return;
       if (event.repeat || event.ctrlKey || event.metaKey || event.altKey) return;
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
       const action = keysRef.current[key];
       if (!action || document.querySelector("[role='dialog']")) return;
       const target = event.target as HTMLElement | null;
-      if (target?.closest("input, textarea, select, [contenteditable]")) return;
+      if (target?.closest("input, textarea, select, [contenteditable], [data-shortcuts=off]")) return;
       if (key === " " && target?.closest("button, a, label")) return;
       event.preventDefault();
       action();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [active]);
 
   const statusTitle = transcribing
     ? `Transcribing ${transcribing}…`
@@ -443,6 +451,11 @@ export default function Recorder({
             <p className="vt-muted">{statusSub}</p>
           </div>
         </div>
+
+        <details className="sd-recording-settings">
+          <summary>Recording settings</summary>
+          {controls}
+        </details>
 
         <UnsupportedDialog
           open={unsupportedOpen}
@@ -618,10 +631,6 @@ export default function Recorder({
             </button>
           </div>
         </section>
-      </div>
-      <div className="vt-side">
-        {controls}
-        {aside}
       </div>
     </>
   );

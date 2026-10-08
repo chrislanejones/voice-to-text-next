@@ -3,3 +3,10 @@ node_modules
 # Local secrets (REPLICATE_API_TOKEN lives in .env.local)
 .env*
 .vercel
+
+# Next.js and TypeScript output
+/.next/
+*.tsbuildinfo
+
+# Built by pnpm speech:build
+/public/speech/
