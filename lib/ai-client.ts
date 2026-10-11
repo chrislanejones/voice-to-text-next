@@ -77,6 +77,28 @@ export async function speak(text: string, signal?: AbortSignal): Promise<string>
   return data.audioUrl;
 }
 
+// Raw audio for the article player, which decodes it with Web Audio.
+export async function speakAudio(text: string, voice: string, signal?: AbortSignal): Promise<ArrayBuffer> {
+  let response: Response;
+  try {
+    response = await fetch("/api/ai/speak", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, voice, audio: true }),
+      signal,
+    });
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    throw new Error("Couldn't reach the server. Check your connection.");
+  }
+  if (response.status === 401) window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+  if (!response.ok) {
+    const data = (await response.json().catch(() => ({}))) as { error?: string };
+    throw new Error(data.error ?? "The AI voice failed.");
+  }
+  return response.arrayBuffer();
+}
+
 // `sources` are indexes into the `notes` array that was sent.
 export async function askNotes(
   notes: string[],

@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { speakAudio } from "@/lib/ai-client";
+import { cloudVoice, cloudVoiceFor } from "@/lib/cloud-voices";
 import { localSpeech, onModelProgress, type LocalAudio } from "@/lib/local-speech";
 import { claimPlayback, PLAYBACK_EVENT } from "@/lib/playback";
 import { speechChunks, type SpeechChunk } from "@/lib/speech-chunks";
 
-export type VoiceMode = "browser" | "local";
+export type VoiceMode = "browser" | "local" | "cloud";
 type Status = "idle" | "loading" | "playing" | "paused" | "done" | "error";
 
 export function useArticlePlayer(initialSpeed: number) {
@@ -30,6 +32,8 @@ export function useArticlePlayer(initialSpeed: number) {
   const offset = useRef(0);
   const duration = useRef(0);
   const cache = useRef(new Map<number, Promise<LocalAudio | null>>());
+  // Cancels AI voice requests for an article that's no longer loaded.
+  const requests = useRef<AbortController | null>(null);
 
   const changeStatus = useCallback((value: Status) => { state.current = value; setStatus(value); }, []);
   const updateProgress = useCallback((fraction = 0) => {
@@ -42,14 +46,20 @@ export function useArticlePlayer(initialSpeed: number) {
     if (utterance.current && typeof speechSynthesis !== "undefined") speechSynthesis.cancel();
     utterance.current = null;
   }, []);
+  const cancelRequests = useCallback(() => {
+    requests.current?.abort();
+    requests.current = null;
+    cache.current.clear();
+  }, []);
   const stop = useCallback(() => {
     halt();
+    cancelRequests();
     index.current = 0;
     offset.current = 0;
     setProgress(0);
     changeStatus("idle");
     setMessage("");
-  }, [changeStatus, halt]);
+  }, [cancelRequests, changeStatus, halt]);
 
   // Called directly in a click handler, before fetching or model loading.
   // This unlocks Web Audio on phones without relying on page-load autoplay.
@@ -64,7 +74,19 @@ export function useArticlePlayer(initialSpeed: number) {
   const generate = useCallback((at: number) => {
     let pending = cache.current.get(at);
     if (!pending) {
-      pending = localSpeech(chunks.current[at].text, voice.current);
+      const text = chunks.current[at].text;
+      if (mode.current === "cloud") {
+        requests.current ??= new AbortController();
+        const signal = requests.current.signal;
+        pending = speakAudio(text, voice.current, signal).then(async (bytes) => {
+          const ctx = context.current;
+          if (!ctx) throw new Error("Web Audio isn't available.");
+          const buffer = await ctx.decodeAudioData(bytes);
+          return { samples: buffer.getChannelData(0), sampleRate: buffer.sampleRate };
+        });
+      } else {
+        pending = localSpeech(text, voice.current);
+      }
       // Prefetch failures are handled if/when that passage is reached.
       void pending.catch(() => {});
       cache.current.set(at, pending);
@@ -86,7 +108,7 @@ export function useArticlePlayer(initialSpeed: number) {
       if (state.current === "paused") { index.current = at + 1; updateProgress(); return; }
       void say(at + 1, run);
     };
-    if (mode.current === "local") {
+    if (mode.current !== "browser") {
       changeStatus("loading");
       try {
         const audio = await generate(at);
@@ -113,13 +135,16 @@ export function useArticlePlayer(initialSpeed: number) {
         // audio in memory rather than synthesizing an entire long article.
         if (at + 1 < chunks.current.length) void generate(at + 1);
         return;
-      } catch {
+      } catch (error) {
         if (run !== token.current) return;
-        cache.current.delete(at);
+        const cloud = mode.current === "cloud";
+        cancelRequests();
         mode.current = "browser";
         offset.current = 0;
         setDownload(null);
-        setMessage("The natural voice couldn't load. Using your browser voice; you can try the natural voice again later.");
+        setMessage(cloud
+          ? `${error instanceof Error ? error.message : "The AI voice failed."} Using your browser voice for now.`
+          : "The natural voice couldn't load. Using your browser voice; you can try the natural voice again later.");
       }
     }
     if (typeof speechSynthesis === "undefined") {
@@ -152,11 +177,11 @@ export function useArticlePlayer(initialSpeed: number) {
     utterance.current = speech;
     speechSynthesis.speak(speech);
     changeStatus("playing");
-  }, [changeStatus, generate, updateProgress]);
+  }, [cancelRequests, changeStatus, generate, updateProgress]);
 
   const load = useCallback((text: string, selected: VoiceMode, selectedVoice: string, language = "en") => {
     halt();
-    cache.current.clear();
+    cancelRequests();
     chunks.current = speechChunks(text);
     length.current = text.length;
     index.current = 0;
@@ -169,9 +194,19 @@ export function useArticlePlayer(initialSpeed: number) {
       mode.current = "browser";
       setMessage("These natural voices read English. Using the browser voice for this article's language.");
     }
+    if (selected === "cloud") {
+      const match = cloudVoiceFor(language, selectedVoice);
+      if (!match) {
+        mode.current = "browser";
+        setMessage("The AI voices don't cover this article's language. Using the browser voice.");
+      } else if (match.id !== selectedVoice) {
+        voice.current = match.id;
+        setMessage(`${cloudVoice(selectedVoice)?.name ?? "That voice"} reads a different language. Using ${match.name} for this article.`);
+      }
+    }
     setProgress(0);
     changeStatus("paused");
-  }, [changeStatus, halt]);
+  }, [cancelRequests, changeStatus, halt]);
 
   const play = useCallback(() => {
     unlock();
@@ -241,6 +276,7 @@ export function useArticlePlayer(initialSpeed: number) {
       window.removeEventListener(PLAYBACK_EVENT, onOther);
       unsubscribe();
       halt();
+      requests.current?.abort();
       void context.current?.close();
     };
   }, [halt, stop]);
@@ -250,7 +286,7 @@ export function useArticlePlayer(initialSpeed: number) {
     let frame: number;
     let last = 0;
     const tick = (now: number) => {
-      if (mode.current === "local" && source.current && context.current && now - last > 150) {
+      if (mode.current !== "browser" && source.current && context.current && now - last > 150) {
         const elapsed = offset.current + (context.current.currentTime - started.current) * rate.current;
         updateProgress(Math.min(1, elapsed / Math.max(0.001, duration.current)));
         last = now;

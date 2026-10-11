@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { HeadphonesIcon, PauseIcon, PlayIcon, SkipBackIcon, SkipForwardIcon, StopIcon } from "@phosphor-icons/react";
 import { useArticlePlayer, type VoiceMode } from "@/hooks/use-article-player";
 import { MAX_ARTICLE_CHARS, type Article } from "@/lib/article-types";
+import { CLOUD_LANGUAGES, CLOUD_VOICES, DEFAULT_CLOUD_VOICE } from "@/lib/cloud-voices";
 import { LOCAL_VOICES } from "@/lib/local-speech";
 import { SPEEDS } from "@/hooks/use-preferences";
 
@@ -16,18 +17,23 @@ const subscribeToShare = (listener: () => void) => {
   return () => window.removeEventListener("popstate", listener);
 };
 
-export default function ArticleReader({ defaultSpeed }: { defaultSpeed: number }) {
+// The AI voices only appear while AI is signed in; the free voices always work.
+export default function ArticleReader({ defaultSpeed, aiActive }: { defaultSpeed: number; aiActive: boolean }) {
   const shared = useSyncExternalStore(subscribeToShare, sharedLink, () => "");
   const [url, setUrl] = useState<string | null>(null);
   const [pasted, setPasted] = useState("");
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [mode, setMode] = useState<VoiceMode>("browser");
-  const [voice, setVoice] = useState("af_heart");
+  const [chosenMode, setMode] = useState<VoiceMode>("browser");
+  const [localVoice, setLocalVoice] = useState("af_heart");
+  const [aiVoice, setAiVoice] = useState(DEFAULT_CLOUD_VOICE);
   const [seekPosition, setSeekPosition] = useState<number | null>(null);
   const request = useRef<AbortController | null>(null);
   const player = useArticlePlayer(defaultSpeed);
+  // Signing out of AI drops back to the browser voice.
+  const mode: VoiceMode = chosenMode === "cloud" && !aiActive ? "browser" : chosenMode;
+  const voice = mode === "cloud" ? aiVoice : localVoice;
 
   useEffect(() => () => request.current?.abort(), []);
 
@@ -87,7 +93,8 @@ export default function ArticleReader({ defaultSpeed }: { defaultSpeed: number }
     // Changing voice prepares the same article for the next press of Play.
     player.stop();
     setMode(nextMode);
-    setVoice(nextVoice);
+    if (nextMode === "cloud") setAiVoice(nextVoice);
+    else if (nextMode === "local") setLocalVoice(nextVoice);
     if (article) player.load(article.text, nextMode, nextVoice, article.lang);
   }
 
@@ -99,7 +106,8 @@ export default function ArticleReader({ defaultSpeed }: { defaultSpeed: number }
   const busy = player.status === "playing" || player.status === "loading";
   const percent = Math.round(seekPosition ?? player.progress);
   const statusText = player.status === "loading"
-    ? player.download !== null ? `Downloading the natural voice: ${player.download}%` : "Preparing the natural voice…"
+    ? mode === "cloud" ? "Making the AI voice…"
+      : player.download !== null ? `Downloading the natural voice: ${player.download}%` : "Preparing the natural voice…"
     : player.status === "playing" ? "Reading" : player.status === "paused" ? "Paused"
       : player.status === "done" ? "Finished" : player.status === "error" ? "Playback stopped" : "Ready to listen";
 
@@ -135,9 +143,13 @@ export default function ArticleReader({ defaultSpeed }: { defaultSpeed: number }
       <div className="vt-reader-settings">
         <div className="field">
           <label className="field-label" htmlFor="article-voice-mode">Reading voice</label>
-          <select id="article-voice-mode" className="input" value={mode} onChange={(event) => changeVoice(event.target.value as VoiceMode, voice)} disabled={loading}>
+          <select id="article-voice-mode" className="input" value={mode} onChange={(event) => {
+              const next = event.target.value as VoiceMode;
+              changeVoice(next, next === "cloud" ? aiVoice : localVoice);
+            }} disabled={loading}>
             <option value="browser">Browser voice · instant</option>
             <option value="local">Natural voice · on this device</option>
+            {aiActive && <option value="cloud">AI voices · {CLOUD_VOICES.length} voices, 6 languages</option>}
           </select>
         </div>
         {mode === "local" && <div className="field">
@@ -147,6 +159,15 @@ export default function ArticleReader({ defaultSpeed }: { defaultSpeed: number }
             {LOCAL_VOICES.map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}
           </select>
         </div>}
+        {mode === "cloud" && <div className="field">
+          <label className="field-label" htmlFor="article-ai-voice">AI voice</label>
+          <select id="article-ai-voice" className="input" value={voice} disabled={loading}
+            onChange={(event) => changeVoice(mode, event.target.value)}>
+            {Object.entries(CLOUD_LANGUAGES).map(([lang, label]) => <optgroup label={label} key={lang}>
+              {CLOUD_VOICES.filter((item) => item.lang === lang).map((item) => <option value={item.id} key={item.id}>{item.name}</option>)}
+            </optgroup>)}
+          </select>
+        </div>}
         <div className="field">
           <label className="field-label" htmlFor="article-speed">Speed</label>
           <select id="article-speed" className="input" value={player.speed} onChange={(event) => player.setSpeed(Number(event.target.value))}>
@@ -154,7 +175,9 @@ export default function ArticleReader({ defaultSpeed }: { defaultSpeed: number }
           </select>
         </div>
         <p className="vt-reader-help vt-muted">
-          {mode === "local" ? "English voices. Downloads a model on first use, then keeps it in this browser's cache. Speech is made on your device." : "Uses your browser's installed voices. Choose Natural voice for free speech made on your device."}
+          {mode === "cloud" ? "Made by Replicate's AI using your AI sign-in. Each passage is sent to Replicate and played as it arrives."
+            : mode === "local" ? "English voices. Downloads a model on first use, then keeps it in this browser's cache. Speech is made on your device."
+              : "Uses your browser's installed voices. Choose Natural voice for free speech made on your device."}
         </p>
       </div>
 

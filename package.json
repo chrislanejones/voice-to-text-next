@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "speech:build": "node scripts/build-speech.mjs",
-    "test:reader": "tsx --test tests/article.test.ts tests/article-fetch.test.ts tests/article-route.test.ts tests/speech-chunks.test.ts"
+    "test:reader": "tsx --test tests/article.test.ts tests/article-fetch.test.ts tests/article-route.test.ts tests/speech-chunks.test.ts tests/cloud-voices.test.ts"
   },
   "dependencies": {
     "@huggingface/transformers": "^3.8.1",

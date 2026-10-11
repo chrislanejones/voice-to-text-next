@@ -138,7 +138,7 @@ export default function DictationApp(): React.ReactElement {
               {query.trim() && <p className="sd-search-count" role="status">{filteredNotes.length} matching {filteredNotes.length === 1 ? "note" : "notes"}</p>}
               <details className="sd-ai-search"><summary>Ask a question about your notes</summary><AskNotes notes={notes} onOpen={(id) => setSelectedId(id)} locked={!ai.active} onUnlock={unlockAi} /></details>
             </section>
-            <ArticleReader defaultSpeed={prefs.speed} />
+            <ArticleReader defaultSpeed={prefs.speed} aiActive={ai.active} />
             <section className="sd-note-listener" aria-labelledby="listen-notes-heading" data-shortcuts="off">
               <h2 id="listen-notes-heading"><SpeakerHighIcon size={21} aria-hidden="true" />Listen to your notes</h2>
               <p className="vt-muted">Pick a saved note to hear it read aloud.</p>

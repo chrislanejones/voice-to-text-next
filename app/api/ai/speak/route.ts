@@ -1,11 +1,12 @@
 import { MODELS, errorResponse, run } from "@/lib/replicate";
 import { requireSignIn } from "@/lib/ai-auth";
+import { CLOUD_VOICES, DEFAULT_CLOUD_VOICE } from "@/lib/cloud-voices";
 
 // Vercel Hobby caps functions at 60 seconds.
 export const maxDuration = 60;
 
 const MAX_CHARS = 5_000;
-const VOICES = new Set(["af_bella", "af_nicole", "af_sarah", "am_adam", "am_michael", "bf_emma", "bm_george"]);
+const VOICES = new Set(CLOUD_VOICES.map((voice) => voice.id));
 
 export async function POST(request: Request) {
   const denied = requireSignIn(request);
@@ -14,6 +15,7 @@ export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
     text?: unknown;
     voice?: unknown;
+    audio?: unknown;
   } | null;
 
   const text = typeof body?.text === "string" ? body.text.trim() : "";
@@ -24,14 +26,30 @@ export async function POST(request: Request) {
     return Response.json({ error: "That note is too long to read aloud." }, { status: 413 });
   }
   const voice =
-    typeof body?.voice === "string" && VOICES.has(body.voice) ? body.voice : "af_bella";
+    typeof body?.voice === "string" && VOICES.has(body.voice) ? body.voice : DEFAULT_CLOUD_VOICE;
 
   try {
     const output = await run(MODELS.speech, { text, voice, speed: 1 }, request.signal);
     if (typeof output !== "string") throw new Error("Unexpected speech output");
-    // Replicate's delivery URLs expire after about an hour, so the client
-    // plays it now and doesn't store it.
-    return Response.json({ audioUrl: output });
+    if (body?.audio !== true) {
+      // Replicate's delivery URLs expire after about an hour, so the client
+      // plays it now and doesn't store it.
+      return Response.json({ audioUrl: output });
+    }
+    // The article player decodes audio with Web Audio, which needs the bytes.
+    // Replicate's file host sends no CORS headers, so relay them from here.
+    const url = new URL(output);
+    if (url.protocol !== "https:" || !url.hostname.endsWith(".replicate.delivery")) {
+      throw new Error("Unexpected speech output");
+    }
+    const audio = await fetch(url, { signal: request.signal });
+    if (!audio.ok || !audio.body) throw new Error("Couldn't download the speech audio");
+    return new Response(audio.body, {
+      headers: {
+        "Content-Type": audio.headers.get("content-type") ?? "audio/wav",
+        "Cache-Control": "no-store",
+      },
+    });
   } catch (error) {
     return errorResponse(error);
   }
