@@ -7,6 +7,11 @@ import { Agent, fetch } from "undici";
 import { MAX_ARTICLE_CHARS, type Article } from "./article-types";
 
 const MAX_HTML_BYTES = 2_000_000;
+const BROWSER_HEADERS = {
+  "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+  "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+};
 const REDIRECTS = new Set([301, 302, 303, 307, 308]);
 
 export class ArticleError extends Error {
@@ -111,7 +116,9 @@ export async function fetchArticle(input: string, signal: AbortSignal, transport
         dispatcher: agent,
         signal,
         redirect: "manual",
-        headers: { "Accept": "text/html, application/xhtml+xml", "User-Agent": "VoiceToTextArticleReader/1.0" },
+        // Send what a browser sends. News sites (USA Today, for one) answer
+        // a custom user agent with a 402 "Access Restricted" page.
+        headers: BROWSER_HEADERS,
       });
       if (REDIRECTS.has(response.status)) {
         await response.body?.cancel();
