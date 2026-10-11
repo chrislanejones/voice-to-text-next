@@ -2,8 +2,8 @@
 
 **Dates:** 10-10-2026 to 10-11-2026
 **Branch:** `main` (merged `design/superdesign`)
-**Live:** https://voice-to-text-next.vercel.app (production deploy of `7b50857`, Ready)
-**Scope:** commit the uncommitted article-reader work, merge the Superdesign VCE2TXT dashboard, keep article listening free, and add Replicate voices when AI is on.
+**Live:** https://voice-to-text-next.vercel.app (production deploy of `528e63d`, Ready; article links and AI voices checked live)
+**Scope:** commit the uncommitted article-reader work, merge the Superdesign VCE2TXT dashboard, keep article listening free, add Replicate voices when AI is on, and fix article links on Vercel.
 
 ## Commits
 
