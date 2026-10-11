@@ -45,3 +45,9 @@ Found while publishing on 10-05-2026.
 Found during the 10-06-2026 docs audit.
 
 - **AI controls show even when the server has no AI set up.** Since `7219e56` the AI tools switch, the dimmed controls, and Ask your notes render no matter what `/api/ai/status` says. On a server without `REPLICATE_API_TOKEN` and `AI_PASSWORD`, clicking them opens the sign-in box, which can only fail with "AI sign-in isn't set up on this server." Hide them when `configured` is false, or keep them and make the dialog say so up front.
+
+Found while merging the Superdesign dashboard on 10-10-2026.
+
+- **The article route is an open fetch proxy.** `/api/article` has an SSRF guard but no auth or rate limit, so anyone can make the server fetch public pages. Add a rate limit (ADR-006 lists this as a cost).
+- **README still says "Voice to Text".** The app is now VCE2TXT (ADR-007). The title (line 1) and screenshot alt text (line 7) need updating through chris-voice, plus a new screenshot.
+- **Broadsheet CSS still loads under the dashboard.** `broadsheet.css` and `portal.css` are imported and `dashboard.css` overrides their tokens. Fold them together once the design settles.

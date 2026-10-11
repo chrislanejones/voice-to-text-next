@@ -40,8 +40,8 @@ const TAGS = new Set<NoteTag>(["clean", "email", "bullets", "summary", "translat
 // clearing the board keeps them gone.
 const DEMO_NOTES: Omit<Note, "id" | "createdAt">[] = [
   {
-    title: "Welcome to the board",
-    text: "Tap the red button, talk, and pin what you said here. The board keeps your last ten notes in this browser. Take this one down with the X when you're done with it.",
+    title: "Welcome to your workspace",
+    text: "Choose New transcription, then tap the microphone or use Edit to type a note. Pin it to keep it in your saved notes.\n\nYour last ten notes stay in this browser. Select one on the left to edit or export it. Use the tools on the right to search your notes, listen to them, or read an article aloud.",
     speakers: 0,
     tags: ["demo"],
   },

@@ -3,8 +3,8 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Voice to Text",
-    short_name: "Voice to Text",
+    name: "VCE2TXT",
+    short_name: "VCE2TXT",
     description: "Speak, pin your notes, and listen to articles.",
     start_url: "/",
     scope: "/",
