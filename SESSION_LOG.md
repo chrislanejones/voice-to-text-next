@@ -2,7 +2,7 @@
 
 **Dates:** 10-10-2026 to 10-11-2026
 **Branch:** `main` (merged `design/superdesign`)
-**Live:** https://voice-to-text-next.vercel.app (production deploy of `528e63d`, Ready; article links and pasted text checked live; AI voices not yet played)
+**Live:** https://voice-to-text-next.vercel.app (production deploy of `b6403fb`, Ready; article links, pasted text, GPU natural voice, layout and AI controls checked live in Chris's Chrome; Replicate AI voices not yet played)
 **Scope:** commit the uncommitted article-reader work, merge the Superdesign VCE2TXT dashboard, keep article listening free, add Replicate voices when AI is on, and fix article links on Vercel.
 
 ## Commits
@@ -15,6 +15,7 @@
 | `bf4e638` | docs: session log, README AI voices bullet |
 | `0008532` | fix: browser headers for article fetch (USA Today 402), Node 24 |
 | `528e63d` | fix: jsdom → linkedom; every `/api/article` call was a 500 on Vercel (`ERR_REQUIRE_ESM`); ADR-006 amended |
+| `b6403fb` | fix: natural voice on the GPU (WebGPU, wasm fallback), two passages prefetched, slow-device notice; stray 160 px page scroll; AI controls back in view; app opens on the recorder |
 
 ## Gates (final)
 
@@ -32,6 +33,9 @@
 - **Free voices stay free.** Browser and on-device Kokoro voices never touch Replicate (checked on a prod build with the token and password blanked).
 - **AI voices relay audio through `/api/ai/speak`.** `replicate.delivery` sends no CORS headers, and the article player decodes with Web Audio, so the route returns bytes when asked (`audio: true`) and only fetches `https` URLs on `*.replicate.delivery`.
 - **jsdom out, linkedom in.** jsdom 30 `require()`s the ESM-only `@exodus/bytes` from nine files; Vercel rejected it on Node 22 and 24. Pinning Node 24 alone didn't fix it. Paste was never broken: Chrome on Windows read short and long pasted text to the end.
+- **Natural voice was the pausing.** Kokoro on one WebAssembly thread took **71 s** to make 9.4 s of audio on Chris's PC (22 cores, WebGPU available, not cross-origin isolated). On WebGPU: passages 2–4 took 2.9–5.5 s for 8–10.8 s of audio. The browser voice never paused (31 ms between passages).
+- **The white space was a screen-reader label.** `.vt-sr-only` is `position: absolute`; the dashboard scrollers weren't positioned, so the label in "Listen to your notes" sat 160 px below the page. Wheel-up then scrolled a column, not the page.
+- **AI controls were folded away and off-screen.** A collapsed `<details>` under the recorder, and the app opened on a saved note with the recorder hidden.
 - **Voice list lives in `lib/cloud-voices.ts`.** 46 voices taken from the model's API schema; the route validates against the same list the UI shows.
 
 ## Skipped / not done

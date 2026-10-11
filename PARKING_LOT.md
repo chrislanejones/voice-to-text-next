@@ -51,3 +51,7 @@ Found while merging the Superdesign dashboard on 10-10-2026.
 - **The article route is an open fetch proxy.** `/api/article` has an SSRF guard but no auth or rate limit, so anyone can make the server fetch public pages. Add a rate limit (ADR-006 lists this as a cost).
 - **README still says "Voice to Text".** The app is now VCE2TXT (ADR-007). The title (line 1) and screenshot alt text (line 7) need updating through chris-voice, plus a new screenshot.
 - **Broadsheet CSS still loads under the dashboard.** `broadsheet.css` and `portal.css` are imported and `dashboard.css` overrides their tokens. Fold them together once the design settles.
+
+Found while fixing the natural voice on 10-11-2026.
+
+- **No multi-threaded WebAssembly fallback.** Devices without WebGPU still run Kokoro on one thread, because the page isn't cross-origin isolated (`crossOriginIsolated` is false). Sending `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: credentialless` would unlock threads, but every cross-origin fetch (Hugging Face model files, Replicate audio) needs checking first.
