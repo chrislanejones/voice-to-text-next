@@ -452,10 +452,9 @@ export default function Recorder({
           </div>
         </div>
 
-        <details className="sd-recording-settings">
-          <summary>Recording settings</summary>
-          {controls}
-        </details>
+        {/* AI controls stay in view, dimmed when signed out, so the paid
+            features are discoverable. */}
+        <div className="sd-recording-controls">{controls}</div>
 
         <UnsupportedDialog
           open={unsupportedOpen}

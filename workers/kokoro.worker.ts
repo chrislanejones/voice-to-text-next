@@ -4,6 +4,7 @@ import { env } from "@huggingface/transformers";
 interface SpeechRequest { id: number; text?: string; voice?: string }
 const scope = self as unknown as {
   location: { href: string };
+  navigator: { gpu?: { requestAdapter(): Promise<{ features: Set<string> } | null> } };
   postMessage: (message: unknown, transfer?: Transferable[]) => void;
   onmessage: ((event: MessageEvent<SpeechRequest>) => void) | null;
 };
@@ -14,18 +15,42 @@ env.backends.onnx.wasm!.numThreads = 1;
 env.backends.onnx.wasm!.proxy = false;
 env.backends.onnx.wasm!.wasmPaths = new URL("./", scope.location.href).href;
 
+type Backend = { device: "webgpu" | "wasm"; dtype: "fp16" | "fp32" | "q8" };
+
+// Single-threaded WebAssembly makes speech several times slower than it
+// plays on most machines, so the GPU is used whenever the browser has one.
+// The GPU model is larger (fp16 about 160 MB, fp32 about 330 MB, against
+// 90 MB for q8) but it's cached after the first use.
+async function pickBackend(): Promise<Backend> {
+  try {
+    const adapter = await scope.navigator.gpu?.requestAdapter();
+    if (adapter) return { device: "webgpu", dtype: adapter.features.has("shader-f16") ? "fp16" : "fp32" };
+  } catch { /* No usable GPU: fall through. */ }
+  return { device: "wasm", dtype: "q8" };
+}
+
+function load(backend: Backend) {
+  return KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
+    ...backend,
+    progress_callback: (info) => {
+      if (info.status === "progress" && info.file.endsWith(".onnx")) {
+        scope.postMessage({ type: "progress", progress: info.progress });
+      }
+    },
+  });
+}
+
 let model: Promise<KokoroTTS> | null = null;
 function loadModel() {
   if (!model) {
-    model = KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {
-      dtype: "q8",
-      device: "wasm",
-      progress_callback: (info) => {
-        if (info.status === "progress" && info.file.endsWith(".onnx")) {
-          scope.postMessage({ type: "progress", progress: info.progress });
-        }
-      },
-    }).catch((error) => { model = null; throw error; });
+    model = pickBackend()
+      .then((backend) => load(backend).catch((error) => {
+        // A GPU that advertises itself but can't run the model (driver
+        // limits, blocked WebGPU) still gets speech, just slower.
+        if (backend.device === "webgpu") return load({ device: "wasm", dtype: "q8" });
+        throw error;
+      }))
+      .catch((error) => { model = null; throw error; });
   }
   return model;
 }

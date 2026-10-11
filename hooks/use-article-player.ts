@@ -34,6 +34,8 @@ export function useArticlePlayer(initialSpeed: number) {
   const cache = useRef(new Map<number, Promise<LocalAudio | null>>());
   // Cancels AI voice requests for an article that's no longer loaded.
   const requests = useRef<AbortController | null>(null);
+  // Passages in a row that took longer to make than to play.
+  const slow = useRef(0);
 
   const changeStatus = useCallback((value: Status) => { state.current = value; setStatus(value); }, []);
   const updateProgress = useCallback((fraction = 0) => {
@@ -85,7 +87,16 @@ export function useArticlePlayer(initialSpeed: number) {
           return { samples: buffer.getChannelData(0), sampleRate: buffer.sampleRate };
         });
       } else {
-        pending = localSpeech(text, voice.current);
+        const began = performance.now();
+        pending = localSpeech(text, voice.current).then((audio) => {
+          // The first passage includes loading the model, so it's skipped.
+          if (audio && at > 0) {
+            const made = (performance.now() - began) / 1000;
+            slow.current = made > 1.3 * (audio.samples.length / audio.sampleRate) ? slow.current + 1 : 0;
+            if (slow.current === 2) setMessage("This device makes the natural voice slower than it plays, so reading pauses between passages. The browser voice doesn't pause.");
+          }
+          return audio;
+        });
       }
       // Prefetch failures are handled if/when that passage is reached.
       void pending.catch(() => {});
@@ -131,9 +142,9 @@ export function useArticlePlayer(initialSpeed: number) {
         node.start(0, Math.min(offset.current, Math.max(0, buffer.duration - 0.01)));
         setDownload(null);
         changeStatus("playing");
-        // Make the next passage while this one plays, keeping only nearby
-        // audio in memory rather than synthesizing an entire long article.
-        if (at + 1 < chunks.current.length) void generate(at + 1);
+        // Make the next two passages while this one plays, keeping only
+        // nearby audio in memory rather than synthesizing a whole article.
+        for (let ahead = 1; ahead <= 2 && at + ahead < chunks.current.length; ahead++) void generate(at + ahead);
         return;
       } catch (error) {
         if (run !== token.current) return;
@@ -182,6 +193,7 @@ export function useArticlePlayer(initialSpeed: number) {
   const load = useCallback((text: string, selected: VoiceMode, selectedVoice: string, language = "en") => {
     halt();
     cancelRequests();
+    slow.current = 0;
     chunks.current = speechChunks(text);
     length.current = text.length;
     index.current = 0;

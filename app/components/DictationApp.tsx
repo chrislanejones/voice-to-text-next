@@ -43,7 +43,8 @@ export default function DictationApp(): React.ReactElement {
     if (toastTimer.current) clearTimeout(toastTimer.current);
   }, []);
 
-  const [selectedId, setSelectedId] = useState<string | null>("");
+  // Opens on the recorder; a saved note is shown only when picked.
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [confirmClear, setConfirmClear] = useState(false);
