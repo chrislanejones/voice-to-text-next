@@ -1,5 +1,7 @@
 "use client";
 
+import { claimPlayback } from "@/lib/playback";
+
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   BrowserIcon,
@@ -193,6 +195,7 @@ export default function Recorder({
       else speech.stopRecording();
       return;
     }
+    claimPlayback("dictation");
     setError(null);
     startTranscript("", false);
     if (useWhisper) void recorder.start();
@@ -284,7 +287,7 @@ export default function Recorder({
       const action = keysRef.current[key];
       if (!action || document.querySelector("[role='dialog']")) return;
       const target = event.target as HTMLElement | null;
-      if (target?.closest("input, textarea, select, [contenteditable]")) return;
+      if (target?.closest("input, textarea, select, [contenteditable], [data-shortcuts=off]")) return;
       if (key === " " && target?.closest("button, a, label")) return;
       event.preventDefault();
       action();

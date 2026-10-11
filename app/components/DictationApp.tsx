@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Recorder from "./Recorder";
+import ArticleReader from "./ArticleReader";
 import Board from "./Board";
 import NoteDialog from "./NoteDialog";
 import AskNotes from "./AskNotes";
@@ -12,6 +13,7 @@ import { useNotes, type Note } from "@/hooks/use-notes";
 import { useAiSettings } from "@/hooks/use-ai-settings";
 import { useReadAloud } from "@/hooks/use-read-aloud";
 import { usePreferences } from "@/hooks/use-preferences";
+import { useOfflineApp } from "@/hooks/use-offline-app";
 
 // No browser speech engine (Firefox): Whisper is the only way to dictate.
 const hasSpeechEngine = () =>
@@ -23,6 +25,7 @@ export default function DictationApp(): React.ReactElement {
   const { notes, addNote, updateNote, removeNote, clearNotes, maxNotes } = useNotes();
   const ai = useAiSettings();
   const prefs = usePreferences();
+  useOfflineApp();
   const [loginOpen, setLoginOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   // AI off but signed in: switch it on. Signed out: ask for the password.
@@ -101,7 +104,12 @@ export default function DictationApp(): React.ReactElement {
           onRequestSignIn={() => setLoginOpen(true)}
           defaultLanguage={prefs.language}
           autoCopy={prefs.autoCopy}
-          aside={<AskNotes notes={notes} onOpen={(id) => open(id)} locked={!ai.active} onUnlock={unlockAi} />}
+          aside={
+            <>
+              <ArticleReader defaultSpeed={prefs.speed} />
+              <AskNotes notes={notes} onOpen={(id) => open(id)} locked={!ai.active} onUnlock={unlockAi} />
+            </>
+          }
         />
       </div>
 

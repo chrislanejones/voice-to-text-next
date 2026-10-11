@@ -1,0 +1,40 @@
+/* Article listening shares Broadsheet's type, controls, and open layout. */
+.vt-reader {
+  min-width: 0;
+}
+.vt-reader-head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 22px; }
+.vt-reader-head > svg { margin-top: 2px; color: var(--color-accent-700); flex: none; }
+.vt-reader-head h2 { font-size: 25px; margin: 0 0 6px; }
+.vt-reader-head p { margin: 0; font-size: 15px; }
+.vt-reader-url { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
+.vt-reader-url > .field { flex: 1 1 100%; min-width: 0; }
+.vt-reader-url .input { min-height: 42px; }
+.vt-reader-url > .btn { min-height: 42px; flex: none; }
+.vt-reader-primary { background: var(--color-accent-700); }
+.vt-reader-primary:not(:disabled):hover { background: var(--color-accent-800); }
+.vt-reader-help { font-size: 13px; line-height: 1.5; margin: 8px 0 0; max-width: 72ch; }
+.vt-reader-fetch { padding-block: 14px; font-size: 14px; color: var(--color-accent-700); }
+.vt-reader-settings { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 12px; margin-top: 22px; }
+.vt-reader-settings > .field { flex: none; }
+.vt-reader-settings > .field:first-child { flex: 1 1 210px; min-width: 0; }
+.vt-reader-settings > .field:first-child .input { width: 100%; }
+.vt-reader-settings > .vt-reader-help { flex: 1 1 100%; margin: 0; padding-bottom: 3px; }
+.vt-reader-settings .input { width: auto; max-width: 100%; }
+.vt-reader-paste { margin-top: 20px; }
+.vt-reader summary { cursor: pointer; width: fit-content; color: var(--color-accent-700); font-size: 14px; padding-block: 6px; }
+.vt-reader summary:hover { color: var(--color-accent-800); }
+.vt-reader-paste form { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 12px; }
+.vt-reader-paste textarea { resize: vertical; font-size: 16px; }
+.vt-reader-article { margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--color-divider); overflow-wrap: anywhere; }
+.vt-reader-article > .vt-kicker { margin-bottom: 10px; font-size: 12px; }
+.vt-reader-article h3 { max-width: 48ch; margin-bottom: 10px; }
+.vt-reader-meta { font-size: 13px; margin: 0 0 22px; }
+.vt-reader-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.vt-reader-controls > .btn { min-height: 44px; padding-inline: 10px; }
+.vt-reader-play { min-width: 112px; color: var(--color-accent-800); }
+.vt-reader-position { display: flex; align-items: center; gap: 16px; margin-top: 12px; max-width: 700px; }
+.vt-reader-position input { flex: 1; min-width: 0; height: 32px; accent-color: var(--color-accent-700); cursor: pointer; }
+.vt-reader-position span { font-size: 13px; font-variant-numeric: tabular-nums; min-width: 4ch; text-align: right; }
+.vt-reader-status { font-size: 13px; margin: 0 0 8px; }
+.vt-reader-text > div { max-height: 360px; overflow-y: auto; margin-top: 10px; }
+.vt-reader-text p { max-width: 70ch; font-size: 17px; line-height: 1.65; }

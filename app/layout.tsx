@@ -2,6 +2,7 @@ import { Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import "./broadsheet.css";
 import "./portal.css";
+import "./reader.css";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -12,7 +13,7 @@ const sourceSerif = Source_Serif_4({
 
 export const metadata = {
   title: "Voice to Text",
-  description: "Speak, then clean it up, translate it, and pin it to your board.",
+  description: "Speak, pin your notes, or paste an article link and listen with a free local voice.",
 };
 
 interface RootLayoutProps {

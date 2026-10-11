@@ -22,6 +22,23 @@ A brand-new board starts with three sample notes so it isn't empty. They're tagg
 
 Sticky notes come in six colors. A new note never matches the five pinned before it, and a note keeps its color for good, so taking one down doesn't reshuffle the rest.
 
+## Listen to an article
+
+Paste a public article link into **Listen to an article** and press **Read article**. The app fetches the page on its own server, extracts the article with Mozilla Readability, and starts reading. Pause/resume, previous/next passage, a position slider, and speed controls work independently of dictation. Starting dictation or a note stops article playback.
+
+- **Browser voice** starts immediately using the browser's available voices. Text is split into short utterances for long articles.
+- **Natural voice** runs Kokoro on this device in a Web Worker, without AI sign-in or Replicate credit. Choose Heart, Bella, Michael, Emma, or George. The quantized model downloads from Hugging Face on first use (roughly 90 MB, plus runtime and voice files) and is cached by the browser. If it cannot load, playback falls back to the browser voice and explains what happened.
+- The local voices offered here read English. Other article languages use a matching browser voice when available.
+- Sign-in pages, paywalls, bot protection, and pages rendered only by JavaScript may not extract. **Or paste article text** reads copied text without a server request.
+- Fetching a new link needs an internet connection. In production, a service worker caches the app shell and static assets. After opening the app online and downloading a local voice, you can reopen it offline and read pasted text with that cached voice. A new article link still needs the server. Browser storage eviction can require another download.
+- The article route accepts public HTTP(S) URLs, validates and pins DNS answers, checks each redirect, and limits fetch time, HTML size, and extracted text. It returns plain text rather than embedding the source page.
+
+On supported browsers, install the app from the browser menu (or add it to your home screen). Its Web Share Target accepts a shared article URL or a link embedded in shared text and prefills the reader. Tap **Read article** to start; it does not autoplay on page load. Share Target support varies by browser and operating system, especially on iOS. The normal paste-a-link workflow works without installation.
+
+This feature adds no paid speech or reader service. Hosting is still subject to your hosting plan's limits. It does not automatically send articles to Jina, Firecrawl, or Replicate.
+
+Run `pnpm test:reader` for the extraction, URL validation, and long-text tests. `pnpm dev` and `pnpm build` build the self-hosted speech worker and its matching WebAssembly runtime first; generated files in `public/speech` are not committed.
+
 ## Settings
 
 The Settings button at the top right opens a panel. Everything in it stays in this browser.
@@ -70,7 +87,7 @@ Chrome sends browser dictation audio to Google's servers. That's how the Web Spe
 
 ## Run it locally
 
-You need Node 20.9 or newer and pnpm.
+You need pnpm and Node 22.22.2+ (22.x), 24.15+ (24.x), or 26+. These are the Node versions supported by the article parser.
 
 ```bash
 git clone https://github.com/chrislanejones/voice-to-text-next.git
