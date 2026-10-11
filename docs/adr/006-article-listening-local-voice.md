@@ -62,5 +62,15 @@ Early warning sign to watch for: a Transformers.js or `undici` major
 bump, unexpected traffic on `/api/article` in Vercel logs, or fallback
 messages showing up on most phone sessions.
 
+## Amendment (2026-10-11)
+`jsdom` is replaced by `linkedom`. jsdom 30 `require()`s the ES-module-only
+`@exodus/bytes` from nine files, and Vercel's runtime rejected that with
+`ERR_REQUIRE_ESM` on Node 22 and on Node 24, so every `/api/article` call
+returned 500 in production. linkedom is ESM, parses without running scripts
+or fetching resources, and works with Readability. The fetch now sends
+standard browser headers, because news sites such as USA Today answer the
+old custom user agent with 402 "Access Restricted". `engines.node` is
+pinned to `24.x`.
+
 ---
 ← Back to the [README](../../Readme.md) · [ADR index](INDEX.md)

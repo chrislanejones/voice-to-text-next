@@ -1,7 +1,7 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 import { Readability } from "@mozilla/readability";
-import { JSDOM } from "jsdom";
+import { parseHTML } from "linkedom";
 import ipaddr from "ipaddr.js";
 import { Agent, fetch } from "undici";
 import { MAX_ARTICLE_CHARS, type Article } from "./article-types";
@@ -52,36 +52,32 @@ export function articleUrl(input: string): URL {
 }
 
 export function extractArticle(html: string, url: string): Article {
-  // Default JSDOM settings execute no scripts and fetch no page resources.
-  const dom = new JSDOM(html, { url });
-  try {
-    const document = dom.window.document;
-    const lang = document.documentElement.lang || "en";
-    const result = new Readability(document, { charThreshold: 100, maxElemsToParse: 40_000 }).parse();
-    if (!result?.content) throw new ArticleError("Couldn't find an article on that page. Try pasting its text below.");
-    const container = document.createElement("div");
-    container.innerHTML = result.content;
-    const blocks = Array.from(container.querySelectorAll("p, h2, h3, h4, li, pre, blockquote"))
-      .filter((el) => !el.querySelector("p, h2, h3, h4, li, pre, blockquote"))
-      .map((el) => (el.textContent ?? "").replace(/\s+/g, " ").trim())
-      .filter(Boolean);
-    let text = (blocks.length ? blocks.join("\n\n") : result.textContent ?? "").trim();
-    if (text.length < 100) throw new ArticleError("That page has too little readable text. Try pasting the article below.");
-    const truncated = text.length > MAX_ARTICLE_CHARS;
-    if (truncated) text = text.slice(0, MAX_ARTICLE_CHARS).replace(/\s+\S*$/, "");
-    return {
-      title: result.title?.trim() || "Untitled article",
-      url,
-      siteName: result.siteName || new URL(url).hostname,
-      byline: result.byline?.trim() || "",
-      lang,
-      text,
-      wordCount: text.split(/\s+/).length,
-      truncated,
-    };
-  } finally {
-    dom.window.close();
-  }
+  // linkedom only parses: it runs no scripts and fetches no page resources.
+  // (jsdom 30 crashed on Vercel with ERR_REQUIRE_ESM; see ADR-006.)
+  const { document } = parseHTML(html);
+  const lang = document.documentElement.lang || "en";
+  const result = new Readability(document, { charThreshold: 100, maxElemsToParse: 40_000 }).parse();
+  if (!result?.content) throw new ArticleError("Couldn't find an article on that page. Try pasting its text below.");
+  const container = document.createElement("div");
+  container.innerHTML = result.content;
+  const blocks = Array.from(container.querySelectorAll("p, h2, h3, h4, li, pre, blockquote"))
+    .filter((el) => !el.querySelector("p, h2, h3, h4, li, pre, blockquote"))
+    .map((el) => (el.textContent ?? "").replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+  let text = (blocks.length ? blocks.join("\n\n") : result.textContent ?? "").trim();
+  if (text.length < 100) throw new ArticleError("That page has too little readable text. Try pasting the article below.");
+  const truncated = text.length > MAX_ARTICLE_CHARS;
+  if (truncated) text = text.slice(0, MAX_ARTICLE_CHARS).replace(/\s+\S*$/, "");
+  return {
+    title: result.title?.trim() || "Untitled article",
+    url,
+    siteName: result.siteName || new URL(url).hostname,
+    byline: result.byline?.trim() || "",
+    lang,
+    text,
+    wordCount: text.split(/\s+/).length,
+    truncated,
+  };
 }
 
 interface ArticleTransport {
