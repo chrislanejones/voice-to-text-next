@@ -28,7 +28,8 @@ Paste a public article link into **Listen to an article** and press **Read artic
 
 - **Browser voice** starts immediately using the browser's available voices. Text is split into short utterances for long articles.
 - **Natural voice** runs Kokoro on this device in a Web Worker, without AI sign-in or Replicate credit. Choose Heart, Bella, Michael, Emma, or George. The quantized model downloads from Hugging Face on first use (roughly 90 MB, plus runtime and voice files) and is cached by the browser. If it cannot load, playback falls back to the browser voice and explains what happened.
-- The local voices offered here read English. Other article languages use a matching browser voice when available.
+- **AI voices** show up when you're signed in to AI. They add Replicate's 46 Kokoro voices in English, French, Hindi, Italian, Japanese, and Chinese, and the reader switches to a voice that matches the article's language. Each passage is one Replicate request, so a long article makes a few hundred.
+- The natural voices read English. For other languages, use an AI voice or a matching browser voice.
 - Sign-in pages, paywalls, bot protection, and pages rendered only by JavaScript may not extract. **Or paste article text** reads copied text without a server request.
 - Fetching a new link needs an internet connection. In production, a service worker caches the app shell and static assets. After opening the app online and downloading a local voice, you can reopen it offline and read pasted text with that cached voice. A new article link still needs the server. Browser storage eviction can require another download.
 - The article route accepts public HTTP(S) URLs, validates and pins DNS answers, checks each redirect, and limits fetch time, HTML size, and extracted text. It returns plain text rather than embedding the source page.

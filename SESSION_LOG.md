@@ -1,3 +1,50 @@
+# Session log — Superdesign merge, AI voices for articles
+
+**Dates:** 10-10-2026 to 10-11-2026
+**Branch:** `main` (merged `design/superdesign`)
+**Live:** https://voice-to-text-next.vercel.app (production deploy of `7b50857`, Ready)
+**Scope:** commit the uncommitted article-reader work, merge the Superdesign VCE2TXT dashboard, keep article listening free, and add Replicate voices when AI is on.
+
+## Commits
+
+| SHA | What |
+|---|---|
+| `4cd07a5` | feat: article listening, offline shell, local speech (the Broadsheet copy left uncommitted on main) |
+| `eff8fc5` | feat: merge Superdesign VCE2TXT dashboard; ADR-006, ADR-007; ADR-004 visual direction superseded |
+| `7b50857` | feat: Replicate AI voices in the article reader when AI is on |
+
+## Gates (final)
+
+| Gate | Result |
+|---|---|
+| `tsc --noEmit` | **Pass** |
+| eslint | **Pass** |
+| `pnpm test:reader` | **20 / 20** (4 new in `tests/cloud-voices.test.ts`) |
+| `next build` | **Pass** |
+| Live: title / signed-out speak route | **VCE2TXT** / **401** |
+
+## Decisions and why
+
+- **Merge resolved to superdesign wholesale.** Main's uncommitted work was an earlier copy of the same feature; `a4214b3` was a superset, so the merged tree equals it byte for byte.
+- **Free voices stay free.** Browser and on-device Kokoro voices never touch Replicate (checked on a prod build with the token and password blanked).
+- **AI voices relay audio through `/api/ai/speak`.** `replicate.delivery` sends no CORS headers, and the article player decodes with Web Audio, so the route returns bytes when asked (`audio: true`) and only fetches `https` URLs on `*.replicate.delivery`.
+- **Voice list lives in `lib/cloud-voices.ts`.** 46 voices taken from the model's API schema; the route validates against the same list the UI shows.
+
+## Skipped / not done
+
+- AI voice not played end to end: needs the AI password, which this session can't read.
+- `~/repo/voice-to-text-next-superdesign` worktree **not deleted**. It holds its own `.env` and `.env.local`; Chris checks those, then runs the delete commands from the session (`git worktree remove`, `git branch -d design/superdesign`, `git push origin --delete design/superdesign`).
+- `.next` build churn from before the merge sits in `git stash` ("next build churn before superdesign merge"); drop it when sure.
+- `.next/` is ignored now but still tracked; untracking it is still open.
+
+## Next session
+
+- Sign in on the live site and play an article with an AI voice; run the 8-row AI test on the new design.
+- Rate-limit `/api/article` (PARKING_LOT).
+- README title and screenshot still say "Voice to Text" (PARKING_LOT).
+
+---
+
 # Session log — Replicate AI, Broadsheet redesign, password gate, publish
 
 **Dates:** 10-05-2026 to 10-06-2026
