@@ -12,6 +12,9 @@
 | `4cd07a5` | feat: article listening, offline shell, local speech (the Broadsheet copy left uncommitted on main) |
 | `eff8fc5` | feat: merge Superdesign VCE2TXT dashboard; ADR-006, ADR-007; ADR-004 visual direction superseded |
 | `7b50857` | feat: Replicate AI voices in the article reader when AI is on |
+| `bf4e638` | docs: session log, README AI voices bullet |
+| `0008532` | fix: browser headers for article fetch (USA Today 402), Node 24 |
+| `528e63d` | fix: jsdom → linkedom; every `/api/article` call was a 500 on Vercel (`ERR_REQUIRE_ESM`); ADR-006 amended |
 
 ## Gates (final)
 
@@ -28,6 +31,7 @@
 - **Merge resolved to superdesign wholesale.** Main's uncommitted work was an earlier copy of the same feature; `a4214b3` was a superset, so the merged tree equals it byte for byte.
 - **Free voices stay free.** Browser and on-device Kokoro voices never touch Replicate (checked on a prod build with the token and password blanked).
 - **AI voices relay audio through `/api/ai/speak`.** `replicate.delivery` sends no CORS headers, and the article player decodes with Web Audio, so the route returns bytes when asked (`audio: true`) and only fetches `https` URLs on `*.replicate.delivery`.
+- **jsdom out, linkedom in.** jsdom 30 `require()`s the ESM-only `@exodus/bytes` from nine files; Vercel rejected it on Node 22 and 24. Pinning Node 24 alone didn't fix it. Paste was never broken: Chrome on Windows read short and long pasted text to the end.
 - **Voice list lives in `lib/cloud-voices.ts`.** 46 voices taken from the model's API schema; the route validates against the same list the UI shows.
 
 ## Skipped / not done
