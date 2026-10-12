@@ -1,6 +1,6 @@
 # Session log — Superdesign merge, AI voices for articles
 
-**Dates:** 10-10-2026 to 10-11-2026
+**Dates:** 10-10-2026 to 10-12-2026
 **Branch:** `main` (merged `design/superdesign`)
 **Live:** https://voice-to-text-next.vercel.app (production deploy of `b6403fb`, Ready; article links, pasted text, GPU natural voice, layout and AI controls checked live in Chris's Chrome; Replicate AI voices not yet played)
 **Scope:** commit the uncommitted article-reader work, merge the Superdesign VCE2TXT dashboard, keep article listening free, add Replicate voices when AI is on, and fix article links on Vercel.
@@ -26,6 +26,16 @@
 | `pnpm test:reader` | **20 / 20** (4 new in `tests/cloud-voices.test.ts`) |
 | `next build` | **Pass** |
 | Live: title / signed-out speak route | **VCE2TXT** / **401** |
+
+## The three fixes, before and after (checked live 10-12-2026)
+
+| Problem | Cause | Fix | Live result |
+|---|---|---|---|
+| Reading pauses every few words | Natural voice ran on one WebAssembly thread: **71 s** to make 9 s of speech on Chris's PC | Runs on the GPU (WebGPU fp16/fp32, wasm q8 elsewhere), prepares two passages ahead, warns on devices that can't keep up | **3–5 s per 8–15 s of speech**, no pauses over 60 s of reading |
+| White space at the bottom, scroll-up broken | A hidden screen-reader label escaped its column and sat **160 px** below the page, so the page scrolled while the wheel moved a column | Columns are `position: relative`, so they contain their hidden labels | **0 px** of extra scroll at 1280×600 and 1488×932 |
+| Premium features gone | The redesign folded them into a "Recording settings" fold, and the app opened on a saved note with the recorder hidden | Controls sit under "Tap to talk", dimmed until sign-in; the app opens on the recorder | Clicking a dimmed control opens **"Sign in to use AI"** |
+
+First use of the Natural voice now downloads the GPU model (**160–330 MB** by GPU) instead of the 90 MB q8 one; cached after that. Devices with no usable GPU still get the slow single-thread voice plus a note suggesting the browser voice.
 
 ## Decisions and why
 
